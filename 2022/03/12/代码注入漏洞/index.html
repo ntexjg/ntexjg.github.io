@@ -1,0 +1,483 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>代码注入漏洞 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="代码注入漏洞代码注入漏洞定义owasp定义:在客户端提交的代码在服务器端接收后当作动态代码或嵌入文件处理wikipedia定义:客户端所提交的数据未经检查就让web服务器去执行
+OWASP-代码注入漏洞分类OS命令执行漏洞&amp;lt;?php
+	$command=$_REQUEST[&#39;command&#39;]">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="代码注入漏洞"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">代码注入漏洞</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-03-12</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="代码注入漏洞"><a href="#代码注入漏洞" class="headerlink" title="代码注入漏洞"></a>代码注入漏洞</h1><h2 id="代码注入漏洞定义"><a href="#代码注入漏洞定义" class="headerlink" title="代码注入漏洞定义"></a>代码注入漏洞定义</h2><p>owasp定义:在客户端提交的代码在服务器端接收后当作动态代码或嵌入文件处理<br>wikipedia定义:客户端所提交的数据未经检查就让web服务器去执行</p>
+<h2 id="OWASP-代码注入漏洞分类"><a href="#OWASP-代码注入漏洞分类" class="headerlink" title="OWASP-代码注入漏洞分类"></a>OWASP-代码注入漏洞分类</h2><h3 id="OS命令执行漏洞"><a href="#OS命令执行漏洞" class="headerlink" title="OS命令执行漏洞"></a>OS命令执行漏洞</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token variable">$command</span><span class="token operator">=</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'command'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token function">system</span><span class="token punctuation">(</span><span class="token variable">$command</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token variable">$page</span><span class="token operator">=</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'page'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">include</span><span class="token punctuation">(</span><span class="token variable">$page</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="动态函数调用"><a href="#动态函数调用" class="headerlink" title="动态函数调用"></a>动态函数调用</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">function</span> <span class="token function-definition function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">echo</span> <span class="token string double-quoted-string">"666"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token variable">$fun</span><span class="token operator">=</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'fun'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token variable">$fun</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="代码执行漏洞"><a href="#代码执行漏洞" class="headerlink" title="代码执行漏洞"></a>代码执行漏洞</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token variable">$myvar</span><span class="token operator">=</span><span class="token string double-quoted-string">"varname"</span><span class="token punctuation">;</span>
+	<span class="token variable">$x</span><span class="token operator">=</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'arg'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\$myvar = \$x;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="wikipedia-代码注入漏洞分类"><a href="#wikipedia-代码注入漏洞分类" class="headerlink" title="wikipedia-代码注入漏洞分类"></a>wikipedia-代码注入漏洞分类</h2><p>SQL注入,XML注入,XSS,文件包含,命令执行等都可视为代码注入的范畴</p>
+<h2 id="XML注入"><a href="#XML注入" class="headerlink" title="XML注入"></a>XML注入</h2><h3 id="XML简介"><a href="#XML简介" class="headerlink" title="XML简介"></a>XML简介</h3><p>XML(The Extensible Markup Language）可扩展标识语言<br>XML最初设计的目的是弥补HTML的不足，后来逐渐用于网络数据的转换和描述<br>XML的设计宗旨是传输数据，并非显示数据<br>XML在web中的应用非常广泛，XML是各种应用程序之间数据传输中最常用的工具</p>
+<h3 id="XML示例"><a href="#XML示例" class="headerlink" title="XML示例"></a>XML示例</h3><p>admin.xml:</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manager</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>admin</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>admin</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>admin</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>666<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>admin</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manager</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="XML注入原理"><a href="#XML注入原理" class="headerlink" title="XML注入原理"></a>XML注入原理</h3><p>XML注入是通过改写XML实现的，与XSS跨站漏洞相似，漏洞利用成功的关键点是闭合XML标签</p>
+<h3 id="XML注入示例"><a href="#XML注入示例" class="headerlink" title="XML注入示例"></a>XML注入示例</h3><p>假如我们能掌控上文admin.xml中的666字段，那么就会产生XML注入<br>添加一个新管理员guest:<br>攻击者输入:<code>666&lt;/password&gt;&lt;/admin&gt;&lt;admin id=&quot;3&quot;&gt;&lt;name&gt;guest&lt;/name&gt;&lt;password&gt;guest</code><br>最终修改后的XML为</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manager</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>admin</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>admin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>admin</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>admin</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>666<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>admin</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>admin</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>guest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>guest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>admin</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manager</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="XML注入时的两大要素"><a href="#XML注入时的两大要素" class="headerlink" title="XML注入时的两大要素"></a>XML注入时的两大要素</h3><ul>
+<li>闭合标签</li>
+<li>获取XML表结构</li>
+</ul>
+<h3 id="XML注入修复"><a href="#XML注入修复" class="headerlink" title="XML注入修复"></a>XML注入修复</h3><p>对预定义字符进行转义</p>
+<ul>
+<li>预定义字符<table>
+<thead>
+<tr>
+<th align="center">预定义字符</th>
+<th align="center">转义后的预定义字符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&lt;</td>
+<td align="center">&amp;lt;</td>
+</tr>
+<tr>
+<td align="center">&gt;</td>
+<td align="center">&amp;gt;</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">&amp;amp;</td>
+</tr>
+<tr>
+<td align="center">‘</td>
+<td align="center">&amp;apos;</td>
+</tr>
+<tr>
+<td align="center">“</td>
+<td align="center">&amp;quot;</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="XPath注入"><a href="#XPath注入" class="headerlink" title="XPath注入"></a>XPath注入</h2><h3 id="XPath简介"><a href="#XPath简介" class="headerlink" title="XPath简介"></a>XPath简介</h3><p>XPath,XML路径语言(XML Path Language）<br>XPath基于XML的树状结构，提供在数据结构树中找寻节点的能力<br>简单的说，XPath就是选取XML节点的一门语言</p>
+<h3 id="XPath基础语法"><a href="#XPath基础语法" class="headerlink" title="XPath基础语法"></a>XPath基础语法</h3><p>XPath使用路径表达式在XML文档中选取节点</p>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;</td>
+<td align="center">从根节点选取</td>
+</tr>
+<tr>
+<td align="center">&#x2F;&#x2F;</td>
+<td align="center">从匹配选择的当前节点选择文档中的节点</td>
+</tr>
+<tr>
+<td align="center">.</td>
+<td align="center">选取当前节点</td>
+</tr>
+<tr>
+<td align="center">..</td>
+<td align="center">选取当前节点的父节点</td>
+</tr>
+<tr>
+<td align="center">@</td>
+<td align="center">选取属性</td>
+</tr>
+<tr>
+<td align="center">*</td>
+<td align="center">通配符。选择所有的元素，与元素名无关</td>
+</tr>
+<tr>
+<td align="center">@*</td>
+<td align="center">属性通配符。选择所有的属性，与名称无关</td>
+</tr>
+<tr>
+<td align="center">:</td>
+<td align="center">属性通配符。选择所有的属性，与名称无关</td>
+</tr>
+<tr>
+<td align="center">()</td>
+<td align="center">为运算分组，明确设置优先级</td>
+</tr>
+<tr>
+<td align="center">[]</td>
+<td align="center">应用筛选模式</td>
+</tr>
+</tbody></table>
+<h3 id="XPath注入-1"><a href="#XPath注入-1" class="headerlink" title="XPath注入"></a>XPath注入</h3><p>XPath最强大的功能在于逻辑运算，如果使用不当，将会造成注入漏洞</p>
+<ul>
+<li>XPath逻辑运算符<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">or</td>
+<td align="center">或</td>
+</tr>
+<tr>
+<td align="center">and</td>
+<td align="center">与</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>通过XPath注入攻击，攻击者可以攻击XML。<br>XPath注入与SQL注入类似</p>
+<ul>
+<li>SQL注入<br><code>select * from admin where id=1 or 1=1</code><br>会列出当前表admin中的所有数据</li>
+<li>XPath注入<br>SQL语句中的admin表相当于XML文件<br>XML文件内容为<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>users</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>user</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>username</span><span class="token punctuation">></span></span>guest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>username</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>guest<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>user</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>user</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>username</span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>username</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>password</span><span class="token punctuation">></span></span>root<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>password</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>user</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>users</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+在查询时，正常的XPath语句<br><code>//user[username/text()=&#39;root&#39; and password/text()=&#39;root&#39;]</code><br>语句含义：查询user节点(任意位置)下的username标签的值为root,并且password标签的值也为root。如果存在，则返回当前节点<br>假设我们可以控制XPath语句，则<br>在查询时，XPath注入语句<br><code>//user[username/text()=&#39;&#39; or 1=1 or &#39;&#39;=&#39;&#39; and password/text()=&#39;&#39; or &#39;1&#39;=&#39;1&#39;]</code><br>即可遍历全部节点</li>
+</ul>
+<h3 id="XPath注入防御"><a href="#XPath注入防御" class="headerlink" title="XPath注入防御"></a>XPath注入防御</h3><ul>
+<li>对于一些敏感信息，不要使用XML传输。如果一定要使用XML，则尽量使用密文传输</li>
+<li>对预定义字符进行转换</li>
+</ul>
+<h2 id="JSON注入"><a href="#JSON注入" class="headerlink" title="JSON注入"></a>JSON注入</h2><h3 id="JSON简介"><a href="#JSON简介" class="headerlink" title="JSON简介"></a>JSON简介</h3><p>JSON(JavaScript Object Notation),是一种轻量级的数据交换格式<br>JSON基于JavaScript的一个子集<br>JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯(c,c++,c#，java,perl,python等语言都可以使用json），这些特性使json成为理想的数据交换语言，易于开发人员阅读与编写，同时也易于程序解析与生成<br>JSON可以将JavaScript中的对象转换为字符串，然后在函数，网络之间传递这个字符串。JavaScript能很容易的解释这个字符串</p>
+<h3 id="JSON示例"><a href="#JSON示例" class="headerlink" title="JSON示例"></a>JSON示例</h3><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"admin"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"password"</span><span class="token punctuation">,</span><span class="token property">"email"</span><span class="token operator">:</span><span class="token string">"388484@qq.com"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"users"</span><span class="token operator">:</span><span class="token punctuation">[</span>
+			<span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"admin"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"password"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+			<span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"2"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"root"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"root"</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+			<span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"3"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"guest"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"guest"</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">]</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="JSON注入-1"><a href="#JSON注入-1" class="headerlink" title="JSON注入"></a>JSON注入</h3><p>JSON是根据<code>&quot;</code>(双引号)<code>:</code>(冒号)<code>,</code>(逗号)<code>&#123;&#125;</code>(花括号)来区分各字符的意义的<br>JSON注入是指恶意用户向JSON中注入恶意字符，导致JSON结构被破坏，导致JSON解析失败</p>
+<ul>
+<li>JSON注入示例<br>正常的JSON<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"admin"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"123"</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+假如我们可以控制password字段的输入，输入：<code>666&quot;666</code><br>JSON注入后的JSON<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"id"</span><span class="token operator">:</span><span class="token string">"1"</span><span class="token punctuation">,</span><span class="token property">"username"</span><span class="token operator">:</span><span class="token string">"admin"</span><span class="token punctuation">,</span><span class="token property">"password"</span><span class="token operator">:</span><span class="token string">"666"</span><span class="token number">666</span>"<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+可见，JSON的结构被破坏，导致该json无法被解析</li>
+</ul>
+<h3 id="JSON注入防御"><a href="#JSON注入防御" class="headerlink" title="JSON注入防御"></a>JSON注入防御</h3><ul>
+<li>对关键字符进行转义,如：<code>&quot;</code>转义为<code>\&quot;</code>,<code>\</code>转义为<code>\\</code>等</li>
+<li>使用一些第三方组件，如JAVA的JSON-lib.jar，可以有效避免JSON注入</li>
+</ul>
+<h2 id="HTTP参数污染-HPP"><a href="#HTTP参数污染-HPP" class="headerlink" title="HTTP参数污染(HPP)"></a>HTTP参数污染(HPP)</h2><h3 id="HTTP参数污染简介"><a href="#HTTP参数污染简介" class="headerlink" title="HTTP参数污染简介"></a>HTTP参数污染简介</h3><p>HTTP参数污染(HTTP Parameter Pollution），简称HPP。它就是web容器处理HTTP参数的问题</p>
+<h3 id="HTTP参数污染原理"><a href="#HTTP参数污染原理" class="headerlink" title="HTTP参数污染原理"></a>HTTP参数污染原理</h3><p>php源码：</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token variable">$str</span><span class="token operator">=</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">echo</span> <span class="token variable">$str</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>开发人员通常不会考虑有重复参数的问题，因为它比较少见。HTTP请求中也并未规定不可以传递多个相同的参数项<br>因此构造URL<code>http://www.example.com/index.php?id=1&amp;id=2&amp;id=3</code><br>显示结果为</p>
+<img src="/2022/03/12/%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/http%E5%8F%82%E6%95%B0%E6%B1%A1%E6%9F%93.png" class="">
+<p>可以发现，php在取值时忽略了前面的id的值，只取了最后一个id参数的值<br>这就是HTTP参数污染<br>注：这仅是php的取值结果，而不同脚本环境的取值结果是不同的</p>
+<ul>
+<li>不同脚本环境HPP的执行结果<img src="/2022/03/12/%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/%E4%B8%8D%E5%90%8C%E8%84%9A%E6%9C%AC%E7%8E%AF%E5%A2%83.png" class="">
+例：<br>JSP：<code>http://www.example.com/index.jsp?id=1&amp;id=2&amp;id=3</code>,取值为第一个id参数的值1<br>ASP.NET:<code>http://www.example.com/index.aspx?id=1&amp;id=2&amp;id=3</code>,取值为123（ASP.NET会将多个相同参数项的值连接起来)</li>
+</ul>
+<h3 id="HTTP参数污染应用"><a href="#HTTP参数污染应用" class="headerlink" title="HTTP参数污染应用"></a>HTTP参数污染应用</h3><p>用来绕过一些web应用防火墙(waf)</p>
+<ul>
+<li><p>waf工作原理简介<br>客户端发送请求，waf在接收到请求数据之后就对数据进行校验。如果未发现恶意代码，则交给服务器端脚本去处理；如果发现恶意代码，就进行拦截，不再交给服务器端脚本去处理</p>
+</li>
+<li><p>HPP绕waf的原理<br>因为HPP有多个相同的参数项，而waf和服务器端脚本的取值不同，如<br>PHP:<code>http://www.example.com/index.php?id=1&amp;id=select username,password from admin -- </code><br>waf取id值为<code>1</code>，而php取id值为<code>select username,password from admin -- </code>,由于<code>1</code>无恶意代码，所以该请求数据不会被waf拦截<br>ASP.NET:<code>http://www.example.com/index.aspx?id=1;&amp;id=s&amp;id=e&amp;id=l&amp;id=e&amp;id=c&amp;id=t</code><br>waf取id值为<code>1;</code>,而asp.net取id值为<code>1;select</code>,由于<code>1;</code>无恶意代码，所以该请求数据不会被waf拦截</p>
+</li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/03/15/URL%E8%B7%B3%E8%BD%AC%E4%B8%8E%E9%92%93%E9%B1%BC/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/03/11/%E9%80%BB%E8%BE%91%E9%94%99%E8%AF%AF%E6%BC%8F%E6%B4%9E/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

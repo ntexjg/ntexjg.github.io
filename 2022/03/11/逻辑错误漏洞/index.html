@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>逻辑错误漏洞 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="逻辑错误漏洞逻辑错误漏洞简介逻辑错误漏洞是指由于程序逻辑不严谨或逻辑太复杂导致一些逻辑分支不能正常处理或处理错误逻辑漏洞一般出现在功能(业务流程)上，漏扫工具无法识别
+逻辑漏洞挖掘步骤
+发现网站所提供的功能模块，如:修改密码，密码找回，修改个人资料等功能
+针对具体的功能确定业务流程例：购物功能的业务">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="逻辑错误漏洞"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">逻辑错误漏洞</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-03-11</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="逻辑错误漏洞"><a href="#逻辑错误漏洞" class="headerlink" title="逻辑错误漏洞"></a>逻辑错误漏洞</h1><h2 id="逻辑错误漏洞简介"><a href="#逻辑错误漏洞简介" class="headerlink" title="逻辑错误漏洞简介"></a>逻辑错误漏洞简介</h2><p>逻辑错误漏洞是指由于程序逻辑不严谨或逻辑太复杂导致一些逻辑分支不能正常处理或处理错误<br>逻辑漏洞一般出现在功能(业务流程)上，漏扫工具无法识别</p>
+<h2 id="逻辑漏洞挖掘步骤"><a href="#逻辑漏洞挖掘步骤" class="headerlink" title="逻辑漏洞挖掘步骤"></a>逻辑漏洞挖掘步骤</h2><ul>
+<li>发现网站所提供的功能模块，如:修改密码，密码找回，修改个人资料等功能</li>
+<li>针对具体的功能确定业务流程<br>例：购物功能的业务流程如下:<pre class="line-numbers language-none"><code class="language-none">1.挑选商品，商品可多选；
+2.立刻购买，在“立刻购买”按钮旁边可以选择购买数量，购买样式等；
+3.显示购买信息，在此步骤可以给卖家留言，填写购买数量，使用优惠券，匿名购买，找人代付等；
+4.提交订单；
+5.付款；<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>拦截HTTP&#x2F;HTTPS请求，分析其参数项的含义</li>
+<li>修改参数值，尝试触发逻辑漏洞</li>
+<li>用同样的方法对其他功能继续测试</li>
+</ul>
+<h2 id="挖掘逻辑漏洞的重点"><a href="#挖掘逻辑漏洞的重点" class="headerlink" title="挖掘逻辑漏洞的重点"></a>挖掘逻辑漏洞的重点</h2><ul>
+<li>业务流程</li>
+<li>HTTP&#x2F;HTTPS请求篡改</li>
+</ul>
+<h2 id="常见的逻辑漏洞"><a href="#常见的逻辑漏洞" class="headerlink" title="常见的逻辑漏洞"></a>常见的逻辑漏洞</h2><h3 id="越权-绕过授权验证"><a href="#越权-绕过授权验证" class="headerlink" title="越权(绕过授权验证)"></a>越权(绕过授权验证)</h3><p>指访问了没有授权的资源或信息</p>
+<h4 id="水平越权"><a href="#水平越权" class="headerlink" title="水平越权"></a>水平越权</h4><p>水平越权就是相同级别(权限)的用户或者同一角色的不同用户之间，可以越权访问，修改，删除的非法操作</p>
+<h5 id="水平越权示例"><a href="#水平越权示例" class="headerlink" title="水平越权示例"></a>水平越权示例</h5><p>无水平越权漏洞，只能查看自己(id&#x3D;1）的个人信息：<br><code>http://www.example.com/userinfo.php?id=1</code><br>存在水平越权漏洞，能查看别人的个人信息:<br><code>http://www.example.com/userinfo.php?id=6</code></p>
+<h5 id="水平越权危害"><a href="#水平越权危害" class="headerlink" title="水平越权危害"></a>水平越权危害</h5><p>可能会造成大批量数据泄漏，严重的甚至会造成用户信息被恶意篡改</p>
+<h4 id="垂直越权"><a href="#垂直越权" class="headerlink" title="垂直越权"></a>垂直越权</h4><p>垂直越权是不同级别之间或不同角色之间的越权</p>
+<h5 id="垂直越权分类"><a href="#垂直越权分类" class="headerlink" title="垂直越权分类"></a>垂直越权分类</h5><ul>
+<li>向上越权</li>
+<li>向下越权</li>
+</ul>
+<h3 id="密码找回逻辑漏洞"><a href="#密码找回逻辑漏洞" class="headerlink" title="密码找回逻辑漏洞"></a>密码找回逻辑漏洞</h3><p>为了防止用户遗忘密码，大多数网站都提供了找回密码功能<br>常见的找回密码方式:邮箱找回密码，根据密保问题找回密码，手机号找回密码等<br>无论是哪种密码找回方式，在找回密码时，如果不仅能找回自己的密码，还能找回其他用户的密码，就存在密码找回漏洞</p>
+<h3 id="支付逻辑漏洞"><a href="#支付逻辑漏洞" class="headerlink" title="支付逻辑漏洞"></a>支付逻辑漏洞</h3><h4 id="测试支付逻辑漏洞的重点"><a href="#测试支付逻辑漏洞的重点" class="headerlink" title="测试支付逻辑漏洞的重点"></a>测试支付逻辑漏洞的重点</h4><ul>
+<li>业务流程</li>
+<li>HTTP请求分析(购买数量，商品价格，折扣，运费，商品信息的中转页面，跳转到支付接口时等参数)</li>
+</ul>
+<h4 id="支付逻辑漏洞示例"><a href="#支付逻辑漏洞示例" class="headerlink" title="支付逻辑漏洞示例"></a>支付逻辑漏洞示例</h4><ul>
+<li>商品数量为负数</li>
+<li>0元购买商品</li>
+<li>商品价格修改</li>
+<li>物流运费修改等</li>
+</ul>
+<h3 id="指定账户恶意攻击"><a href="#指定账户恶意攻击" class="headerlink" title="指定账户恶意攻击"></a>指定账户恶意攻击</h3><p>针对安全性较高的系统，当该类系统使用账号密码登陆时，如果密码输入次数超过规定次数，就会锁定当前账户，从而在一定的时间内无法登陆。<br>攻击者可利用该逻辑漏洞对某账号恶意攻击导致其无法使用</p>
+<ul>
+<li>防御方法<br>不要暴露登陆账户，对外仅仅暴露昵称</li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/03/12/%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/03/07/CSRF%E6%BC%8F%E6%B4%9E/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>主机状态扫描-ICMP扫描 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="ICMP简介ICMP位于TCP&amp;#x2F;IP协议族中的网络层，ICMP的目的是用于在IP主机，路由器之间传递控制消息因为互联网也经常发生各种错误，为了发现和处理这些错误，ICMP(互联网控制报文协议)应运而生ICMP中提供了多种报文，这些报文分为两大类：差错报文和查询报文，查询报文都是由一个请求和">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="主机状态扫描-ICMP扫描"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">主机状态扫描-ICMP扫描</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-01</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="ICMP简介"><a href="#ICMP简介" class="headerlink" title="ICMP简介"></a>ICMP简介</h1><p>ICMP位于TCP&#x2F;IP协议族中的网络层，ICMP的目的是用于在IP主机，路由器之间传递控制消息<br>因为互联网也经常发生各种错误，为了发现和处理这些错误，ICMP(互联网控制报文协议)应运而生<br>ICMP中提供了多种报文，这些报文分为两大类：差错报文和查询报文，查询报文都是由一个请求和一个应答构成<br>ICMP查询报文有4种：响应请求或应答，时间戳请求或应答，地址掩码请求或应答，路由器询问或应答。但在实际应用中，后面的3种成功率很低，所以主要使用第一种ICMP查询报文<br>ping命令就是响应请求或应答报文的应用，我们经常使用ping命令来测试本地与目标之间的连通性</p>
+<h1 id="ICMP请求与应答"><a href="#ICMP请求与应答" class="headerlink" title="ICMP请求与应答"></a>ICMP请求与应答</h1><p>本地主机为192.168.1.1,目标主机为192.168.1.2，如果要判断目标是否为活跃主机，我们就需要向目标主机192.168.1.2发送一个ICMP请求，ICMP请求格式为</p>
+<pre class="line-numbers language-none"><code class="language-none">IP层内容
+源IP地址:192.168.1.1
+目的IP地址:192.168.1.2
+ICMP层内容
+Type:8(表示请求）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果目标主机192.168.1.2活跃，它在接收到ICMP请求数据包之后，就会给出一个ICMP响应，ICMP响应格式为</p>
+<pre class="line-numbers language-none"><code class="language-none">IP层内容
+源IP地址:192.168.1.2
+目的IP地址:192.168.1.1
+ICMP层内容
+Type:0(表示应答)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="ICMP扫描原理图"><a href="#ICMP扫描原理图" class="headerlink" title="ICMP扫描原理图"></a>ICMP扫描原理图</h1><p><img src="/icmp%E5%8E%9F%E7%90%86%E5%9B%BE1.png"><br>注：由于现在很多网络安全设备或机制会屏蔽ICMP，在这种情况下，即使目标主机处于活跃状态，也收不到来自目标主机的ICMP响应<br><img src="/icmp%E5%8E%9F%E7%90%86%E5%9B%BE2.png"></p>
+<h1 id="ICMP扫描抓包"><a href="#ICMP扫描抓包" class="headerlink" title="ICMP扫描抓包"></a>ICMP扫描抓包</h1><p><img src="/icmp%E6%8A%93%E5%8C%851.png"><br><img src="/icmp%E6%8A%93%E5%8C%852.png"></p>
+<h1 id="ICMP扫描的优点及局限性"><a href="#ICMP扫描的优点及局限性" class="headerlink" title="ICMP扫描的优点及局限性"></a>ICMP扫描的优点及局限性</h1><p>优点：无论是以太网还是互联网都可以使用ICMP扫描，应用范围广<br>局限：大量网络设备，例如：路由器，防火墙等都对ICMP进行了屏蔽，这样就会导致扫描结果不准确</p>
+<h1 id="scapy构造ICMP请求包"><a href="#scapy构造ICMP请求包" class="headerlink" title="scapy构造ICMP请求包"></a>scapy构造ICMP请求包</h1><pre class="line-numbers language-none"><code class="language-none">ans,unans&#x3D;sr(IP(dst&#x3D;&quot;192.168.1.1&quot;)&#x2F;ICMP())<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="python-nmap模块扫描"><a href="#python-nmap模块扫描" class="headerlink" title="python-nmap模块扫描"></a>python-nmap模块扫描</h1><pre class="line-numbers language-none"><code class="language-none">nm.scan(hosts&#x3D;&quot;192.168.1.2&quot;,arguments&#x3D;&quot;-PE -sn&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/03/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-TCP%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ARP%E6%89%AB%E6%8F%8F/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

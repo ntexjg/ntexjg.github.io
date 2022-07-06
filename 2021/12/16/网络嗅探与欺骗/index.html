@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>网络嗅探与欺骗 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="网络数据嗅探scapy中捕获数据包的函数sniff()
+sniff()中重要的参数count	#表示要捕获数据包的数量。默认值为0，表示不限制数量store	#表示是否要保存捕获到的数据包。默认值为1prn	#这个参数是一个函数，这个函数将会应用在每一个捕获到的数据包上。如果这个函数有返回值，将会显">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="网络嗅探与欺骗"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">网络嗅探与欺骗</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-16</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="网络数据嗅探"><a href="#网络数据嗅探" class="headerlink" title="网络数据嗅探"></a>网络数据嗅探</h1><h3 id="scapy中捕获数据包的函数"><a href="#scapy中捕获数据包的函数" class="headerlink" title="scapy中捕获数据包的函数"></a>scapy中捕获数据包的函数</h3><p>sniff()</p>
+<h3 id="sniff-中重要的参数"><a href="#sniff-中重要的参数" class="headerlink" title="sniff()中重要的参数"></a>sniff()中重要的参数</h3><p>count	#表示要捕获数据包的数量。默认值为0，表示不限制数量<br>store	#表示是否要保存捕获到的数据包。默认值为1<br>prn	#这个参数是一个函数，这个函数将会应用在每一个捕获到的数据包上。如果这个函数有返回值，将会显示出来。默认是空<br>iface	#表示要使用的网卡或网卡列表<br>filter	#要应用的BPF过滤器</p>
+<h3 id="sniff-过滤器的使用"><a href="#sniff-过滤器的使用" class="headerlink" title="sniff()过滤器的使用"></a>sniff()过滤器的使用</h3><ul>
+<li>sniff()过滤器使用的过滤语法<br>伯克利包过滤语法（BPF）<br>BPF通过比较各个层协议中数据字段值的方法对流量进行过滤</li>
+<li>BPF的主要特点<br>使用一个名为“原语”的方法来完成对网络数据包的描述，支持与，或，非等逻辑运算<ul>
+<li>例<br>  host	#描述主机<br>  port	#描述端口</li>
+</ul>
+</li>
+<li>BPF表达式<br>使用BPF语法创建出来的过滤器被称为BPF表达式<br>每个表达式包含一个或多个原语，每个原语中又包含一个或多个限定词。主要有3个限定词<ul>
+<li>Type<br>  Type用来规定使用名字或数字代表的类型。例如：host,net,port等</li>
+<li>Dir<br>  Dir用来规定流量的方向。例如：src,dst,src and dst等</li>
+<li>Proto<br>  Proto用来规定匹配的协议。例如：ip,tcp,arp等</li>
+</ul>
+</li>
+<li>常见的过滤器<br>host 1.1.1.1	#只捕获与网络中某一个IP的主机进行交互的流量<br>ether host 00-11-22-33-44-55	#只捕获与网络中某一个MAC地址的主机进行交互的流量<br>src host 1.1.1.1	#只捕获来自网络中某一个IP的主机的流量<br>dst host 1.1.1.1	#只捕获去往网络中某一个IP的主机的流量。host可以省略，dst 1.1.1.1<br>port 23		#只捕获23端口的流量<br>!23		#捕获除了23端口以外的流量<br>dst port 80	#只捕获目的端口为80的流量<br>icmp		#只捕获icmp流量<br>icmp[0]&#x3D;3 &amp;&amp; icmp[1]&#x3D;0	#只捕获type为3，code为0的icmp流量</li>
+</ul>
+<h3 id="即时显示捕获的数据包"><a href="#即时显示捕获的数据包" class="headerlink" title="即时显示捕获的数据包"></a>即时显示捕获的数据包</h3><pre class="line-numbers language-none"><code class="language-none">prn&#x3D;lambda x:x.summary()	#x可以为任意字符，如y,z等<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="即时显示捕获的数据包中的某项信息"><a href="#即时显示捕获的数据包中的某项信息" class="headerlink" title="即时显示捕获的数据包中的某项信息"></a>即时显示捕获的数据包中的某项信息</h3><pre class="line-numbers language-none"><code class="language-none">prn&#x3D;lambda x:x[IP].src<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="自定义函数及调用"><a href="#自定义函数及调用" class="headerlink" title="自定义函数及调用"></a>自定义函数及调用</h3><pre class="line-numbers language-none"><code class="language-none">def callback(packet):
+	print(packet.show())	#scapy中的show()表示显示数据包的详细信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="wrpcap-将捕获的数据包保存为一个文件"><a href="#wrpcap-将捕获的数据包保存为一个文件" class="headerlink" title="wrpcap()将捕获的数据包保存为一个文件"></a>wrpcap()将捕获的数据包保存为一个文件</h3><pre class="line-numbers language-none"><code class="language-none">wrpcap(&quot;demo.pcap&quot;,packet)	#demo.pcap为文件名，packet为捕获的数据包
+				#保存的格式很多，目前最为通用的格式是pcap<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="wireshark-调用wireshark来查看数据包"><a href="#wireshark-调用wireshark来查看数据包" class="headerlink" title="wireshark()调用wireshark来查看数据包"></a>wireshark()调用wireshark来查看数据包</h3><pre class="line-numbers language-none"><code class="language-none">wireshark(packet)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="arp欺骗"><a href="#arp欺骗" class="headerlink" title="arp欺骗"></a>arp欺骗</h1><h3 id="arp的原理与缺陷"><a href="#arp的原理与缺陷" class="headerlink" title="arp的原理与缺陷"></a>arp的原理与缺陷</h3><p>目前网络中大部分的监听和欺骗技术都是源于arp协议</p>
+<ul>
+<li>arp原理<br>以太网中使用的设备交换机并不能识别IP地址，只能识别硬件地址。在交换机中使用一个内容寻址寄存器（CAM），这个CAM表列出了交换机每一个端口所连接设备的硬件地址<ul>
+<li>CAM表  <pre class="line-numbers language-none"><code class="language-none">Mac Address		Ports
+11:11:11:11:11:11	Fa0&#x2F;1
+22:22:22:22:22:22	Fa0&#x2F;2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+当交换机收到了一个发往特定硬件地址的数据包（例如：11:11:11:11:11:11），就会首先查找CAM表中是否有对应的表项，如果有就将数据包发往这个端口（例如：Fa0&#x2F;1）<br>因为软件中使用的都是IP地址，而交换机使用的却是硬件地址，那么这个过程中一定发生了IP地址和硬件地址的转换，这个转换发生在软件将数据包交给交换机之前。在每一台支持arp的主机中都有一个arp表，arp表保存了已知的IP地址和硬件地址的对应关系</li>
+<li>ARP表  <pre class="line-numbers language-none"><code class="language-none">IP地址		硬件地址		类型
+1.1.1.1		11:11:11:11:11:11	动态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>查看windows系统arp表  <pre class="line-numbers language-none"><code class="language-none">arp -a<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>查看linux系统arp表  <pre class="line-numbers language-none"><code class="language-none">arp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+假设要跟主机1.1.1.1通信，就首先查找arp表，在arp表中找到1.1.1.1对应的硬件地址后，就会给这个数据包添加一个硬件地址(11:11:11:11:11:11),然后将该数据包交给交换机，交换机就会根据数据包中的硬件地址从CAM表中找到该硬件地址对应的端口，就会将该数据包发送给连接该端口的主机<br>假设要跟主机2.2.2.2通信，就首先查找arp表，如果找不到对应的表项，就不知道2.2.2.2所对应的硬件地址，这时就需要使用arp了。主机就会向局域网中发送一个arp请求的广播包，内容大概是“我的ip是x.x.x.x,我的物理地址是xx:xx:xx:xx:xx:xx,ip地址为2.2.2.2的主机在吗，我需要和你进行通信，请告诉我你的物理地址，收到请回答!”，因为该数据包是广播包，因此局域网中所有的主机都能收到，但只有目标主机2.2.2.2会给出回应。目标主机2.2.2.2首先会将接收到的arp请求包中的发送端的ip和硬件地址作为新的表项添加到自己的arp表中，然后向发送端发送一个arp响应包，内容大概是“我就是那个ip地址为2.2.2.2的主机，我的物理地址是22:22:22:22:22:22”。发送端接收到该arp响应包后，就会将数据包中的ip和硬件地址作为新的表项添加到自己的arp表中。</li>
+</ul>
+</li>
+<li>arp缺陷<br>arp协议通信的过程并没有任何的认证机制，也就是说一台主机收到arp请求数据包，它就会将数据包中的ip和mac地址添加到自己的arp缓存表中，并不会判断该数据包是否真的来自于该ip对应的主机。由于没有对数据包的真伪进行判断，因此就可以利用该漏洞来冒充网关等主机</li>
+</ul>
+<h3 id="arp欺骗原理"><a href="#arp欺骗原理" class="headerlink" title="arp欺骗原理"></a>arp欺骗原理</h3><p>arp中规定，只要主机收到一个arp请求之后，不会判断这个请求的真伪，就会直接将请求中的ip地址和物理地址添加到arp表中。如果之前有了相同ip地址的表项，就对其修改，这种方式称为动态arp表</p>
+<h3 id="arpspoof使用"><a href="#arpspoof使用" class="headerlink" title="arpspoof使用"></a>arpspoof使用</h3><pre class="line-numbers language-none"><code class="language-none">arpspoof [-i指定使用的网卡] [-t要欺骗的目标主机] [-r双向欺骗] 要伪装成的主机
+例：arpspoof -i eth0 -t 192.168.1.10 -r 192.168.1.1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="主机开启转发功能"><a href="#主机开启转发功能" class="headerlink" title="主机开启转发功能"></a>主机开启转发功能</h3><pre class="line-numbers language-none"><code class="language-none">echo 1 &gt;&gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>注：通过arp欺骗截获目标主机发往网关的数据包之后，我们需要在本机开启转发功能，使截获的数据包能够再转发给网关，让目标主机可以正常上网</p>
+<h1 id="python实现arp欺骗"><a href="#python实现arp欺骗" class="headerlink" title="python实现arp欺骗"></a>python实现arp欺骗</h1>	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/07/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%89%AB%E6%8F%8F/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

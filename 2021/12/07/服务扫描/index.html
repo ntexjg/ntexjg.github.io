@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>服务扫描 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="服务扫描的思路
+常见的服务都会运行在指定的端口上（ftp:21,ssh:22,http:80等等），所以可以根据开放的端口号猜测端口上运行的服务（nmap-services库）
+抓取软件banner信息
+向目标开放的端口发送探针数据包，然后把返回的数据包与数据库中的记录进行比对，从而找出具体的服务信">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="服务扫描"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">服务扫描</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-07</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="服务扫描的思路"><a href="#服务扫描的思路" class="headerlink" title="服务扫描的思路"></a>服务扫描的思路</h1><ul>
+<li>常见的服务都会运行在指定的端口上（ftp:21,ssh:22,http:80等等），所以可以根据开放的端口号猜测端口上运行的服务（nmap-services库）</li>
+<li>抓取软件banner信息</li>
+<li>向目标开放的端口发送探针数据包，然后把返回的数据包与数据库中的记录进行比对，从而找出具体的服务信息（nmap-service-probe数据库）</li>
+</ul>
+<h1 id="抓取banner进行服务扫描程序"><a href="#抓取banner进行服务扫描程序" class="headerlink" title="抓取banner进行服务扫描程序"></a>抓取banner进行服务扫描程序</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> socket
+s<span class="token operator">=</span>socket<span class="token punctuation">.</span>socket<span class="token punctuation">(</span><span class="token punctuation">)</span>
+s<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">"192.168.1.1"</span><span class="token punctuation">,</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+s<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span>
+banner<span class="token operator">=</span>s<span class="token punctuation">.</span>recv<span class="token punctuation">(</span><span class="token number">1024</span><span class="token punctuation">)</span> <span class="token comment">#获取目标端口服务软件的banner信息</span>
+s<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"port:80"</span><span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">,</span><span class="token string">"service:"</span><span class="token punctuation">,</span>banner<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="使用python-nmap模块进行服务扫描程序"><a href="#使用python-nmap模块进行服务扫描程序" class="headerlink" title="使用python-nmap模块进行服务扫描程序"></a>使用python-nmap模块进行服务扫描程序</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> nmap
+nm<span class="token operator">=</span>nmap<span class="token punctuation">.</span>PortScanner<span class="token punctuation">(</span><span class="token punctuation">)</span>
+nm<span class="token punctuation">.</span>scan<span class="token punctuation">(</span>hosts<span class="token operator">=</span><span class="token string">"192.168.1.1"</span><span class="token punctuation">,</span>ports<span class="token operator">=</span><span class="token string">"80"</span><span class="token punctuation">,</span>arguments<span class="token operator">=</span><span class="token string">"-sV"</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> host <span class="token keyword">in</span> nm<span class="token punctuation">.</span>all_hosts<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">for</span> proto <span class="token keyword">in</span> nm<span class="token punctuation">[</span>host<span class="token punctuation">]</span><span class="token punctuation">.</span>all_protocols<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">for</span> port <span class="token keyword">in</span> nm<span class="token punctuation">[</span>host<span class="token punctuation">]</span><span class="token punctuation">[</span>proto<span class="token punctuation">]</span><span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+			service<span class="token operator">=</span>nm<span class="token punctuation">[</span>host<span class="token punctuation">]</span><span class="token punctuation">[</span>proto<span class="token punctuation">]</span><span class="token punctuation">[</span>port<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'product'</span><span class="token punctuation">]</span> <span class="token comment">#端口服务名称</span>
+			version<span class="token operator">=</span>nm<span class="token punctuation">[</span>host<span class="token punctuation">]</span><span class="token punctuation">[</span>proto<span class="token punctuation">]</span><span class="token punctuation">[</span>port<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'version'</span><span class="token punctuation">]</span> <span class="token comment">#端口服务版本</span>
+			<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"service:\t"</span><span class="token punctuation">,</span>service<span class="token punctuation">)</span>
+			<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"version:\t"</span><span class="token punctuation">,</span>version<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/07/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

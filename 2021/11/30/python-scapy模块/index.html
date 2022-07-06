@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python-scapy模块 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="scapy基本介绍在scapy中，每一个协议就是一个类。只需要实例化一个协议类，就可以创建一个该协议的数据包
+scapy的协议类Ether(),IP(),TCP(),UDP()
+scapy基本操作查看协议类的属性ls()
+ls(Ether())
+设置协议类的属性IP(src&amp;#x3D;&amp;quot;1">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="python-scapy模块"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">python-scapy模块</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-11-30</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="scapy基本介绍"><a href="#scapy基本介绍" class="headerlink" title="scapy基本介绍"></a>scapy基本介绍</h1><p>在scapy中，每一个协议就是一个类。只需要实例化一个协议类，就可以创建一个该协议的数据包</p>
+<h2 id="scapy的协议类"><a href="#scapy的协议类" class="headerlink" title="scapy的协议类"></a>scapy的协议类</h2><p>Ether(),IP(),TCP(),UDP()</p>
+<h1 id="scapy基本操作"><a href="#scapy基本操作" class="headerlink" title="scapy基本操作"></a>scapy基本操作</h1><h2 id="查看协议类的属性"><a href="#查看协议类的属性" class="headerlink" title="查看协议类的属性"></a>查看协议类的属性</h2><p>ls()</p>
+<pre class="line-numbers language-none"><code class="language-none">ls(Ether())<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="设置协议类的属性"><a href="#设置协议类的属性" class="headerlink" title="设置协议类的属性"></a>设置协议类的属性</h3><pre class="line-numbers language-none"><code class="language-none">IP(src&#x3D;&quot;192.168.1.1&quot;,dst&#x3D;&quot;192.168.1.2&quot;,ttl&#x3D;64) #设置ttl值，ttl值是一个数字<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="构造dst属性的值为1个IP地址的IP数据包"><a href="#构造dst属性的值为1个IP地址的IP数据包" class="headerlink" title="构造dst属性的值为1个IP地址的IP数据包"></a>构造dst属性的值为1个IP地址的IP数据包</h2><pre class="line-numbers language-none"><code class="language-none">IP(src&#x3D;&quot;192.168.1.1&quot;,dst&#x3D;&quot;192.168.1.2&quot;)
+dst的值是一个IP地址
+生成了1个数据包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="构造dst属性的值为1个IP范围的IP数据包"><a href="#构造dst属性的值为1个IP范围的IP数据包" class="headerlink" title="构造dst属性的值为1个IP范围的IP数据包"></a>构造dst属性的值为1个IP范围的IP数据包</h2><pre class="line-numbers language-none"><code class="language-none">IP(src&#x3D;&quot;192.168.1.1&quot;,dst&#x3D;&quot;192.168.1.0&#x2F;24&quot;)
+dst的值是一个IP范围
+生成了256个数据包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>要查看其中的每一个数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">[p for p in ip]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="scapy数据包构造形式"><a href="#scapy数据包构造形式" class="headerlink" title="scapy数据包构造形式"></a>scapy数据包构造形式</h2><p>scapy采用分层的形式来构造数据包，通常最下面的一个协议为Ether,然后是IP，再之后是TCP或UDP</p>
+<h3 id="生成一个广播数据包"><a href="#生成一个广播数据包" class="headerlink" title="生成一个广播数据包"></a>生成一个广播数据包</h3><pre class="line-numbers language-none"><code class="language-none">Ether(dst&#x3D;&quot;ff:ff:ff:ff:ff:ff&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>scapy中的分层通过符号“&#x2F;”实现，一个数据包是由多层协议组合而成，这些协议之间使用“&#x2F;”分开，按照协议由底而上的顺序从左向右排列</p>
+<h3 id="构造一个TCP数据包"><a href="#构造一个TCP数据包" class="headerlink" title="构造一个TCP数据包"></a>构造一个TCP数据包</h3><pre class="line-numbers language-none"><code class="language-none">Ether()&#x2F;IP()&#x2F;TCP()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="构造一个HTTP数据包"><a href="#构造一个HTTP数据包" class="headerlink" title="构造一个HTTP数据包"></a>构造一个HTTP数据包</h3><pre class="line-numbers language-none"><code class="language-none">IP()&#x2F;TCP()&#x2F;&quot;GET &#x2F; HTTP&#x2F;1.0\r\n\r\n&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="scapy模块中的函数"><a href="#scapy模块中的函数" class="headerlink" title="scapy模块中的函数"></a>scapy模块中的函数</h1><pre class="line-numbers language-none"><code class="language-none">send() #工作在第三层，用来发送IP数据包
+sendp() #工作在第二层，用来发送Ether数据包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>注：send()和sendp()只发不收，只会将数据包发送出去，但不能处理该数据包的回应包</p>
+<pre class="line-numbers language-none"><code class="language-none">fuzz() #构造一个内容是随机填充的数据包，又保证这个数据包的正确性
+例：
+IP(dst&#x3D;&quot;192.168.1.1&quot;)&#x2F;fuzz(TCP())<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">sr() #工作在第三层，用来发送和接收数据包
+sr1() #工作在第三层，用来发送和接收数据包
+srp() #工作在第二层，用来发送和接收数据包<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>sr()的返回值是两个列表，第一个列表是收到了应答的数据包和对应的应答数据包，第二个列表是未收到应答的数据包<br>所以可以使用两个列表来保存sr()的返回值</p>
+<pre class="line-numbers language-none"><code class="language-none">ans,unans&#x3D;sr(IP(dst&#x3D;&quot;192.168.1.1&quot;)&#x2F;ICMP())<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>查看ans,unans列表中数据包的内容</p>
+<pre class="line-numbers language-none"><code class="language-none">ans.summary()
+unans.summary()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>判断数据包是否具有某协议</p>
+<pre class="line-numbers language-none"><code class="language-none">haslayer() 
+例：resp.haslayer(TCP)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>读取数据包中某协议字段的内容</p>
+<pre class="line-numbers language-none"><code class="language-none">getlayer()
+例：resp.getlayer(TCP).flags<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>自动生成一个随机端口号</p>
+<pre class="line-numbers language-none"><code class="language-none">RandShort()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>sr1()跟sr()作用基本一样，但是只返回一个应答数据包,所以只需使用一个列表来保存这个函数的返回值</p>
+<pre class="line-numbers language-none"><code class="language-none">p&#x3D;sr1(IP(dst&#x3D;&#39;192.168.1.1&#39;)&#x2F;ICMP())<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用sr1()来测试目标的某个端口是否开放，采用半开扫描(SYN)方法：</p>
+<pre class="line-numbers language-none"><code class="language-none">p&#x3D;sr1(IP(dst&#x3D;&quot;192.168.1.1&quot;)&#x2F;TCP(dport&#x3D;80,flags&#x3D;&quot;S&quot;))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">sniff() #捕获经过本机网卡的数据包<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用sniff()开始监听，但是捕获的数据包不会即时显示，只有使用ctrl+c停止监听时才会显示捕获的数据包<br>sniff()可以使用filter参数对数据包进行过滤，例：<br>只捕获与主机192.168.1.1有关的数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(filter&#x3D;&quot;host 192.168.1.1&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>只捕获指定协议的数据包</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(filter&#x3D;&quot;icmp&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果要同时满足多个条件可以使用“and”，”or”等关系运算符来表达</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(filter&#x3D;&quot;host 192.168.1.1 and icmp&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>sniff()可以使用iface参数指定所要进行监听的网卡</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(iface&#x3D;&quot;eth0&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>sniff()可以使用count参数指定监听到数据包的数量，达到指定的数量就会停止监听</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(count&#x3D;5)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>sniff()参数组合使用</p>
+<pre class="line-numbers language-none"><code class="language-none">sniff(count&#x3D;3,iface&#x3D;&quot;eth0&quot;,filter&#x3D;&quot;host 192.168.1.1 and icmp&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>注：在scapy中，“_”下划线符号表示上一条语句执行的结果</p>
+<pre class="line-numbers language-none"><code class="language-none">a.summary() #以摘要的形式显示a的内容，摘要的长度为一行
+a.nsummary() #作用与summary()相同，只是要操作的对象是多个数据包
+a.show() #显示数据包的详细内容<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="scapy模块的常用简单实例"><a href="#scapy模块的常用简单实例" class="headerlink" title="scapy模块的常用简单实例"></a>scapy模块的常用简单实例</h1><p>ACK端口扫描，探测目标端口是否被防火墙等过滤</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scapy<span class="token punctuation">.</span><span class="token builtin">all</span> <span class="token keyword">import</span> IP<span class="token punctuation">,</span>TCP<span class="token punctuation">,</span>sr
+ans<span class="token punctuation">,</span>unans<span class="token operator">=</span>sr<span class="token punctuation">(</span>IP<span class="token punctuation">(</span>dst<span class="token operator">=</span><span class="token string">"192.168.1.1"</span><span class="token punctuation">)</span><span class="token operator">/</span>TCP<span class="token punctuation">(</span>dport<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">,</span><span class="token number">80</span><span class="token punctuation">,</span><span class="token number">443</span><span class="token punctuation">,</span><span class="token number">445</span><span class="token punctuation">]</span><span class="token punctuation">,</span>flags<span class="token operator">=</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> request<span class="token punctuation">,</span>response <span class="token keyword">in</span> ans<span class="token punctuation">:</span>
+	<span class="token keyword">if</span> request<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>dport <span class="token operator">==</span> response<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>sport<span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>request<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>dport<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">" is unfiltered"</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> req <span class="token keyword">in</span> unans<span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>req<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>dport<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">" is filtered"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>SYN端口扫描，探测目标端口开放或关闭</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> scapy<span class="token punctuation">.</span><span class="token builtin">all</span> <span class="token keyword">import</span> IP<span class="token punctuation">,</span>TCP<span class="token punctuation">,</span>sr<span class="token punctuation">,</span>fuzz
+ans<span class="token punctuation">,</span>unans<span class="token operator">=</span>sr<span class="token punctuation">(</span>IP<span class="token punctuation">(</span>dst<span class="token operator">=</span><span class="token string">"192.168.1.1"</span><span class="token punctuation">)</span><span class="token operator">/</span>fuzz<span class="token punctuation">(</span>TCP<span class="token punctuation">(</span>dport<span class="token operator">=</span><span class="token punctuation">[</span><span class="token number">21</span><span class="token punctuation">,</span><span class="token number">22</span><span class="token punctuation">,</span><span class="token number">80</span><span class="token punctuation">,</span><span class="token number">443</span><span class="token punctuation">]</span><span class="token punctuation">,</span>flags<span class="token operator">=</span><span class="token string">"S"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> request<span class="token punctuation">,</span>response <span class="token keyword">in</span> ans<span class="token punctuation">:</span>
+	<span class="token keyword">if</span> response<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>flags <span class="token operator">==</span> <span class="token number">18</span><span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>response<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>sport<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">" is open"</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> response<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>flags <span class="token operator">==</span> <span class="token number">20</span><span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>response<span class="token punctuation">[</span>TCP<span class="token punctuation">]</span><span class="token punctuation">.</span>sport<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">" is closed"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ARP%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/11/27/python-python-nmap%E6%A8%A1%E5%9D%97/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

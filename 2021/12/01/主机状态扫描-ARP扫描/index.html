@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>主机状态扫描-ARP扫描 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="ARP简介arp(地址解析协议),主要用在以太网中所有的主机在互联网中通信时使用的是IP地址，而在以太网中通信时使用的是硬件地址（MAC地址）
+以太网的结构
+ARP请求与应答当局域网内的一台主机(192.168.1.1)想与另一台主机(192.168.1.2)通信时，由于192.168.1.1这台主">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="主机状态扫描-ARP扫描"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">主机状态扫描-ARP扫描</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-01</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="ARP简介"><a href="#ARP简介" class="headerlink" title="ARP简介"></a>ARP简介</h1><p>arp(地址解析协议),主要用在以太网中<br>所有的主机在互联网中通信时使用的是IP地址，而在以太网中通信时使用的是硬件地址（MAC地址）</p>
+<h1 id="以太网的结构"><a href="#以太网的结构" class="headerlink" title="以太网的结构"></a>以太网的结构</h1><p><img src="/Ether%E7%BD%91%E7%BB%93%E6%9E%84.png"></p>
+<h1 id="ARP请求与应答"><a href="#ARP请求与应答" class="headerlink" title="ARP请求与应答"></a>ARP请求与应答</h1><p>当局域网内的一台主机(192.168.1.1)想与另一台主机(192.168.1.2)通信时，由于192.168.1.1这台主机只知道目标主机192.168.1.2的IP地址，不知道192.168.1.2的MAC地址。因此，192.168.1.1就需要使用以太广播包给局域网内的每一台主机发送ARP请求，ARP请求的格式为</p>
+<pre class="line-numbers language-none"><code class="language-none">协议类型：ARP Request(ARP请求)
+源主机IP地址：192.168.1.1
+目标主机IP地址：192.168.1.2
+源主机MAC地址：11:11:11:11:11:11
+目标主机MAC地址：ff:ff:ff:ff:ff:ff<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当局域网中的其他主机在接收到这个ARP请求包之后，它就会把自己的IP地址与ARP请求包中头部的目标主机IP作比较，如果不匹配，就不会做出响应。如果匹配，它就会向发送该ARP请求包的主机发送一个ARP响应数据包，ARP响应的格式为</p>
+<pre class="line-numbers language-none"><code class="language-none">协议类型：ARP Response(ARP响应)
+源主机IP地址: 192.168.1.2
+目标主机IP地址：192.168.1.1
+源主机MAC地址：22:22:22:22:22:22
+目标主机MAC地址：11:11:11:11:11:11<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当主机192.168.1.1收到ARP响应包之后，就会把结果放在ARP缓存表中，ARP缓存表格式为</p>
+<pre class="line-numbers language-none"><code class="language-none">IP地址		硬件地址		类型
+192.168.1.2     22:22:22:22:22:22       动态<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>以后当主机192.168.1.1再需要和192.168.1.2主机通信时，只需要查询这个ARP缓存表，找到192.168.1.2对应的MAC地址，然后把数据包发送到该MAC地址即可</p>
+<h1 id="ARP扫描的使用场景-优点及局限性"><a href="#ARP扫描的使用场景-优点及局限性" class="headerlink" title="ARP扫描的使用场景,优点及局限性"></a>ARP扫描的使用场景,优点及局限性</h1><p>当目标主机与我们处于同一个以太网(局域网)中时，利用ARP对其进行扫描是一个最好的选择<br>ARP扫描方式最快，也最为精准，没有任何的安全措施会阻止这种扫描方式<br>ARP扫描只能扫描同一以太网(局域网)内的主机</p>
+<h1 id="ARP扫描的原理图"><a href="#ARP扫描的原理图" class="headerlink" title="ARP扫描的原理图"></a>ARP扫描的原理图</h1><p><img src="/arp%E5%8E%9F%E7%90%86%E5%9B%BE1.png"><br><img src="/arp%E5%8E%9F%E7%90%86%E5%9B%BE2.png"></p>
+<h1 id="scapy构造ARP请求包"><a href="#scapy构造ARP请求包" class="headerlink" title="scapy构造ARP请求包"></a>scapy构造ARP请求包</h1><pre class="line-numbers language-none"><code class="language-none">ans,unans&#x3D;srp(Ether(dst&#x3D;&quot;ff:ff:ff:ff:ff:ff&quot;)&#x2F;ARP(pdst&#x3D;&quot;192.168.1.2&quot;),timeout&#x3D;2)
+ans.summary(lambda req,res:res.printf(&quot;目标主机IP：%ARP.psrc% 目标主机MAC：%Ether.src%&quot;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="python-nmap模块扫描"><a href="#python-nmap模块扫描" class="headerlink" title="python-nmap模块扫描"></a>python-nmap模块扫描</h1><pre class="line-numbers language-none"><code class="language-none">nm.scan(hosts&#x3D;&quot;192.168.1.2&quot;,arguments&#x3D;&quot;-PR -sn&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="ARP扫描抓包"><a href="#ARP扫描抓包" class="headerlink" title="ARP扫描抓包"></a>ARP扫描抓包</h1><p><img src="/arp%E6%8A%93%E5%8C%851.png"><br>说明目标主机在线<br><img src="/arp%E6%8A%93%E5%8C%852.png"><br>说明目标主机不在线</p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ICMP%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/11/30/python-scapy%E6%A8%A1%E5%9D%97/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>旁注攻击 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="旁注攻击旁注攻击简介攻击者在对目标站点渗透的过程中，由于在目标站点找不到安全漏洞导致对目标无从下手时，就可以通过渗透同服务器的其他站点来渗透到目标站点，从而获取目标站点的权限
+IP逆向查询http://www.yougetsignal.com/tools/web-sites-on-web-serve">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="旁注攻击"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">旁注攻击</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-04-28</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="旁注攻击"><a href="#旁注攻击" class="headerlink" title="旁注攻击"></a>旁注攻击</h1><h2 id="旁注攻击简介"><a href="#旁注攻击简介" class="headerlink" title="旁注攻击简介"></a>旁注攻击简介</h2><p>攻击者在对目标站点渗透的过程中，由于在目标站点找不到安全漏洞导致对目标无从下手时，就可以通过渗透同服务器的其他站点来渗透到目标站点，从而获取目标站点的权限</p>
+<h2 id="IP逆向查询"><a href="#IP逆向查询" class="headerlink" title="IP逆向查询"></a>IP逆向查询</h2><p><a target="_blank" rel="noopener" href="http://www.yougetsignal.com/tools/web-sites-on-web-server">http://www.yougetsignal.com/tools/web-sites-on-web-server</a><br><a target="_blank" rel="noopener" href="http://tool.chinaz.com/same">http://tool.chinaz.com/same</a><br><a target="_blank" rel="noopener" href="http://dns.aizhan.com/">http://dns.aizhan.com</a><br><a target="_blank" rel="noopener" href="http://www.114best.com/ip/">http://www.114best.com/ip/</a></p>
+<h2 id="SQL跨库查询"><a href="#SQL跨库查询" class="headerlink" title="SQL跨库查询"></a>SQL跨库查询</h2><p>SQL跨库查询即为SQL旁注，是管理员没有分配好数据库用户权限所导致的问题</p>
+<h3 id="SQL跨库原理"><a href="#SQL跨库原理" class="headerlink" title="SQL跨库原理"></a>SQL跨库原理</h3><p>通常，一个数据库中会有多个用户，用户之间互不干扰。但如果数据库用户权限分配不当，用户之间就可能存在越权操作</p>
+<img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/sql%E8%B7%A8%E5%BA%93.png" class="">
+<p>如图,某台服务器安装了Mysql数据库，数据库中有两个用户:用户A和用户B，用户A对应的数据库为数据库A，用户B对应的数据库为数据库B。用户A可以操作数据库A的数据，但不可以操作数据库B的数据。如果数据库用户权限分配不当导致用户A可以操作数据库B的数据，则就会造成越权(也称为跨库查询)</p>
+<h3 id="防止SQL跨库查询"><a href="#防止SQL跨库查询" class="headerlink" title="防止SQL跨库查询"></a>防止SQL跨库查询</h3><p>在分配用户权限时，使用权限最小原则。即所分配的权限在不干扰程序运行的情况下，分配最小的权限</p>
+<h2 id="目录越权"><a href="#目录越权" class="headerlink" title="目录越权"></a>目录越权</h2><p>每个web应用程序(网站程序)都存在于一个单独的目录中,彼此之间互不干扰，独立运行。但如果服务器管理员配置不当，就会发生目录越权的风险</p>
+<h3 id="目录越权原理"><a href="#目录越权原理" class="headerlink" title="目录越权原理"></a>目录越权原理</h3><img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/%E7%9B%AE%E5%BD%95%E8%B6%8A%E6%9D%83.png" class="">
+<p>如图，网站对应的程序只能在当前存放目录中操作，不应该有其他目录的读写权限。如果管理员配置不当，使网站对应的程序有了其他目录的读写权限，一旦攻击者获得了该网站的权限，就可以利用目录越权向同服务器的其他网站目录中写入shell，从而控制其他网站</p>
+<h2 id="构造注入点"><a href="#构造注入点" class="headerlink" title="构造注入点"></a>构造注入点</h2><p>当cracker通过某个旁站的漏洞获得了该网站的权限，但由于目录权限做的比较严格导致cracker无法向目标网站目录写入shell。这时cracker就可以在获得权限的网站的目录下构造注入点，然后就可以通过该注入点获取数据库权限。如果数据库权限是db_owner,就可以进行数据备份，将shell备份到指定的目录；如果数据库权限足够大，就可以提权</p>
+<h3 id="注入点构造"><a href="#注入点构造" class="headerlink" title="注入点构造"></a>注入点构造</h3><h4 id="aspx版"><a href="#aspx版" class="headerlink" title="aspx版"></a>aspx版</h4><img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/aspx.png" class="">
+<h4 id="php版"><a href="#php版" class="headerlink" title="php版"></a>php版</h4><img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/php.png" class="">
+<h4 id="jsp版"><a href="#jsp版" class="headerlink" title="jsp版"></a>jsp版</h4><img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/jsp.png" class="">
+<h4 id="参考案例"><a href="#参考案例" class="headerlink" title="参考案例"></a>参考案例</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30512785/article/details/99546848?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-1.pc_relevant_default&amp;spm=1001.2101.3001.4242.2&amp;utm_relevant_index=4">https://blog.csdn.net/weixin_30512785/article/details/99546848?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-1.pc_relevant_default&amp;spm=1001.2101.3001.4242.2&amp;utm_relevant_index=4</a></p>
+<h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a>CDN</h2><h3 id="CDN简介"><a href="#CDN简介" class="headerlink" title="CDN简介"></a>CDN简介</h3><p>CDN的全称是Content Delivery Network，即内容分发网络。<br>CDN的最终目的是用来网络加速</p>
+<h3 id="CDN工作原理"><a href="#CDN工作原理" class="headerlink" title="CDN工作原理"></a>CDN工作原理</h3><p>CDN就是将原服务器上可以缓存的文件(静态文件，图片，JS，CSS等)下载到缓存服务器。当用户访问域名时，将会访问缓存服务器，而不是直接去访问源服务器</p>
+<h3 id="CDN流程图"><a href="#CDN流程图" class="headerlink" title="CDN流程图"></a>CDN流程图</h3><img src="/2022/04/28/%E6%97%81%E6%B3%A8%E6%94%BB%E5%87%BB/cdn.png" class="">
+
+<h3 id="CDN下常见的搜集真实IP的方法"><a href="#CDN下常见的搜集真实IP的方法" class="headerlink" title="CDN下常见的搜集真实IP的方法"></a>CDN下常见的搜集真实IP的方法</h3><h4 id="phpinfo"><a href="#phpinfo" class="headerlink" title="phpinfo()"></a>phpinfo()</h4><p>phpinfo()函数可以显示服务器端的一些配置信息，其中包括服务器端的IP地址。<br>phpinfo()是php的函数，asp,aspx,jsp都有类似的函数</p>
+<h4 id="子域名"><a href="#子域名" class="headerlink" title="子域名"></a>子域名</h4><p>很多网站一般会对主站进行CDN加速，而忽略了一些子域名。如果这些子域名恰好与主站存放于同一台服务器上的话，我们可以通过搜集未进行CDN加速的子域名从而获取服务器的真实IP地址</p>
+<h4 id="观察IP变化"><a href="#观察IP变化" class="headerlink" title="观察IP变化"></a>观察IP变化</h4><p>有些网站提供了查看域名服务器IP地址变化的功能，通过IP地址变化，我们可能猜测出服务器的真实IP地址<br><a target="_blank" rel="noopener" href="https://sitereport.netcraft.com/">https://sitereport.netcraft.com/</a></p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/04/29/%E6%8F%90%E6%9D%83/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/04/27/%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

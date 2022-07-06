@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>apache-tomcat安装 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="apache-tomcat安装下载官网地址:https://tomcat.apache.org如:将文件解压到某个文件夹下
+安装(安装前需要安装JAVA环境)进入解压后文件的bin目录，执行service.bat install安装成功则显示”…has been installed”
+配置环境变量进">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="apache-tomcat安装"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">apache-tomcat安装</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-03-21</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="apache-tomcat安装"><a href="#apache-tomcat安装" class="headerlink" title="apache-tomcat安装"></a>apache-tomcat安装</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>官网地址:<a target="_blank" rel="noopener" href="https://tomcat.apache.org/">https://tomcat.apache.org</a><br>如:<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/down.png" class=""><br>将文件解压到某个文件夹下</p>
+<h2 id="安装-安装前需要安装JAVA环境"><a href="#安装-安装前需要安装JAVA环境" class="headerlink" title="安装(安装前需要安装JAVA环境)"></a>安装(安装前需要安装JAVA环境)</h2><p>进入解压后文件的bin目录，执行<code>service.bat install</code><br>安装成功则显示”…has been installed”</p>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><p>进入系统变量界面，点击新建</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F1.png" class="">
+<p>变量名输入<code>CATALINA_HOME</code>,变量值为apache-tomcat的目录，如</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F2.png" class="">
+<p>编辑系统变量中的Path变量，点击新建，输入<code>%CATALINA_HOME%\bin</code>,如</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F3.png" class="">
+<p>点击确定</p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>进入tomcat文件的bin目录，执行<code>startup.bat</code>文件<br>如果终端显示</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/success.png" class="">
+<p>代表启动成功。访问<code>127.0.0.1:8080</code>,显示</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/%E9%A1%B5%E9%9D%A2.png" class="">
+<p>如果终端显示</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/startup1.png" class="">
+<p>我们就需要打开bin目录下的setclasspath.bat文件，在文件中添加<br><code>set JAVA_HOME=JDK安装目录</code><br><code>set JRE_HOME=JRE安装目录	</code><br>例:</p>
+<img src="/2022/03/21/apache-tomcat%E5%AE%89%E8%A3%85/setclasspath.png" class="">
+<p>保存，再次执行<code>startup.bat</code>文件，则启动成功</p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/03/22/web-server%E8%BF%9C%E7%A8%8B%E9%83%A8%E7%BD%B2%E6%BC%8F%E6%B4%9E/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2022/03/15/URL%E8%B7%B3%E8%BD%AC%E4%B8%8E%E9%92%93%E9%B1%BC/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

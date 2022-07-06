@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>端口扫描-TCP全开扫描 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="TCP全开扫描原理
+目标端口开放如果目标端口开放，主机端口向目标端口发送一个SYN请求，目标端口就会响应一个SYN+ACK，表示愿意接受这次连接的请求，这时主机端口再回应一个ACK，就成功的和目标端口建立了一个TCP连接
+目标端口不开放
+目标端口关闭：如果目标端口关闭，主机端口向目标端口发送一个SY">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="端口扫描-TCP全开扫描"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">端口扫描-TCP全开扫描</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-06</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="TCP全开扫描原理"><a href="#TCP全开扫描原理" class="headerlink" title="TCP全开扫描原理"></a>TCP全开扫描原理</h1><ul>
+<li>目标端口开放<br>如果目标端口开放，主机端口向目标端口发送一个SYN请求，目标端口就会响应一个SYN+ACK，表示愿意接受这次连接的请求，这时主机端口再回应一个ACK，就成功的和目标端口建立了一个TCP连接</li>
+<li>目标端口不开放<ul>
+<li>目标端口关闭：如果目标端口关闭，主机端口向目标端口发送一个SYN请求，目标端口就会响应一个RST，表示不接受这次连接的请求，这样就中断了这次TCP连接</li>
+<li>目标端口被过滤：在目标主机存活的前提下，如果目标的网络安全设备屏蔽了我们对目标某些端口的SYN请求，当主机端口向目标端口发送一个SYN请求，目标端口就会无响应</li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP全开扫描原理图"><a href="#TCP全开扫描原理图" class="headerlink" title="TCP全开扫描原理图"></a>TCP全开扫描原理图</h1><p><img src="/tcp1.png"><br><img src="/tcp2.png"><br><img src="/tcp3.png"></p>
+<h1 id="基于TCP全开的端口扫描程序"><a href="#基于TCP全开的端口扫描程序" class="headerlink" title="基于TCP全开的端口扫描程序"></a>基于TCP全开的端口扫描程序</h1><pre class="line-numbers language-none"><code class="language-none">import sys
+from scapy.all import *
+if len(sys.argv) !&#x3D; 3:
+	print(&quot;usage:tcpfullscan.py host port&quot;)
+	sys.exit(1)
+else:
+	host&#x3D;sys.argv[1]
+	dport&#x3D;int(sys.argv[2])
+	resp&#x3D;sr1(IP(dst&#x3D;host)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;S&quot;),timeout&#x3D;5)
+	if str(type(resp)) &#x3D;&#x3D; &quot;&lt;class &#39;NoneType&#39;&gt;&quot;:  # &lt;class &#39;NoneType&#39;&gt;表示空，说明未收到响应
+		print(dport,&quot;\tis closed&quot;)
+	elif resp.haslayer(TCP):
+		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x12: #0x12代表SYN+ACK
+			sr1(IP(dst&#x3D;host)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;AR&quot;),timeout&#x3D;10) #向目标端口发送ACK来完成TCP三次握手
+			print(dport,&quot;\tis open&quot;)
+		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x14: #0x14代表RST
+			print(dport,&quot;\tis closed&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/03/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-UDP%E6%89%AB%E6%8F%8F/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

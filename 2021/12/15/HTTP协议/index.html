@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HTTP协议 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="HTTP协议http是一种无状态的协议，无状态是指web浏览器与 web服务器不需要建立持久的连接。这意味着客户端向服务器发送请求，服务器给客户端响应，然后连接就关闭了，在服务器端不保留连接的有关信息。也就是说，http请求只能由客户端发起，服务器端不能主动向客户端发送数据
+http请求：请求行，请">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="HTTP协议"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">HTTP协议</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-15</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h1><p>http是一种无状态的协议，无状态是指web浏览器与 web服务器不需<br>要建立持久的连接。这意味着客户端向服务器发送请求，服务器给客户<br>端响应，然后连接就关闭了，在服务器端不保留连接的有关信息。也就<br>是说，http请求只能由客户端发起，服务器端不能主动向客户端发送数据</p>
+<h3 id="http请求："><a href="#http请求：" class="headerlink" title="http请求："></a>http请求：</h3><p>请求行，请求头，请求正文</p>
+<h3 id="http响应："><a href="#http响应：" class="headerlink" title="http响应："></a>http响应：</h3><p>响应行，响应头，响应正文</p>
+<h3 id="http请求方法："><a href="#http请求方法：" class="headerlink" title="http请求方法："></a>http请求方法：</h3><p>get<br>head 			#没有响应正文<br>post<br>put 			#可以为服务器创建、修改文件(服务器默认关闭)<br>delete 			#可以删除服务器文件(服务器默认关闭)<br>trace 			#回显服务器收到的请求<br>connect 		#用于能动态切换到隧道的代理<br>options 		#查看服务器支持的请求方式  </p>
+<h3 id="http状态码："><a href="#http状态码：" class="headerlink" title="http状态码："></a>http状态码：</h3><p>200 	#客户端请求成功<br>302 	#重定向<br>404 	#请求资源不存在<br>400 	#客户端请求有语法错误<br>401 	#请求未经授权<br>403 	#服务器收到请求，但是拒绝提供服务<br>500 	#服务器内部错误<br>503 	#服务器当前不能处理客户端的请求，一段时间后可能恢复正常</p>
+<h3 id="http头-请求头，响应头，普通头，实体头"><a href="#http头-请求头，响应头，普通头，实体头" class="headerlink" title="http头(请求头，响应头，普通头，实体头):"></a>http头(请求头，响应头，普通头，实体头):</h3><p>请求头：<br>host 		#用于指定被请求资源的internet主机和端口号<br>user-agent 	#允许客户端将它的操作系统，浏览器和其他属性告诉服务器<br>referer 	#用户从什么地方来到本页面<br>cookie 		#一段文本，常用来表示请求者身份<br>range 		#请求资源的部分内容(不包括响应头的大小)<br>x-forward-for 	#即XXF头，它代表请求端的ip,可以有多个，中间以逗号隔开<br>accept 		#指定客户端接收哪些MIME类型的信息<br>accept-charset 	#用于指定客户端接收的字符集<br>响应头:<br>server 		#服务器所使用的web服务器名称<br>set-cookie 	#查看服务器向客户端发送的cookie信息<br>last-modified 	#资源的最后修改时间<br>location 	#服务器通过该头告诉浏览器去访问哪个页面<br>refresh 	#服务器通过该头告诉浏览器定时刷新浏览器<br>普通头：<br>date 		#表示消息产生的日期和时间<br>connection 	#http请求是否保持长连接<br>cache-control 	#用于指定缓存指令，缓存指令是单向且独立的<br>实体头:<br>content-type 	#用于告诉客户端实际返回的内容的内容类型<br>content-encoding #用于告诉客户端实际返回内容的编码格式<br>content-length 	#指明实体正文的长度，以字节方式存储的十进制数字来表示<br>last-modified 	#用于指示资源的最后修改日期和时间</p>
+<h3 id="端口："><a href="#端口：" class="headerlink" title="端口："></a>端口：</h3><p>http:80 https:443</p>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/15/%E4%B8%BABurp%E6%B7%BB%E5%8A%A0sqlmap%E6%8F%92%E4%BB%B6%E6%96%B9%E6%B3%95-%E5%91%BD%E4%BB%A4%E8%A1%8C/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next disabled"><a>next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

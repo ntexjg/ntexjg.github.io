@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>端口扫描-TCP半开扫描 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="TCP半开扫描原理
+目标端口开放如果目标端口开放，我们向目标端口发送一个SYN请求，目标端口就会响应一个SYN+ACK数据包，然后我们向目标端口发送一个RST数据包来断开TCP连接
+目标端口关闭如果目标端口关闭，我们向目标端口发送一个SYN请求，目标端口就会响应一个RST数据包
+目标端口被过滤如果目">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="端口扫描-TCP半开扫描"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">端口扫描-TCP半开扫描</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-07</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="TCP半开扫描原理"><a href="#TCP半开扫描原理" class="headerlink" title="TCP半开扫描原理"></a>TCP半开扫描原理</h1><ul>
+<li>目标端口开放<br>如果目标端口开放，我们向目标端口发送一个SYN请求，目标端口就会响应一个SYN+ACK数据包，然后我们向目标端口发送一个RST数据包来断开TCP连接</li>
+<li>目标端口关闭<br>如果目标端口关闭，我们向目标端口发送一个SYN请求，目标端口就会响应一个RST数据包</li>
+<li>目标端口被过滤<br>如果目标端口被网络安全设备或机制所过滤，我们向目标端口发送一个SYN请求，在大多数情况下，目标端口无响应。在有些情况下，目标端口会响应ICMP错误消息<ul>
+<li>ICMP错误消息<br>  <img src="/tcp%E5%8D%8A%E5%BC%801.png"></li>
+</ul>
+</li>
+</ul>
+<h1 id="TCP半开扫描原理图"><a href="#TCP半开扫描原理图" class="headerlink" title="TCP半开扫描原理图"></a>TCP半开扫描原理图</h1><ul>
+<li>目标端口开放<br><img src="/tcp%E5%8D%8A%E5%BC%802.png"></li>
+<li>目标端口关闭<br><img src="/tcp%E5%8D%8A%E5%BC%803.png"></li>
+<li>目标端口被过滤(在大多数情况下，目标端口无响应。在有些情况下，目标端口会响应ICMP错误消息，此处为大多数情况）<br><img src="/tcp%E5%8D%8A%E5%BC%804.png"></li>
+</ul>
+<h1 id="TCP半开扫描程序"><a href="#TCP半开扫描程序" class="headerlink" title="TCP半开扫描程序"></a>TCP半开扫描程序</h1><pre class="line-numbers language-none"><code class="language-none">import sys
+from scapy.all import *
+if len(sys.argv) !&#x3D; 3:
+	print(&quot;usage:tcp半开扫描.py host port&quot;)
+else:
+	target&#x3D;sys.argv[1]
+	dport&#x3D;int(sys.argv[2])
+	packet&#x3D;IP(dst&#x3D;target)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;S&quot;)
+	resp&#x3D;sr1(packet,timeout&#x3D;10)
+	if str(type(resp)) &#x3D;&#x3D; &quot;&lt;class &#39;NoneType&#39;&gt;&quot;:
+		print(&quot;%s is filtered&quot;%dport)
+	elif resp.haslayer(ICMP):
+		if int(resp.getlayer(ICMP).type) &#x3D;&#x3D; 3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]:
+			print(&quot;&#123;0&#125; is filtered&quot;.format(dport))
+	elif resp.haslayer(TCP):
+		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x12:  #SYN+ACK
+			print(&quot;&#123;&#125; is open&quot;.format(dport))
+			sr1(IP(dst&#x3D;target)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;R&quot;)) #向目标端口发送一个 RST数据包来断开TCP连接
+		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x14:  #RST
+			print(dport,&quot;is closed&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+			
+			
+			
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/07/%E6%9C%8D%E5%8A%A1%E6%89%AB%E6%8F%8F/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/06/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%85%A8%E5%BC%80%E6%89%AB%E6%8F%8F/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

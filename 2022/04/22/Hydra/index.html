@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hydra使用 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="Hydrahydra常用参数-R	继续从上一次的进度开始破解
+-S  采用SSL连接
+-s	如果非默认端口，可通过该参数指定
+-l	使用指定的用户名
+-L	使用指定的用户名字典
+-p	使用指定的密码
+-P  使用指定的密码字典
+-e	n:空密码试探 s:密码等同用户名试探 r:密码等同反向用户名试探">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Hydra使用"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">Hydra使用</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2022-04-22</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
+	<!-- toc -->
+<script type="text/javascript">
+		jQuery(document).ready(function() {
+ 		   generateWikiTOC('.note', '.toc',  2 , 2 );
+		});
+</script>
+  </div><!-- col-md-3 -->
+  
+  
+
+  
+  <div class="col-xs-12 col-sm-9 col-md-9 note">
+	
+
+	  <!-- content -->
+	  <h1 id="Hydra"><a href="#Hydra" class="headerlink" title="Hydra"></a>Hydra</h1><h2 id="hydra常用参数"><a href="#hydra常用参数" class="headerlink" title="hydra常用参数"></a>hydra常用参数</h2><pre class="line-numbers language-none"><code class="language-none">-R	继续从上一次的进度开始破解
+-S  采用SSL连接
+-s	如果非默认端口，可通过该参数指定
+-l	使用指定的用户名
+-L	使用指定的用户名字典
+-p	使用指定的密码
+-P  使用指定的密码字典
+-e	n:空密码试探 s:密码等同用户名试探 r:密码等同反向用户名试探
+-C	使用冒号分割格式的文件，例：“户名:密码”，代替-L&#x2F;-P参数
+-M	要攻击的目标(服务器)列表文件，每行一个条目，&#39;:&#39;指定端口
+-o	指定结果输出文件
+-f	破解出一个用户名和密码时立刻终止破解(只破解一个账号密码)
+-t	设置运行的线程数，默认为16
+-w	设置最大超时时间，单位为s,默认为32s
+-v	显示详细信息
+-V	每次尝试都显示login+pass
+server	指定要攻击的目标，可以是IPv4地址、IPv6地址或域名
+service	指定要破解的服务。当前支持的服务有:adam6500 asterisk cisco cisco-enable cvs firebird ftp[s] http[s]-&#123;head|get|post&#125; http[s]-&#123;get|post&#125;-form http-proxy http-proxy-urlenum icq imap[s] irc ldap2[s] ldap3[-&#123;cram|digest&#125;md5][s] memcached mongodb mssql mysql nntp oracle-listener oracle-sid pcanywhere pcnfs pop3[s] postgres radmin2 rdp redis rexec rlogin rpcap rsh rtsp s7-300 sip smb smtp[s] smtp-enum snmp socks5 ssh sshkey svn teamspeak telnet[s] vmauthd vnc xmpp
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="hydra破解实例"><a href="#hydra破解实例" class="headerlink" title="hydra破解实例"></a>hydra破解实例</h2><h3 id="破解Mysql密码"><a href="#破解Mysql密码" class="headerlink" title="破解Mysql密码"></a>破解Mysql密码</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L user.txt -P pass.txt 192.168.1.1 mysql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="破解FTP密码"><a href="#破解FTP密码" class="headerlink" title="破解FTP密码"></a>破解FTP密码</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l admin -P pass.txt -t 32 192.168.1.1 ftp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="破解ssh"><a href="#破解ssh" class="headerlink" title="破解ssh"></a>破解ssh</h3><pre class="line-numbers language-none"><code class="language-none">hydra -L user.txt -P pass.txt -e n -vV 192.168.1.1 ssh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="破解RDP"><a href="#破解RDP" class="headerlink" title="破解RDP"></a>破解RDP</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l administrator -P pass.txt www.xxser.com rdp -V<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="破解POP3"><a href="#破解POP3" class="headerlink" title="破解POP3"></a>破解POP3</h3><pre class="line-numbers language-none"><code class="language-none">hydra -l root -P pass.txt my.pop3.mail pop3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+			
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2022/04/23/Medusa/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next"><a href="/2021/12/15/Sqlmap%E4%BD%BF%E7%94%A8/" class="alignright next">next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>

