@@ -51,20 +51,11 @@
 <div class="row page">
   <!-- cols -->	
   
-  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
-	<!-- toc -->
-<script type="text/javascript">
-		jQuery(document).ready(function() {
- 		   generateWikiTOC('.note', '.toc',  2 , 2 );
-		});
-</script>
-  </div><!-- col-md-3 -->
-  
   
 
   
-  <div class="col-xs-12 col-sm-9 col-md-9 note">
-	
+	<div class="col-md-12">
+	  
 
 	  <!-- content -->
 	  <h1 id="ICMP简介"><a href="#ICMP简介" class="headerlink" title="ICMP简介"></a>ICMP简介</h1><p>ICMP位于TCP&#x2F;IP协议族中的网络层，ICMP的目的是用于在IP主机，路由器之间传递控制消息<br>因为互联网也经常发生各种错误，为了发现和处理这些错误，ICMP(互联网控制报文协议)应运而生<br>ICMP中提供了多种报文，这些报文分为两大类：差错报文和查询报文，查询报文都是由一个请求和一个应答构成<br>ICMP查询报文有4种：响应请求或应答，时间戳请求或应答，地址掩码请求或应答，路由器询问或应答。但在实际应用中，后面的3种成功率很低，所以主要使用第一种ICMP查询报文<br>ping命令就是响应请求或应答报文的应用，我们经常使用ping命令来测试本地与目标之间的连通性</p>
@@ -80,8 +71,11 @@ Type:8(表示请求）<span aria-hidden="true" class="line-numbers-rows"><span><
 目的IP地址:192.168.1.1
 ICMP层内容
 Type:0(表示应答)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="ICMP扫描原理图"><a href="#ICMP扫描原理图" class="headerlink" title="ICMP扫描原理图"></a>ICMP扫描原理图</h1><p><img src="/icmp%E5%8E%9F%E7%90%86%E5%9B%BE1.png"><br>注：由于现在很多网络安全设备或机制会屏蔽ICMP，在这种情况下，即使目标主机处于活跃状态，也收不到来自目标主机的ICMP响应<br><img src="/icmp%E5%8E%9F%E7%90%86%E5%9B%BE2.png"></p>
-<h1 id="ICMP扫描抓包"><a href="#ICMP扫描抓包" class="headerlink" title="ICMP扫描抓包"></a>ICMP扫描抓包</h1><p><img src="/icmp%E6%8A%93%E5%8C%851.png"><br><img src="/icmp%E6%8A%93%E5%8C%852.png"></p>
+<h1 id="ICMP扫描原理图"><a href="#ICMP扫描原理图" class="headerlink" title="ICMP扫描原理图"></a>ICMP扫描原理图</h1><img src="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ICMP%E6%89%AB%E6%8F%8F/icmp%E5%8E%9F%E7%90%86%E5%9B%BE1.png" class="">
+<p>注：由于现在很多网络安全设备或机制会屏蔽ICMP，在这种情况下，即使目标主机处于活跃状态，也收不到来自目标主机的ICMP响应</p>
+<img src="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ICMP%E6%89%AB%E6%8F%8F/icmp%E5%8E%9F%E7%90%86%E5%9B%BE2.png" class="">
+<h1 id="ICMP扫描抓包"><a href="#ICMP扫描抓包" class="headerlink" title="ICMP扫描抓包"></a>ICMP扫描抓包</h1><img src="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ICMP%E6%89%AB%E6%8F%8F/icmp%E6%8A%93%E5%8C%851.png" class="">
+<img src="/2021/12/01/%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81%E6%89%AB%E6%8F%8F-ICMP%E6%89%AB%E6%8F%8F/icmp%E6%8A%93%E5%8C%852.png" class="">
 <h1 id="ICMP扫描的优点及局限性"><a href="#ICMP扫描的优点及局限性" class="headerlink" title="ICMP扫描的优点及局限性"></a>ICMP扫描的优点及局限性</h1><p>优点：无论是以太网还是互联网都可以使用ICMP扫描，应用范围广<br>局限：大量网络设备，例如：路由器，防火墙等都对ICMP进行了屏蔽，这样就会导致扫描结果不准确</p>
 <h1 id="scapy构造ICMP请求包"><a href="#scapy构造ICMP请求包" class="headerlink" title="scapy构造ICMP请求包"></a>scapy构造ICMP请求包</h1><pre class="line-numbers language-none"><code class="language-none">ans,unans&#x3D;sr(IP(dst&#x3D;&quot;192.168.1.1&quot;)&#x2F;ICMP())<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h1 id="python-nmap模块扫描"><a href="#python-nmap模块扫描" class="headerlink" title="python-nmap模块扫描"></a>python-nmap模块扫描</h1><pre class="line-numbers language-none"><code class="language-none">nm.scan(hosts&#x3D;&quot;192.168.1.2&quot;,arguments&#x3D;&quot;-PE -sn&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -263,6 +257,15 @@ Type:0(表示应答)<span aria-hidden="true" class="line-numbers-rows"><span></s
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 
 </body>

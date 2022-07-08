@@ -54,55 +54,47 @@
 <div class="row page">
   <!-- cols -->	
   
-  <div class="col-xs-12 col-sm-3 col-md-3 toc"> 
-	<!-- toc -->
-<script type="text/javascript">
-		jQuery(document).ready(function() {
- 		   generateWikiTOC('.note', '.toc',  2 , 2 );
-		});
-</script>
-  </div><!-- col-md-3 -->
-  
   
 
   
-  <div class="col-xs-12 col-sm-9 col-md-9 note">
-	
+	<div class="col-md-12">
+	  
 
 	  <!-- content -->
 	  <h1 id="TCP半开扫描原理"><a href="#TCP半开扫描原理" class="headerlink" title="TCP半开扫描原理"></a>TCP半开扫描原理</h1><ul>
 <li>目标端口开放<br>如果目标端口开放，我们向目标端口发送一个SYN请求，目标端口就会响应一个SYN+ACK数据包，然后我们向目标端口发送一个RST数据包来断开TCP连接</li>
 <li>目标端口关闭<br>如果目标端口关闭，我们向目标端口发送一个SYN请求，目标端口就会响应一个RST数据包</li>
 <li>目标端口被过滤<br>如果目标端口被网络安全设备或机制所过滤，我们向目标端口发送一个SYN请求，在大多数情况下，目标端口无响应。在有些情况下，目标端口会响应ICMP错误消息<ul>
-<li>ICMP错误消息<br>  <img src="/tcp%E5%8D%8A%E5%BC%801.png"></li>
+<li>ICMP错误消息  <img src="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/tcp%E5%8D%8A%E5%BC%801.png" class=""></li>
 </ul>
 </li>
 </ul>
 <h1 id="TCP半开扫描原理图"><a href="#TCP半开扫描原理图" class="headerlink" title="TCP半开扫描原理图"></a>TCP半开扫描原理图</h1><ul>
-<li>目标端口开放<br><img src="/tcp%E5%8D%8A%E5%BC%802.png"></li>
-<li>目标端口关闭<br><img src="/tcp%E5%8D%8A%E5%BC%803.png"></li>
-<li>目标端口被过滤(在大多数情况下，目标端口无响应。在有些情况下，目标端口会响应ICMP错误消息，此处为大多数情况）<br><img src="/tcp%E5%8D%8A%E5%BC%804.png"></li>
+<li>目标端口开放<img src="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/tcp%E5%8D%8A%E5%BC%802.png" class=""></li>
+<li>目标端口关闭<img src="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/tcp%E5%8D%8A%E5%BC%803.png" class=""></li>
+<li>目标端口被过滤(在大多数情况下，目标端口无响应。在有些情况下，目标端口会响应ICMP错误消息，此处为大多数情况）<img src="/2021/12/07/%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F-TCP%E5%8D%8A%E5%BC%80%E6%89%AB%E6%8F%8F/tcp%E5%8D%8A%E5%BC%804.png" class=""></li>
 </ul>
-<h1 id="TCP半开扫描程序"><a href="#TCP半开扫描程序" class="headerlink" title="TCP半开扫描程序"></a>TCP半开扫描程序</h1><pre class="line-numbers language-none"><code class="language-none">import sys
-from scapy.all import *
-if len(sys.argv) !&#x3D; 3:
-	print(&quot;usage:tcp半开扫描.py host port&quot;)
-else:
-	target&#x3D;sys.argv[1]
-	dport&#x3D;int(sys.argv[2])
-	packet&#x3D;IP(dst&#x3D;target)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;S&quot;)
-	resp&#x3D;sr1(packet,timeout&#x3D;10)
-	if str(type(resp)) &#x3D;&#x3D; &quot;&lt;class &#39;NoneType&#39;&gt;&quot;:
-		print(&quot;%s is filtered&quot;%dport)
-	elif resp.haslayer(ICMP):
-		if int(resp.getlayer(ICMP).type) &#x3D;&#x3D; 3 and int(resp.getlayer(ICMP).code) in [1,2,3,9,10,13]:
-			print(&quot;&#123;0&#125; is filtered&quot;.format(dport))
-	elif resp.haslayer(TCP):
-		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x12:  #SYN+ACK
-			print(&quot;&#123;&#125; is open&quot;.format(dport))
-			sr1(IP(dst&#x3D;target)&#x2F;TCP(sport&#x3D;RandShort(),dport&#x3D;dport,flags&#x3D;&quot;R&quot;)) #向目标端口发送一个 RST数据包来断开TCP连接
-		if resp.getlayer(TCP).flags &#x3D;&#x3D; 0x14:  #RST
-			print(dport,&quot;is closed&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="TCP半开扫描程序"><a href="#TCP半开扫描程序" class="headerlink" title="TCP半开扫描程序"></a>TCP半开扫描程序</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> sys
+<span class="token keyword">from</span> scapy<span class="token punctuation">.</span><span class="token builtin">all</span> <span class="token keyword">import</span> <span class="token operator">*</span>
+<span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">3</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"usage:tcp半开扫描.py host port"</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	target<span class="token operator">=</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+	dport<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+	packet<span class="token operator">=</span>IP<span class="token punctuation">(</span>dst<span class="token operator">=</span>target<span class="token punctuation">)</span><span class="token operator">/</span>TCP<span class="token punctuation">(</span>sport<span class="token operator">=</span>RandShort<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>dport<span class="token operator">=</span>dport<span class="token punctuation">,</span>flags<span class="token operator">=</span><span class="token string">"S"</span><span class="token punctuation">)</span>
+	resp<span class="token operator">=</span>sr1<span class="token punctuation">(</span>packet<span class="token punctuation">,</span>timeout<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">type</span><span class="token punctuation">(</span>resp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"&lt;class 'NoneType'>"</span><span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"%s is filtered"</span><span class="token operator">%</span>dport<span class="token punctuation">)</span>
+	<span class="token keyword">elif</span> resp<span class="token punctuation">.</span>haslayer<span class="token punctuation">(</span>ICMP<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">if</span> <span class="token builtin">int</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>getlayer<span class="token punctuation">(</span>ICMP<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">type</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span> <span class="token keyword">and</span> <span class="token builtin">int</span><span class="token punctuation">(</span>resp<span class="token punctuation">.</span>getlayer<span class="token punctuation">(</span>ICMP<span class="token punctuation">)</span><span class="token punctuation">.</span>code<span class="token punctuation">)</span> <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+			<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"&#123;0&#125; is filtered"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>dport<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">elif</span> resp<span class="token punctuation">.</span>haslayer<span class="token punctuation">(</span>TCP<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">if</span> resp<span class="token punctuation">.</span>getlayer<span class="token punctuation">(</span>TCP<span class="token punctuation">)</span><span class="token punctuation">.</span>flags <span class="token operator">==</span> <span class="token number">0x12</span><span class="token punctuation">:</span>  <span class="token comment">#SYN+ACK</span>
+			<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"&#123;&#125; is open"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>dport<span class="token punctuation">)</span><span class="token punctuation">)</span>
+			sr1<span class="token punctuation">(</span>IP<span class="token punctuation">(</span>dst<span class="token operator">=</span>target<span class="token punctuation">)</span><span class="token operator">/</span>TCP<span class="token punctuation">(</span>sport<span class="token operator">=</span>RandShort<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>dport<span class="token operator">=</span>dport<span class="token punctuation">,</span>flags<span class="token operator">=</span><span class="token string">"R"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#向目标端口发送一个 RST数据包来断开TCP连接</span>
+		<span class="token keyword">if</span> resp<span class="token punctuation">.</span>getlayer<span class="token punctuation">(</span>TCP<span class="token punctuation">)</span><span class="token punctuation">.</span>flags <span class="token operator">==</span> <span class="token number">0x14</span><span class="token punctuation">:</span>  <span class="token comment">#RST</span>
+			<span class="token keyword">print</span><span class="token punctuation">(</span>dport<span class="token punctuation">,</span><span class="token string">"is closed"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 
 	  
 
@@ -279,6 +271,15 @@ else:
 </script>
 
 
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
 
 
 </body>
