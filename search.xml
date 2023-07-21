@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>AI Web 2</title>
+      <link href="/2023/07/17/AI-Web-2/"/>
+      <url>/2023/07/17/AI-Web-2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="AI-Web-2靶场闯关"><a href="#AI-Web-2靶场闯关" class="headerlink" title="AI Web 2靶场闯关"></a>AI Web 2靶场闯关</h1><p> 获取目标主机的ip地址<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> netdiscover <span class="token parameter variable">-r</span> <span class="token number">192.168</span>.124.0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/1.png" class=""><br> 得到靶机ip为192.168.124.20<br> 对靶机进行nmap扫描<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> nmap <span class="token parameter variable">-sS</span> <span class="token parameter variable">-sV</span> <span class="token parameter variable">-T4</span> <span class="token parameter variable">-A</span> -p- <span class="token number">192.168</span>.124.20<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/2.png" class=""><br> 可以看到靶机开放了22和80端口以及端口对应的信息。<br> dirb爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirb http://192.168.124.20 <span class="token parameter variable">-X</span> .html,.php,.zip,.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/3.png" class=""><br> dirsearch爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirsearch <span class="token parameter variable">-u</span> <span class="token string">"http://192.168.124.20"</span> <span class="token parameter variable">-e</span> html,php,txt,zip <span class="token parameter variable">-i</span> <span class="token number">200,401</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/4.png" class=""><br> 访问<code>http://192.168.124.20/download.php</code>,发现页面可以下载，但内容为空<br> <img src="/2023/07/17/AI-Web-2/5.png" class=""><br> 访问<code>http://192.168.124.20/index.php</code>,发现是一个只需要输入用户名的登录页面<br> <img src="/2023/07/17/AI-Web-2/6.png" class=""><br> 使用常用帐号登录未果，使用burp爆破也未果<br> <img src="/2023/07/17/AI-Web-2/7.png" class=""><br> <img src="/2023/07/17/AI-Web-2/8.png" class=""><br> 点击index页面的<code>signup</code>注册按钮，注册一个新用户<code>admin</code>,点击ok<br> <img src="/2023/07/17/AI-Web-2/9.png" class=""><br> 继续使用新注册的用户名<code>admin</code>登录<br> <img src="/2023/07/17/AI-Web-2/10.png" class=""><br> 虽然进入后台，但没有发现有价值的信息。<br> google搜索<code>XuezhuLi FileSharing</code><br> <img src="/2023/07/17/AI-Web-2/11.png" class=""><br> 发现该系统存在目录穿越漏洞<br> <img src="/2023/07/17/AI-Web-2/12.png" class=""><br> 该漏洞存在于两个位置<br> <img src="/2023/07/17/AI-Web-2/13.png" class=""><br> 验证第1个漏洞点，访问<code>http://192.168.124.20/</code></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> vulnhub靶场 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>docker版mysql数据库备份</title>
       <link href="/2022/11/03/docker%E7%89%88mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD/"/>
       <url>/2022/11/03/docker%E7%89%88mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD/</url>
